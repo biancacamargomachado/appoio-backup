@@ -1,25 +1,23 @@
 const Sequelize = require("sequelize");
 const sequelizeInstance = require("./index");
-const user = require("../model/user");
+const userInstance = require("../model/user");
 
-
-async function login(email) {
-    var result = await user.user(sequelizeInstance, Sequelize).findOne({
+// Recupera do banco de dados um usuário que possua e-mail igual ao informado e retorna o objeto recuperado
+async function login(informedEmail) {
+    return await userInstance.user(sequelizeInstance, Sequelize).findOne({
         where: {
-            email: email
+            email: informedEmail,
         }
     });
-
-    return result;
 }
 
-async function register(name, email, password) {
-    return await user.user(sequelizeInstance, Sequelize).create({
-        name: name,
-        email: email,
-        password: password,
+// Registra no banco de dados um usuário com nome, email e senha informados e retorna o objeto criado
+async function register(informedName, informedEmail, informedPassword) {
+    return await userInstance.user(sequelizeInstance, Sequelize).create({
+        name: informedName,
+        email: informedEmail,
+        password: informedPassword,
     });
 }
 
-//Aqui estamos exportando todos os métodos que criamos para que consigamos acessar eles de outros arquivos
 module.exports = { login, register };

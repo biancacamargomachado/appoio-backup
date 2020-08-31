@@ -1,49 +1,53 @@
-const user = require('../repository/user');
+const userInstance = require("../repository/user");
 
 
+// Função assincrona que realiza o login e retorna um dicionario de resposta
+// Valida usuário encontrado
+// Valida senha
 async function login(params) {
-    var usr = await user.login(params.email);
-    
-    if (!usr)
+    var user = await userInstance.login(params.email);
+
+    if (!user)
         return {
             resp: false,
             code: 404,
-            msg: 'Erro: usuario não encontrado',
+            msg: "Erro: usuário não encontrado",
             data: {},
-        };
+        }
 
-
-    else if (usr.validPassword(params.pwd))
+    else if (user.validPassword(params.pwd))
         return {
             resp: false,
             code: 403,
-            msg: 'Erro: Senha incorreta',
+            msg: "Erro: senha incorreta",
             data: {},
-        };
+        }
 
     return {
         resp: true,
         code: 200,
-        msg: "User logged",
+        msg: "Usuário logado",
         data: {},
     }
 }
 
+// Função assincrona que registra um usuário e retorna um dicionario de resposta
+// Valida usuário já cadastrado
 async function register(params) {
-    var usr = await user.register(params.name, params.email, params.pwd);
+    var user = await userInstance.register(params.name, params.email, params.pwd);
 
-    if (!usr)
+    if (!user)
         return {
             resp: false,
             code: 401,
-            msg: 'Erro: E-mail já cadastrado',
+            msg: "Erro: e-mail já cadastrado",
             data: {},
-        };
+        }
 
     return {
         resp: true,
         code: 201,
-        msg: "User registered",
+        msg: "Uusário registrado",
         data: {},
     }
 }

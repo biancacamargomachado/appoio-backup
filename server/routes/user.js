@@ -1,13 +1,13 @@
-const express = require('express');
-const user = require('../controller/user');
+const express = require("express");
+const userInstance = require("../controller/user");
 
 const router = express.Router();
 
-//Rota para realizar login
-router.route('/login').post(user.login);
+// Rota para logar um usuário
+router.route("/login").post(userInstance.login);
 
-//Rota para cadastrar um usuário
-router.route('/registration').post(user.register);
+// Rota para cadastrar um usuário
+router.route("/registration").post(userInstance.register);
 
 
 module.exports = router;

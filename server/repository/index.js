@@ -1,23 +1,24 @@
 const Sequelize = require("sequelize");
 const config = require("../config/env");
 
+// Configurações de ambiente
 let obj = config.dataConfig;
 
-// Development
+// Cria instancia da conexão
 const sequelize = new Sequelize({
     dialect: obj.dialect,
     storage: obj.storage,
 });
 
-//Validando a conexão com o banco de dados
+// Realiza a conexão com o banco de dados
 sequelize
     .authenticate()
-    .then(() => {
-        console.log('Connection has been established successfully.');
-    })
-    .catch(err => {
-        console.error('Unable to connect to the database:', err);
-    });
+    .then(
+        () => console.log("Connection has been established successfully")
+    )
+    .catch(
+        (err) => console.log("Error", err)
+    );
 
 
 module.exports = sequelize;

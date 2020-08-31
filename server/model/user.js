@@ -1,32 +1,32 @@
-// https://sequelize.org/master/manual/validations-and-constraints.html
 
 const bcrypt = require("bcrypt");
 
-
+// Função que retorna uma representação do usuário do banco de dados
+// Senha criptografada antes da criação automaticamente
 module.exports = {
-    user: function user(queryInterface, Sequelize) {
+    user: function user(queryInterface, ORM) {
         var User = queryInterface.define(
-            "user",
+            'user',
             {
                 name: {
-                    type: Sequelize.STRING(50),
+                    type: ORM.STRING(50),
                     allowNull: false,
                 },
                 email: {
                     primaryKey: true,
-                    type: Sequelize.STRING(50),
-                    allowNull: null,
+                    type: ORM.STRING(50),
+                    allowNull: false,
                 },
                 password: {
-                    type: Sequelize.STRING(50),
-                    allowNull: null,
-                },
+                    type: ORM.STRING(50),
+                    allowNull: false,
+                }
             },
             {
                 timestamps: false,
                 freezeTableName: true,
                 hooks: {
-                    beforeCreate: (user) => {
+                    beforeCreate: (user)=>{
                         const salt = bcrypt.genSaltSync(8);
                         user.password = bcrypt.hashSync(user.password, salt);
                     }
@@ -34,11 +34,10 @@ module.exports = {
             }
         );
 
-        User.prototype.validPassword = function (password) {
+        User.prototype.validPassword = function(password){
             bcrypt.compareSync(password, this.password);
-        }
+        };
 
         return User;
-
     }
 };

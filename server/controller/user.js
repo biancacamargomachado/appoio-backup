@@ -1,34 +1,27 @@
-const user = require('../service/user');
+// https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status
 
+const userInstance = require("../service/user");
 
-//Método que retorna apenas um usuário de acordo com o login informado
+// Função assincrona que realiza o login e retorna um JSON de resposta
 async function login(req, res) {
-    res.setHeader("Content-Type", "application/json");
-
-    return await user
+    return await userInstance
         .login(req.body)
-        .catch(err => {
-            console.log(err);
-            res.status(err.statusCode || 404).send(err);
-        })
-        .then(q => {
-            return res.status(200).send(JSON.stringify(q));
-        });
+        .catch(err => console.log(err))
+        .then(q => res
+            .status(200)
+            .json(q)
+        );
 }
 
-//Método que retorna registra um novo usuário de acordo com o email e senha informados
+// Função assincrona que realiza o regisgtro de um usuário e retorna um JSON de resposta
 async function register(req, res) {
-    res.setHeader("Content-Type", "application/json");
-
-    return await user
+    return await userInstance
         .register(req.body)
-        .catch(err => {
-            console.log(err);
-            res.status(err.statusCode || 401).send(err);
-        })
-        .then(q => {
-            return res.status(200).send(JSON.stringify(q));
-        });
+        .catch(err => console.log(err))
+        .then(q => res.status(201)
+            .json(q)
+        );
 }
+
 
 module.exports = { login, register };
