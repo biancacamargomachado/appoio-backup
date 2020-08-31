@@ -1,9 +1,11 @@
 // https://sequelize.org/master/manual/validations-and-constraints.html
 
+const bcrypt = require("bcrypt");
+
 
 module.exports = {
     user: function user(queryInterface, Sequelize) {
-        return queryInterface.define(
+        var User = queryInterface.define(
             "user",
             {
                 name: {
@@ -23,9 +25,20 @@ module.exports = {
             {
                 timestamps: false,
                 freezeTableName: true,
-
+                hooks: {
+                    beforeCreate: (user) => {
+                        const salt = bcrypt.genSaltSync(8);
+                        user.password = bcrypt.hashSync(user.password, salt);
+                    }
+                }
             }
         );
+
+        User.prototype.validPassword = function (password) {
+            bcrypt.compareSync(password, this.password);
+        }
+
+        return User;
 
     }
 };

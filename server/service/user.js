@@ -3,7 +3,7 @@ const user = require('../repository/user');
 
 async function login(params) {
     var usr = await user.login(params.email);
-
+    
     if (!usr)
         return {
             resp: false,
@@ -13,7 +13,7 @@ async function login(params) {
         };
 
 
-    else if (params.pwd != usr.password)
+    else if (usr.validPassword(params.pwd))
         return {
             resp: false,
             code: 403,
