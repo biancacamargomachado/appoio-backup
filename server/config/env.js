@@ -5,20 +5,20 @@ var args = process.argv.slice(2);
 if (args.length >= 1)
     if (args[0] == 'dev')
         module.exports = {
-            env: "development",
-            nomeApi: "appoio-backend",
-            apiURL: "http://localhost",
+            env: 'development',
+            nomeApi: 'appoio-backend',
+            apiURL: 'http://localhost',
             apiPort: 8080,
             dataConfig: {
-                dialect: "sqlite",
-                storage: "./database.sqlite3"
+                dialect: 'sqlite',
+                storage: './database.sqlite3'
             }
         };
     else
         module.exports = {
-            env: "production",
-            nomeApi: "appoio-backend",
-            apiURL: "http://localhost",
+            env: 'production',
+            nomeApi: 'appoio-backend',
+            apiURL: 'http://localhost',
             apiPort: 8080,
             dataConfig: {
                 database: args[1],
@@ -26,7 +26,7 @@ if (args.length >= 1)
                 password: args[3],
                 host: args[4],
                 port: args[5],
-                dialect: "mysql",
+                dialect: 'mysql',
                 dialectOptions: {
                     ssl: 'Amazon RDS'
                 },
@@ -36,4 +36,4 @@ if (args.length >= 1)
         };
 
 else
-    throw "Ambiente não informado: dev/prod";
+    throw 'Ambiente não informado: dev/prod';
