@@ -1,5 +1,3 @@
-const Sequelize = require('sequelize');
-const sequelizeInstance = require('../database');
 const User = require('../models/User');
 
 // Recupera do banco de dados um usuário que possua e-mail igual ao informado e retorna o objeto recuperado
