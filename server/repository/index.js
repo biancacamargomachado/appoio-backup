@@ -1,14 +1,15 @@
 const Sequelize = require("sequelize");
 const config = require("../config/env");
 
-// Configurações de ambiente
-let obj = config.dataConfig;
-
 // Cria instancia da conexão
-const sequelize = new Sequelize({
-    dialect: obj.dialect,
-    storage: obj.storage,
-});
+const sequelize;
+if (config.env == 'dev')
+    sequelize = new Sequelize({
+        dialect: config.dataConfig.dialect,
+        storage: config.dataConfig.storage,
+    });
+else
+    sequelize = new Sequelize(config.database, config.username, config.password, config.dataConfig);
 
 // Realiza a conexão com o banco de dados
 sequelize
