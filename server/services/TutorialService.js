@@ -1,9 +1,9 @@
 const tutorialRepository = require('../repository/TutorialRepo');
 
 //Função que realiza a busca pelos tutoriais da categoria Celular
-async function verCelular(){
+async function getCelular(){
   return await tutorialRepository
-  .findByCategoria(
+  .findByCategory(
     'celular'
   )
   .then((tutorials) => {
@@ -19,4 +19,4 @@ async function verCelular(){
   );
 }
 
-module.exports = { verCelular };
+module.exports = { getCelular };

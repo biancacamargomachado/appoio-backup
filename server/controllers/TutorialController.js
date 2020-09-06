@@ -1,9 +1,9 @@
 const tutorialService = require('../services/TutorialService');
 
 //Função que busca os tutoriais da categoria Celular e retorna um json de resposta 
-async function verCelular(req,res){
+async function getCelular(req,res){
   return await tutorialService.
-  verCelular()
+  getCelular()
   .then(
     (tutorials) => res.json(tutorials)
   )
@@ -23,4 +23,4 @@ async function verCelular(req,res){
 
 
 
-module.exports = { verCelular };
+module.exports = { getCelular };
