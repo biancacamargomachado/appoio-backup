@@ -1,22 +1,31 @@
 const tutorialRepository = require('../repository/TutorialRepo');
 
 //Função que realiza a busca pelos tutoriais da categoria Celular
-async function getCelular(){
+async function getAll(category){
   return await tutorialRepository
   .findByCategory(
-    'celular'
+    category
   )
   .then((tutorials) => {
       return {
-        //preencher
+        resp: true,
+        code: 200,
+        msg: `Tutoriais de ${category} encontrados`,
+        data: tutorials,
       }
     }
   )
   .catch((err) => {
       console.log(err);
-      //preencher
+      
+      return {
+        resp: false,
+        code: 404,
+        msg: `Não foi possível encontrar os tutoriais de ${category}`,
+        data: {},
+      }
     }
   );
 }
 
-module.exports = { getCelular };
+module.exports = { getAll };
