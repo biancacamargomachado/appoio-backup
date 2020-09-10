@@ -1,15 +1,16 @@
 const tutorialService = require ('../services/TutorialService');
 
 async function register(req, res) {
-    const {nomeApoio, categoria, OS, versaoOS, tags} = req.body;
-    
+    const {nomeApoio, categoria, OS, versaoOS, tags, passos} = req.body;
+    console.log(tags);
     return await tutorialService
       .register({
         nomeApoio, 
         categoria, 
         OS, 
         versaoOS, 
-        tags
+        tags,
+        passos      
       })
       .then(
         (tutorial) => res.json(tutorial)

@@ -10,7 +10,7 @@ class Tutorial extends Model {
         versaoOS: DataTypes.INTEGER},
       {
         sequelize,
-        modelName: 'tutoriais',
+        modelName: 'tutorial',
         underscored: true,
         freezeTableName: true,
       }

@@ -1,6 +1,5 @@
 const express = require('express');
 const tutorialController = require('../controllers/TutorialController');
-
 const router = express.Router();
 
 // Rota para registrar um tutorial
