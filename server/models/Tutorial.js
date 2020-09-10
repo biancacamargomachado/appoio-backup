@@ -5,7 +5,10 @@ class Tutorial extends Model {
     static init(sequelize){
       super.init(
         {
-          app_id: DataTypes.INTEGER,
+          app_id: {
+            type: DataTypes.INTEGER,
+            references: { model: 'apps', key: 'id_app' },
+          },
           name: DataTypes.STRING,
           category: DataTypes.STRING,
           app_version: DataTypes.STRING,

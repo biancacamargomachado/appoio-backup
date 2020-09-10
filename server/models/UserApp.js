@@ -4,8 +4,14 @@ class UserApp extends Model {
   static init(sequelize){
     super.init(
       {
-        id_app: Datatypes.INTEGER,
-        id_user: Datatypes.INTEGER,
+        id_app: {
+          type: Datatypes.INTEGER,
+          references: { model: 'apps', key: 'id_app' },
+        },
+        id_user: { 
+          type: Datatypes.INTEGER,
+          references: { model: 'users', key: 'id' },
+        }
       },
       {
         sequelize,
@@ -16,3 +22,5 @@ class UserApp extends Model {
     );
   }
 }
+
+module.exports = UserApp;
