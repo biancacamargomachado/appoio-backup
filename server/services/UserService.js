@@ -57,7 +57,7 @@ async function register({ name, email, password, birthday, city, uf }) {
       return {
         resp: true,
         code: 201,
-        msg: 'Usário registrado',
+        msg: 'Usuário registrado',
         data: user,
       }
     })
