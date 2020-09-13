@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const config = require('../config/env');
 
 const User = require('../models/User');
-const Tag = require('../models/tag');
+const Tag = require('../models/Tag');
 
 // Cria instancia da conexão
 const sequelize = new Sequelize(config.dataConfig);
