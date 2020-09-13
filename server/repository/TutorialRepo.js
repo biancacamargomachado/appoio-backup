@@ -1,3 +1,7 @@
+/**
+ * @author Fernanda Mello
+ */
+
 const Tutorial = require('../models/Tutorial');
 
 async function findByCategory(category){

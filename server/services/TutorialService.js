@@ -1,3 +1,7 @@
+/**
+ * @author Fernanda Mello
+ */
+
 const tutorialRepository = require('../repository/TutorialRepo');
 
 //Função que realiza a busca pelos tutoriais da categoria Celular

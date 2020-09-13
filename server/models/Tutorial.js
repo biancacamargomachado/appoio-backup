@@ -1,3 +1,7 @@
+/**
+ * @author Fernanda Mello
+ */
+
 'use strict';
 const { Model,DataTypes } = require('sequelize');
 

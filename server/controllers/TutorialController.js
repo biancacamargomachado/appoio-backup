@@ -1,3 +1,7 @@
+/**
+ * @author Fernanda Mello
+ */
+
 const tutorialService = require('../services/TutorialService');
 
 //Função que busca os tutoriais da categoria Celular e retorna um json de resposta 
