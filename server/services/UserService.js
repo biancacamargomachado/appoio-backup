@@ -41,11 +41,11 @@ async function login({ email, password }) {
 
 // Função assincrona que registra um usuário e retorna um dicionario de resposta
 // Valida usuário já cadastrado
-async function register({ name, email, password, birthday, city, uf }) {
+async function registerUser({ name, email, password, birthday, city, uf }) {
   const hashedPassword = await hash(password, 8);
 
   return await userRepository
-    .register({
+    .registerUser({
       name,
       email,
       password: hashedPassword,
@@ -76,4 +76,4 @@ async function register({ name, email, password, birthday, city, uf }) {
 
 }
 
-module.exports = { login, register };
+module.exports = { login, registerUser };

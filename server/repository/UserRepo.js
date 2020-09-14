@@ -6,7 +6,7 @@ async function findByEmail(email) {
 }
 
 // Registra no banco de dados um usuário com nome, email e senha informados e retorna o objeto criado
-async function register({ name, email, password, birthday, city, uf }) {
+async function registerUser({ name, email, password, birthday, city, uf }) {
   return await User.create({
     name,
     email,
@@ -17,4 +17,4 @@ async function register({ name, email, password, birthday, city, uf }) {
   });
 }
 
-module.exports = { register, findByEmail };
+module.exports = { registerUser, findByEmail };

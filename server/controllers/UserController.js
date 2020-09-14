@@ -33,7 +33,7 @@ async function register(req, res) {
   const { name, email, password, birthday, city, uf } = req.body;
 
   return await userService
-    .register({
+    .registerUser({
       name,
       email,
       password,
