@@ -1,40 +1,94 @@
 const Tutorial = require('../models/Tutorial');
-const Passo = require('../models/Passo');
+const Step = require('../models/Step');
 
-async function register({
-    nomeApoio,
-    categoria,
-    OS,
-    versaoOS,
-    tags
-}) {
-    return await Tutorial.create({
-        nomeApoio,
-        categoria,
-        OS,
-        versaoOS,
+async function registerTutorial({ userId, appId, appoioName, category, operationalSystem, operationalSystemVersion, steps }) {
+    if (appId !== undefined) {
+        if (operationalSystemVersion !== undefined) {
+            return await Tutorial.create(
+                {
+                    userId: userId,
+                    appId: appId,
+                    appoioName: appoioName,
+                    category: category,
+                    appVersion: appVersion,
+                    operatingSystem: operationalSystem,
+                    operationalSystemVersion: operationalSystemVersion,
+                    step: steps
+                },
+                {
+                    include: [
+                        {
+                            model: Step,
+                            as: 'steps'
+                        }]
+                }
+            );
+        }
+        else {
+            return await Tutorial.create(
+                {
+                    userId: userId,
+                    appId: appId,
+                    appoioName: appoioName,
+                    category: category,
+                    appVersion: appVersion,
+                    operatingSystem: operationalSystem,
+                    step: steps
+                },
+                {
+                    include: [
+                        {
+                            model: Step,
+                            as: 'steps'
+                        }]
+                }
+            );
+        }
+    }
+    else {
+        if (operationalSystem !== undefined) {
+            return await Tutorial.create(
+                {
+                    userId: userId,
+                    appoioName: appoioName,
+                    category: category,
+                    operationalSystem: operationalSystem,
+                    operationalSystemVersion: operationalSystemVersion,
+                    step: steps
+                },
+                {
+                    include: [
+                        {
+                            model: Step,
+                            as: 'steps'
+                        }]
+                }
+            );
+        }
+        else {
+            return await Tutorial.create(
+                {
+                    userId: userId,
+                    appoioName: appoioName,
+                    category: category,
+                    step: steps
+                },
+                {
+                    include: [
+                        {
+                            model: Step,
+                            as: 'steps'
+                        }]
+                }
+            );
+        }
+    }
+}
+
+async function findByCategory({ category }) {
+    return await Tutorial.findAll({
+        where: category
     });
 }
 
-async function registerPassos({ passos }) {
-    var promises = [];
-    for (var i = 0; i < passos.length; i++) {
-        promises.push(Passo.create({
-            idPasso: DataTypes.INTEGER, 
-            idTutorial: DataTypes.INTEGER, 
-            descricao: DataTypes.STRING, 
-            videoUrl: DataTypes.STRING, 
-            imgUrl: DataTypes.STRING
-        }));
-    }
-    
-    return await Promise.all(promises);
-}
-
-
-
-async function findByCategory(category){
-  return await Tutorial.findAll({ where: { category } });
-}
-
-module.exports = { register, registerPassos, findByCategory };
+module.exports = { registerTutorial, findByCategory };

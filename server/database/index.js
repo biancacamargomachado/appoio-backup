@@ -2,14 +2,15 @@ const Sequelize = require('sequelize');
 const config = require('../config/env');
 
 const User = require('../models/User');
-const Tag = require('../models/Tag');
 const Tutorial = require('../models/Tutorial');
+const Step = require('../models/Step');
+const Tag = require('../models/Tag');
 const App = require('../models/App');
-const UserApp = require('../models/UserApp');
 
 // Cria instancia da conexão
 const sequelize = new Sequelize(config.dataConfig);
 
+// Realiza a conexão com o banco
 sequelize
   .authenticate()
   .then(() => {
@@ -19,14 +20,46 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
-
+// Inicializa todas as tabelas
 User.init(sequelize);
-Tag.init(sequelize);
 Tutorial.init(sequelize);
+Step.init(sequelize);
+Tag.init(sequelize);
 App.init(sequelize);
-UserApp.init(sequelize);
 
-//Sincroniza todos os modelos ao mesmo tempo
+// Many to Many entre User e App utilizando tabela intermediária "USER_APP"
+User.belongsToMany(App, {
+  through: 'user_app',
+  as: 'apps'
+});
+App.belongsToMany(User, {
+  through: 'user_app',
+  as: 'users'
+});
+
+// One to Many entre User e Tutorial
+Tutorial.belongsTo(User, { foreignKey: { name: 'userId', allowNull: false }, as: 'user' });
+User.hasMany(Tutorial, { as: 'tutorials' });
+
+// One to Many entre App e Tutorial
+Tutorial.belongsTo(App, { foreignKey: { name: 'userId', allowNull: true }, as: 'app' });
+App.hasMany(Tutorial, { as: 'tutorials' });
+
+// One to Many entre Tutorial e Step
+Step.belongsTo(Tutorial, { foreignKey: { name: 'tutorialId', allowNull: false }, as: 'tutorial' });
+Tutorial.hasMany(Step, { as: 'steps' });
+
+// Many to Many entre Tutorial e Tag utilizando tabela intermediária "TUTORIAL_TAG"
+Tutorial.belongsToMany(Tag, {
+  through: 'tutorial_tag',
+  as: 'tags'
+});
+Tag.belongsToMany(Tutorial, {
+  through: 'tutorial_tag',
+  as: 'tutorials'
+});
+
+// Registra no banco efetivamente
 sequelize.sync();
 
 module.exports = sequelize;

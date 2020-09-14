@@ -1,71 +1,21 @@
-const tutorialRepo = require('../repository/TutorialRepo');
+const tutorialRepository = require('../repository/TutorialRepo');
 
-async function register({
-  nomeApoio,
-  categoria,
-  OS,
-  versaoOS,
-  tags,
-  passos
-}) {
-
-  return await tutorialRepo
-    .register({
-      nomeApoio,
-      categoria,
-      OS,
-      versaoOS,
-      tags
-    })
-    .then((tutorial) => {
-      return {
-        resp: true,
-        code: 201,
-        msg: 'Tutorial registrado',
-        data: tutorial,
-      }
-    })
-    .catch(
-      (err) => {
-        console.log(err);
-
-        return {
-          resp: false,
-          code: 401,
-          msg: 'Erro: nome de tutorial já cadastrado',
-          data: {},
-        };
-      }
-    );
-
+// Função que registra um tutorial juntamente com os passos necessários para executá-lo
+async function registerTutorial({ userId, appId, appoioName, category, operationalSystem, operationalSystemVersion, steps }) {
+  try {
+    return await tutorialRepository.registerTutorial({ userId, appId, appoioName, category, operationalSystem, operationalSystemVersion, steps });
+  } catch (err) {
+    throw err;
+  }
 }
 
-//Função que realiza a busca pelos tutoriais da categoria Celular
-async function getAll(category){
-  return await tutorialRepository
-  .findByCategory(
-    category
-  )
-  .then((tutorials) => {
-      return {
-        resp: true,
-        code: 200,
-        msg: `Tutoriais de ${category} encontrados`,
-        data: tutorials,
-      }
-    }
-  )
-  .catch((err) => {
-      console.log(err);
-      
-      return {
-        resp: false,
-        code: 404,
-        msg: `Não foi possível encontrar os tutoriais de ${category}`,
-        data: {},
-      }
-    }
-  );
+//Função que realiza a busca pelos tutoriais dado a categoria
+async function getAll(category) {
+  try {
+    return await tutorialRepository.findByCategory({ category });
+  } catch (err) {
+    throw err;
+  }
 }
 
-module.exports = { register, getAll };
+module.exports = { registerTutorial, getAll };

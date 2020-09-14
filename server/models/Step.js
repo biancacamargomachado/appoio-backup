@@ -1,21 +1,25 @@
 const { Model, DataTypes } = require('sequelize');
 
-class App extends Model{
+class Step extends Model {
   static init(sequelize) {
     super.init(
       {
-        name: {
-          type: DataTypes.STRING(50),
+        description: {
+          type: DataTypes.STRING(500),
           allowNull: false,
         },
-        logoURL: {
+        videoURL: {
           type: DataTypes.STRING(500),
-          allowNull: false
-        }
+          allowNull: true
+        },
+        imgURL: {
+          type: DataTypes.STRING(500),
+          allowNull: true
+        },
       },
       {
         sequelize,
-        modelName: 'app',
+        modelName: 'step',
         freezeTableName: true,
         timestamps: false
       }
@@ -23,4 +27,4 @@ class App extends Model{
   }
 }
 
-module.exports = App;
+module.exports = Step;

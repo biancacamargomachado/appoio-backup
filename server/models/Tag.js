@@ -4,15 +4,17 @@ class Tag extends Model {
   static init(sequelize) {
     super.init(
       {
-        id: {type: DataTypes.INTEGER, primaryKey:true },
-        name: DataTypes.STRING,
-        created_at: DataTypes.DATE,
+        name: {
+          type: DataTypes.STRING(50),
+          allowNull: false,
+          unique: true,
+        },
       },
       {
         sequelize,
-        modelName: 'tags',
-        underscored: true,
+        modelName: 'tag',
         freezeTableName: true,
+        timestamps: false
       }
     );
   }

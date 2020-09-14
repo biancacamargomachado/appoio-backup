@@ -4,19 +4,37 @@ class User extends Model {
   static init(sequelize) {
     super.init(
       {
-        name: DataTypes.STRING,
-        email: DataTypes.STRING,
-        password: DataTypes.STRING,
-        birthday: DataTypes.DATEONLY,
-        city: DataTypes.STRING,
-        uf: DataTypes.STRING,
-        created_at: DataTypes.DATE,
+        name: {
+          type: DataTypes.STRING(50),
+          allowNull: false,
+        },
+        email: {
+          type: DataTypes.STRING(100),
+          allowNull: false,
+          unique: true,
+        },
+        password: {
+          type: DataTypes.STRING(255),
+          allowNull: false,
+        },
+        birthday: {
+          type: DataTypes.DATE,
+          allowNull: false,
+        },
+        city: {
+          type: DataTypes.STRING(50),
+          allowNull: false,
+        },
+        uf: {
+          type: DataTypes.STRING(2),
+          allowNull: false,
+        },
       },
       {
         sequelize,
         modelName: 'user',
-        underscored: true,
         freezeTableName: true,
+        timestamps: false
       }
     );
   }

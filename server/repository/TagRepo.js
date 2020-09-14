@@ -1,15 +1,20 @@
-const Tag = require('../models/Tag');
+const Tag = require('../models/Tag.js');
 
-// Recupera do banco de dados uma tag que possui nome igual ao informado e retorna o objeto recuperado
-async function findByTag(name) {
-  return await Tag.findOne({ where: { name } });
+async function registerTags({ tutorial, tags }) {
+    let returnedTags = [];
+    for (let i = 0; i < tags.length; i++) {
+        returnedTags.push(await Tag.findOrCreate({
+            where: {
+                name: tags[i].name
+            },
+            defaults: {
+                name: tags[i].name
+            }
+        }));
+    }
+    await Promise.all(returnedTags.map((tag) => tag.addTutorial(tutorial)));
+
+    return returnedTags;
 }
 
-// Registra no banco de dados uma tag com nome informados e retorna o objeto criado
-async function register({ name }) {
-  return await Tag.create({
-    name,
-  });
-}
-
-module.exports = { register, findByTag };
+module.exports = { registerTags };

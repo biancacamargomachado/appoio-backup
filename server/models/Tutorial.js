@@ -1,28 +1,43 @@
-'use strict';
-const { Model,DataTypes } = require('sequelize');
+const { Model, DataTypes } = require('sequelize');
 
 class Tutorial extends Model {
-    static init(sequelize){
-      super.init(
-        {
-          app_id: {
-            type: DataTypes.INTEGER,
-            references: { model: 'apps', key: 'id_app' },
-          },
-          name: DataTypes.STRING,
-          category: DataTypes.STRING,
-          app_version: DataTypes.STRING,
-          operating_system: DataTypes.STRING,
-          operating_system_version: DataTypes.STRING,
-          approved: DataTypes.TINYINT,
-        }, {
-          sequelize,
-          modelName: 'tutorial',
-          underscored: true,
-          freezeTableName: true,
-        }
-      );
-    }
+  static init(sequelize) {
+    super.init(
+      {
+        appoioName: {
+          type: DataTypes.STRING(50),
+          allowNull: false,
+          unique: true
+        },
+        category: {
+          type: DataTypes.STRING(11),
+          allowNull: false,
+        },
+        appVersion: {
+          type: DataTypes.STRING(30),
+          allowNull: true,
+        },
+        operatingSystem: {
+          type: DataTypes.STRING(20),
+          allowNull: true,
+        },
+        operatingSystemVersion: {
+          type: DataTypes.STRING(30),
+          allowNull: true,
+        },
+        approved: {          
+          type: DataTypes.TINYINT,
+          default: 0
+        },
+      },
+      {
+        sequelize,
+        modelName: 'tutorial',
+        freezeTableName: true,
+        timestamps: false
+      }
+    );
+  }
 }
 
 module.exports = Tutorial;
