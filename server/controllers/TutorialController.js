@@ -17,7 +17,10 @@ async function register(req, res) {
       steps,
     });
 
-    await tagService.registerTags({ tutorial: returnedTutorial, tags });
+    if(tags !== undefined){
+      await tagService.registerTags({ tutorial: returnedTutorial, tags });
+    }
+
 
     return res.json({
       resp: true,
@@ -27,12 +30,6 @@ async function register(req, res) {
         tutorial: {
           id: returnedTutorial.dataValues.id,
           appoioName: returnedTutorial.dataValues.appoioName,
-          tags: returnedTags.map((tag) => {
-            return {
-              id: tag.dataValues.id,
-              name: tag.dataValues.name
-            }
-          })
         }
       }
     });
@@ -81,5 +78,31 @@ async function getAll(req, res) {
   }
 }
 
+// Função que busca os tutoriais por seu id
+async function get(req, res){
+  try{
+    const id = req.params.id;
+    const tutorial = await tutorialService.get(id);
+    return res.json({
+      resp: true,
+      status: 200,
+      msg: 'Tutorial recovered',
+      data: {
+        
+      }
+    })
 
-module.exports = { register, getAll };
+  } catch(err){
+    console.log(err);
+
+    return res.json({
+      resp: false,
+      status: 500,
+      msg: 'Unkown error found on search: ' + err,
+      data: {}
+    });
+  }
+}
+
+
+module.exports = { register, getAll, get };
