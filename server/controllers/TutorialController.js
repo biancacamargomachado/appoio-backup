@@ -84,39 +84,12 @@ async function get(req, res){
     const id = req.params.id;
     const tutorial = await tutorialService.get(id);
 
-    const steps = await tutorial.getSteps();
-    const tags = await tutorial.getTags();
-
     return res.json({
       resp: true,
       status: 200,
       msg: 'Tutorial recovered',
       data: {
-          tutorial: {
-            appoioName: tutorial.dataValues.appoioName,
-            appVersion: tutorial.dataValues.appVersion,
-            operatingSystem: tutorial.dataValues.operatingSystem,
-            operatingSystemVersion: tutorial.dataValues.operatingSystemVersion,
-            userId: tutorial.dataValues.userId,
-          },
-          steps: [
-              steps.map(
-                (steps) => {
-                  return {
-                    description: steps.dataValues.description,
-                    imgUrl: steps.dataValues.imgUrl,
-                    videoUrl: steps.dataValues.videoUrl,
-                  }
-              })
-          ],
-          tags: [
-            tags.map(
-              (tags) => {
-                return {
-                  name: tags.dataValues.name,
-                }
-            })
-          ]
+          tutorial
       }
     })
 
