@@ -5,6 +5,11 @@ const tagService = require('../services/TagService');
 async function register(req, res) {
   const { userId, appId, appoioName, category, operationalSystem, operationalSystemVersion, tags, steps } = req.body;
 
+  console.log(req.file);
+  console.log(req.body);
+  
+  return res.json({status: "ok"});
+  
   try {
 
     const returnedTutorial = await tutorialService.registerTutorial({
