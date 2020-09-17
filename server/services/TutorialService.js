@@ -18,4 +18,13 @@ async function getAll(category) {
   }
 }
 
-module.exports = { registerTutorial, getAll };
+//Função que realiza a busca pelos tutoriais dado o id
+async function get(id){
+  try {
+    return await tutorialRepository.findById(id);
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports = { registerTutorial, getAll, get };

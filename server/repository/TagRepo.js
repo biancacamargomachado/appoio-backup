@@ -12,9 +12,14 @@ async function registerTags({ tutorial, tags }) {
             }
         }));
     }
-    await Promise.all(returnedTags.map((tag) => tag.addTutorial(tutorial)));
+
+    await returnedTags.forEach((tag) => addTags(tag, tutorial) );
 
     return returnedTags;
+}
+
+async function addTags(tag, tutorial){
+    await tutorial.addTags(tag[0]);
 }
 
 module.exports = { registerTags };
