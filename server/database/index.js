@@ -28,12 +28,13 @@ Tag.init(sequelize);
 App.init(sequelize);
 
 // Many to Many entre User e App utilizando tabela intermediária "USER_APP"
+const UserApp = sequelize.define('user_app', {}, { timestamps: false });
 User.belongsToMany(App, {
-  through: 'user_app',
+  through: UserApp,
   as: 'apps'
 });
 App.belongsToMany(User, {
-  through: 'user_app',
+  through: UserApp,
   as: 'users'
 });
 
@@ -50,12 +51,13 @@ Step.belongsTo(Tutorial, { foreignKey: { name: 'tutorialId', allowNull: false },
 Tutorial.hasMany(Step, { as: 'steps' });
 
 // Many to Many entre Tutorial e Tag utilizando tabela intermediária "TUTORIAL_TAG"
+const TutorialTag = sequelize.define('tutorial_tag', {}, { updatedAt: false });
 Tutorial.belongsToMany(Tag, {
-  through: 'tutorial_tag',
+  through: TutorialTag,
   as: 'tags'
 });
 Tag.belongsToMany(Tutorial, {
-  through: 'tutorial_tag',
+  through: TutorialTag,
   as: 'tutorials'
 });
 
