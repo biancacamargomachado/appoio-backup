@@ -8,7 +8,7 @@ if (args.length >= 1)
             env: 'development',
             nomeApi: 'appoio-backend',
             apiURL: 'http://localhost',
-            apiPort: 8080,
+            apiPort: 3000,
             dataConfig: {
                 dialect: 'sqlite',
                 dialectOptions: {
@@ -22,7 +22,7 @@ if (args.length >= 1)
             env: 'production',
             nomeApi: 'appoio-backend',
             apiURL: 'http://localhost',
-            apiPort: 8080,
+            apiPort: 3000,
             dataConfig: {
                 database: args[1],
                 username: args[2],
