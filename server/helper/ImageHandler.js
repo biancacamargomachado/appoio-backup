@@ -1,28 +1,44 @@
-var fs = require('fs');
+const fs = require('fs');
 
 
 function ImageHandler() {
 }
 
 ImageHandler.prototype._handleFile = function _handleFile(req, file, cb) {
-    console.log("\n\nSalvando arquivo");
+    if (!('processed' in req.body)) {
+        if ('userId' in req.body) {
+            req.body.userId = parseInt(req.body.userId);
+        }
+        if ('appId' in req.body) {
+            req.body.appId = parseInt(req.body.appId);
+        }
+        if ('tags' in req.body) {
+            req.body.tags = JSON.parse(req.body.tags);
+        }
+        if ('steps' in req.body) {
+            req.body.steps = JSON.parse(req.body.steps);
+        }
+        req.body.processed = true;
+    }
 
-    var path = './tmp/';
+    let path = './tmp/' + file.originalname;
 
-    var outStream = fs.createWriteStream(path + file.originalname);
-
+    let outStream = fs.createWriteStream(path);
     file.stream.pipe(outStream);
+
     outStream.on('error', cb);
-    outStream.on('finish', function () {
-        cb(null, {
-            path: this.path,
-            size: outStream.bytesWritten
-        });
-    });
+    outStream.on('finish',
+        () => cb(null, {
+            path: path
+        })
+    );
+
 }
 
 ImageHandler.prototype._removeFile = function _removeFile(req, file, cb) {
-    console.log("\n\nExcluindo arquivo\n\n");
+    if (file === undefined)
+        return;
+
     fs.unlink(file.path, cb)
 }
 
