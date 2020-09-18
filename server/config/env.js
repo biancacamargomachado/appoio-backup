@@ -11,6 +11,9 @@ if (args.length >= 1)
             apiPort: 8080,
             dataConfig: {
                 dialect: 'sqlite',
+                dialectOptions: {
+                    useUTC: false
+                },
                 storage: './database.sqlite3'
             }
         };
@@ -28,6 +31,7 @@ if (args.length >= 1)
                 port: args[5],
                 dialect: 'mysql',
                 dialectOptions: {
+                    useUTC: false,
                     ssl: 'Amazon RDS'
                 },
                 pool: { maxConnections: 10, maxIdleTime: 30 },
