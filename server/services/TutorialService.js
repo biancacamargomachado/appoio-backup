@@ -1,30 +1,72 @@
 const tutorialRepository = require('../repository/TutorialRepo');
 
-// Função que registra um tutorial juntamente com os passos necessários para executá-lo
-async function registerTutorial({ userId, appId, appoioName, category, operationalSystem, operationalSystemVersion, steps }) {
-  try {
-    return await tutorialRepository.registerTutorial({ userId, appId, appoioName, category, operationalSystem, operationalSystemVersion, steps });
-  } catch (err) {
-    throw err;
-  }
-}
-
-//Função que realiza a busca pelos tutoriais dado a categoria
-async function getAll(category) {
-  try {
-    return await tutorialRepository.findByCategory({ category });
-  } catch (err) {
-    throw err;
-  }
-}
 
 //Função que realiza a busca pelos tutoriais dado o id
-async function get(id){
+async function get(id) {
   try {
-    return await tutorialRepository.findById(id);
+    let tutorial = await tutorialRepository
+      .findById(
+        id
+      );
+
+    tutorial = tutorial.toJSON();
+
+    tutorial.createdAt = tutorial.tags[0].createdAt.createdAt;
+
+    for (let tag of tutorial.tags) {
+      delete tag.createdAt;
+    }
+
+    return tutorial;
+
   } catch (err) {
     throw err;
   }
 }
 
-module.exports = { registerTutorial, getAll, get };
+//Função que realiza a busca de todos tutoriais
+async function getAll() {
+  try {
+    let tutorials = await tutorialRepository.findAll();
+    tutorials = tutorials.map(tutorial => tutorial.toJSON());
+
+    let categoryTutorials = {};
+
+    for (let tutorial of tutorials) {
+      let category = tutorial.category;
+      delete tutorial.category;
+
+      if (category in categoryTutorials) {
+        categoryTutorials[category].push(tutorial);
+      }
+      else {
+        categoryTutorials[category] = [tutorial]
+      }
+    }
+
+    return categoryTutorials;
+
+  } catch (err) {
+    throw err;
+  }
+}
+
+// Função que registra um tutorial juntamente com os passos necessários para executá-lo
+async function registerTutorial(tutorialCreationObject) {
+  try {
+    Object
+      .keys(tutorialCreationObject)
+      .forEach(
+        key => tutorialCreationObject[key] === undefined ? delete tutorialCreationObject[key] : {}
+      );
+
+    return await tutorialRepository
+      .registerTutorial(
+        tutorialCreationObject
+      );
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports = { get, getAll, registerTutorial };

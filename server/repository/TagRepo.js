@@ -1,9 +1,9 @@
 const Tag = require('../models/Tag.js');
 
-async function registerTags({ tutorial, tags }) {
-    let returnedTags = [];
+async function registerTags(tutorial, tags) {
+    let promiseTags = [];
     for (let i = 0; i < tags.length; i++) {
-        returnedTags.push(await Tag.findOrCreate({
+        promiseTags.push(Tag.findOrCreate({
             where: {
                 name: tags[i].name
             },
@@ -13,13 +13,10 @@ async function registerTags({ tutorial, tags }) {
         }));
     }
 
-    await returnedTags.forEach((tag) => addTags(tag, tutorial) );
+    let registeredTags = await Promise.all(promiseTags);
+    await Promise.all(registeredTags.map(tag => tutorial.addTags(tag[0])));
 
-    return returnedTags;
-}
-
-async function addTags(tag, tutorial){
-    await tutorial.addTags(tag[0]);
+    return registeredTags;
 }
 
 module.exports = { registerTags };
