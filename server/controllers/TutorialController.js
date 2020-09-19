@@ -56,18 +56,19 @@ async function getAll(req, res) {
 
 // Função que registra um tutorial juntamente com os passos necessários para executá-lo e retorna um JSON de resposta sem corpo
 async function register(req, res) {
-  let { userId, appId, appoioName, category, operationalSystem, operationalSystemVersion, tags, steps } = req.body;
+  let { userId, appoioName, category, appId, appVersion, operatingSystem, operatingSystemVersion, tags, steps } = req.body;
   let files = req.files;
 
   try {
     let tutorial = await tutorialService.registerTutorial(
       {
         userId,
-        appId,
         appoioName,
         category,
-        operationalSystem,
-        operationalSystemVersion,
+        appId,
+        appVersion,
+        operatingSystem,
+        operatingSystemVersion,
         steps,
         files
       }
