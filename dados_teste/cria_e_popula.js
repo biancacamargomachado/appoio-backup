@@ -65,7 +65,7 @@ async function criaBanco() {
   });
 
   // Registra no banco efetivamente
-  sequelize.sync();
+  await sequelize.sync();
 }
 
 async function criaUsuarios(qtdUsuarios) {
@@ -81,7 +81,7 @@ async function criaUsuarios(qtdUsuarios) {
       });
     }
   } catch (err) {
-    console.log("Usuarios já criados");
+    console.log("\n\nUsuarios já criados\n\n");
   }
 }
 
@@ -128,8 +128,12 @@ async function criaTutoriais(qtdCategorias, qtdTutorialCategoria, qtdPassosTutor
   }
 }
 
-(async () => {
+
+async function main(){
   await criaBanco();
   await criaUsuarios(2);
-  await criaTutoriais(2, 1, 5, 3);
-})();
+  await criaTutoriais(2, 3, 5, 2);
+}
+
+
+main().then();
