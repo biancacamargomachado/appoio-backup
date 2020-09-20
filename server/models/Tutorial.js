@@ -34,7 +34,8 @@ class Tutorial extends Model {
         sequelize,
         modelName: 'tutorial',
         freezeTableName: true,
-        timestamps: false
+        updatedAt: false,
+        deletedAt: false,
       }
     );
   }

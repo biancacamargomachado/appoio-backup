@@ -9,15 +9,7 @@ async function get(id) {
         id
       );
 
-    tutorial = tutorial.toJSON();
-
-    tutorial.createdAt = tutorial.tags[0].createdAt.createdAt;
-
-    for (let tag of tutorial.tags) {
-      delete tag.createdAt;
-    }
-
-    return tutorial;
+    return tutorial.toJSON();
 
   } catch (err) {
     throw err;

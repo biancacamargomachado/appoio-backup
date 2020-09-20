@@ -51,7 +51,7 @@ Step.belongsTo(Tutorial, { foreignKey: { name: 'tutorialId', allowNull: false },
 Tutorial.hasMany(Step, { as: 'steps' });
 
 // Many to Many entre Tutorial e Tag utilizando tabela intermediária "TUTORIAL_TAG"
-const TutorialTag = sequelize.define('tutorial_tag', {}, { updatedAt: false });
+const TutorialTag = sequelize.define('tutorial_tag', {}, { timestamps: false });
 Tutorial.belongsToMany(Tag, {
   through: TutorialTag,
   as: 'tags'

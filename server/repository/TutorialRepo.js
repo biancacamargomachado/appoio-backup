@@ -16,7 +16,8 @@ async function findById(id) {
                 'category',
                 'appVersion',
                 'operatingSystem',
-                'operatingSystemVersion'
+                'operatingSystemVersion',
+                ['createdAt', 'date']
             ],
             include: [
                 {
@@ -34,10 +35,6 @@ async function findById(id) {
                     attributes: [
                         'name'
                     ],
-                    through: {
-                        as: 'createdAt',
-                        attributes: ['createdAt']
-                    },
                 },
                 {
                     model: User,
