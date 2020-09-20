@@ -59,6 +59,14 @@ async function register(req, res) {
   let { userId, appoioName, category, appId, appVersion, operatingSystem, operatingSystemVersion, tags, steps } = req.body;
   let files = req.files;
 
+  files.forEach(file => {
+    // formato do nome de cada imagem: "<step-order>.[jpg,png]"
+    const fileOrder = parseInt(file.originalName.split(".")[0]);
+
+    const step = steps.find(step => parseInt(step.order) === fileOrder);
+    step.imgURL = file.secureUrl
+  });
+
   try {
     let tutorial = await tutorialService.registerTutorial(
       {
