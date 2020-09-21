@@ -74,7 +74,7 @@ async function register(req, res) {
     appId = null;
   }
 
-  files?.forEach(file => {
+  if (files) files.forEach(file => {
     // formato do nome de cada imagem: "<step-order>.[jpg,png]"
     const fileOrder = parseInt(file.originalName.split(".")[0]);
 
