@@ -14,6 +14,7 @@ async function findById(id) {
             attributes: [
                 'appoioName',
                 'category',
+                'appId',
                 'appVersion',
                 'operatingSystem',
                 'operatingSystemVersion',
