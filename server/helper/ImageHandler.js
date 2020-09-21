@@ -1,5 +1,5 @@
 const fs = require('fs');
-
+const cloudinary = require('cloudinary').v2;
 
 function ImageHandler() {
 }
@@ -21,17 +21,26 @@ ImageHandler.prototype._handleFile = function _handleFile(req, file, cb) {
         req.body.processed = true;
     }
 
-    let path = './tmp/' + file.originalname;
+    const uploadStream = cloudinary.uploader.upload_stream({
+        use_filename: false,
+        resource_type: "image",
+        access_control: [{ access_type: "anonymous" }],
+        discard_original_filename: true,
+    }, (error, result) => {
+        if (error) {
+            cb(error);
+            return;
+        }
 
-    let outStream = fs.createWriteStream(path);
-    file.stream.pipe(outStream);
-
-    outStream.on('error', cb);
-    outStream.on('finish',
-        () => cb(null, {
-            path: path
+        cb(null, {
+            originalName: file.originalname,
+            publicId: result.public_id,
+            url: result.url,
+            secureUrl: result.secure_url,
         })
-    );
+    })
+
+    file.stream.pipe(uploadStream)
 
 }
 

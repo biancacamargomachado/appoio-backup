@@ -56,18 +56,42 @@ async function getAll(req, res) {
 
 // Função que registra um tutorial juntamente com os passos necessários para executá-lo e retorna um JSON de resposta sem corpo
 async function register(req, res) {
-  let { userId, appId, appoioName, category, operationalSystem, operationalSystemVersion, tags, steps } = req.body;
+  let { userId, appoioName, category, appId, appVersion, operatingSystem, operatingSystemVersion, tags, steps } = req.body;
   let files = req.files;
+
+  // se nenhum passo tiver imagens, o request não passa pelo multer
+  // e tags e steps não são parseadas de string para JSON
+  if (typeof tags === "string") {
+    tags = JSON.parse(tags);
+  }
+
+  if (typeof steps === "string") {
+    steps = JSON.parse(steps);
+  }
+
+  // garantir que estará null para não ter problemas de constraints
+  if (category !== "aplicativos") {
+    appId = null;
+  }
+
+  files?.forEach(file => {
+    // formato do nome de cada imagem: "<step-order>.[jpg,png]"
+    const fileOrder = parseInt(file.originalName.split(".")[0]);
+
+    const step = steps.find(step => parseInt(step.order) === fileOrder);
+    step.imgURL = file.secureUrl
+  });
 
   try {
     let tutorial = await tutorialService.registerTutorial(
       {
         userId,
-        appId,
         appoioName,
         category,
-        operationalSystem,
-        operationalSystemVersion,
+        appId,
+        appVersion,
+        operatingSystem,
+        operatingSystemVersion,
         steps,
         files
       }

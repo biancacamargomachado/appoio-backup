@@ -7,7 +7,6 @@ class Tutorial extends Model {
         appoioName: {
           type: DataTypes.STRING(50),
           allowNull: false,
-          unique: true
         },
         category: {
           type: DataTypes.STRING(11),
