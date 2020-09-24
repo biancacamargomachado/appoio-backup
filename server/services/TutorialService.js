@@ -3,10 +3,7 @@ const tutorialRepository = require('../repository/TutorialRepo');
 
 async function get(id) {
   try {
-    let tutorial = await tutorialRepository
-      .findById(
-        id
-      );
+    let tutorial = await tutorialRepository.findById(id);
 
     return tutorial.toJSON();
 
@@ -45,12 +42,9 @@ async function getAll() {
 
 async function registerTutorial(tutorialCreationObject) {
   try {
-    
 
-    return await tutorialRepository
-      .registerTutorial(
-        tutorialCreationObject
-      );
+
+    return await tutorialRepository.registerTutorial(tutorialCreationObject);
   } catch (err) {
     throw err;
   }

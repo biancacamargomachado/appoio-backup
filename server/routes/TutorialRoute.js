@@ -1,5 +1,5 @@
 const express = require('express');
-const multer = require('multer')
+const multer = require('multer');
 const tutorialController = require('../controllers/TutorialController');
 const storage = require('../helper/ImageHandler');
 
