@@ -8,7 +8,7 @@ require('../database');
 
 const app = express();
 
-app.use(session({ store: new SQLiteStore, secret: 'ShhEhSegredo' }));
+app.use(session({ store: new SQLiteStore, secret: 'ShhEhSegredo', resave: false, saveUninitialized: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

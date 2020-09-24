@@ -1,14 +1,21 @@
 const userRepository = require('../repository/UserRepo');
 const { compare, hash } = require('bcrypt');
+const admEmail = require('../config/env').admEmail;
 
 
 async function login(email, password) {
   try {
-    let user = await userRepository.findByEmail(email).toJSON();
+    let user = (await userRepository.findByEmail(email)).toJSON();
 
     let match = await compare(password, user.password);
     if (!match)
       throw Error('password does not match');
+
+    delete user.password;
+    if (email === admEmail)
+      user.adm = true;
+    else
+      user.adm = false;
 
     return user;
 

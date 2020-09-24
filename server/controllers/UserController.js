@@ -12,7 +12,7 @@ async function login(req, res) {
       resp: true,
       status: 200,
       msg: 'User logged',
-      data: {}
+      data: user
     });
 
   } catch (err) {
