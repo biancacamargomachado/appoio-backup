@@ -69,6 +69,31 @@ async function getAll(req, res) {
   }
 }
 
+async function search(req, res){
+  let userId = req.session.userId;
+
+  if (userId === undefined)
+    return res.json({
+      resp: false,
+      status: 401,
+      msg: 'User not logged',
+      data: {}
+    });
+
+    // Titulo
+    // Funcao de levenshtein de proximidade
+    // Uso de Like
+    
+    // Tags
+    // Literal
+    // Uso de like
+
+    // Aplicativos
+    // Literal
+    // Uso de like
+
+}
+
 
 async function register(req, res) {
   let userId = req.session.userId;
@@ -139,4 +164,4 @@ async function register(req, res) {
 }
 
 
-module.exports = { get, getAll, register };
+module.exports = { get, getAll, search, register };
