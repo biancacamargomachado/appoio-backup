@@ -25,13 +25,39 @@ async function getAll(userId) {
 }
 
 
-async function get(userId) {
+async function getInstalled(userId) {
     try {
         return (await appRepository.getByUserId(userId)).map(app => {
             app = app.toJSON();
             delete app['user_app'];
             return app;
         });
+
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function getTutorials(appName) {
+    try {
+        let tutorials = await appRepository.getTutorials(appName);
+        tutorials = tutorials.map(tutorial => tutorial.toJSON());
+
+        let categoryTutorials = {};
+
+        for (let tutorial of tutorials) {
+            let category = tutorial.category;
+            delete tutorial.category;
+
+            if (category in categoryTutorials) {
+                categoryTutorials[category].push(tutorial);
+            }
+            else {
+                categoryTutorials[category] = [tutorial]
+            }
+        }
+
+        return categoryTutorials;
 
     } catch (err) {
         throw err;
@@ -56,4 +82,4 @@ async function update(userId, appNames) {
     }
 }
 
-module.exports = { getAll, get, register, update };
+module.exports = { getAll, getInstalled, getTutorials, register, update };

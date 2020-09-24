@@ -36,7 +36,7 @@ async function getAll(req, res) {
 }
 
 
-async function get(req, res) {
+async function getInstalled(req, res) {
     let userId = req.session.userId;
     if (userId === undefined)
         return res.json({
@@ -47,7 +47,7 @@ async function get(req, res) {
         });
 
     try {
-        let apps = await appService.get(userId);
+        let apps = await appService.getInstalled(userId);
 
         return res.json({
             resp: true,
@@ -69,6 +69,46 @@ async function get(req, res) {
         });
     }
 }
+
+
+async function getTutorials(req, res) {
+    let userId = req.session.userId;
+
+    if (userId === undefined)
+        return res.json({
+            resp: false,
+            status: 401,
+            msg: 'User not logged',
+            data: {}
+        });
+
+    try {
+        let { appName } = req.body;
+
+        let tutorials = await appService.getTutorials(appName);
+
+        return res.json({
+            resp: true,
+            status: 201,
+            msg: 'App registered',
+            data: {
+                tutorials: tutorials
+            }
+        });
+    }
+    catch (err) {
+        console.log(err);
+
+        return res.json({
+            resp: false,
+            status: 500,
+            msg: 'Unkown error found on app registration: ' + err,
+            data: {}
+        });
+    }
+
+}
+
 
 async function register(req, res) {
     let userId = req.session.userId;
@@ -143,4 +183,4 @@ async function update(req, res) {
 }
 
 
-module.exports = { getAll, get, register, update };
+module.exports = { getAll, getInstalled, getTutorials, register, update };

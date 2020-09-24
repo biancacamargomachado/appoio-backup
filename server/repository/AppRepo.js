@@ -29,6 +29,21 @@ async function getByUserId(userId) {
 }
 
 
+async function getTutorials(appName) {
+    return await (await App.findOne({ where: { name: appName } })).getTutorials(
+        {
+            attributes: [
+                'id',
+                'appoioName',
+                'category'
+            ],
+            order: [
+                ['createdAt', 'DESC']
+            ]
+        });
+}
+
+
 async function register(userId, appNames) {
     let user = await User.findOne({
         where: {
@@ -54,4 +69,4 @@ async function update(userId, appNames) {
 
 }
 
-module.exports = { getAll, getByUserId, register, update };
+module.exports = { getAll, getByUserId, getTutorials, register, update };
