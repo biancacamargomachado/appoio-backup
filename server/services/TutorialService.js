@@ -1,7 +1,6 @@
 const tutorialRepository = require('../repository/TutorialRepo');
 
 
-//Função que realiza a busca pelos tutoriais dado o id
 async function get(id) {
   try {
     let tutorial = await tutorialRepository
@@ -16,7 +15,7 @@ async function get(id) {
   }
 }
 
-//Função que realiza a busca de todos tutoriais
+
 async function getAll() {
   try {
     let tutorials = await tutorialRepository.findAll();
@@ -43,14 +42,10 @@ async function getAll() {
   }
 }
 
-// Função que registra um tutorial juntamente com os passos necessários para executá-lo
+
 async function registerTutorial(tutorialCreationObject) {
   try {
-    Object
-      .keys(tutorialCreationObject)
-      .forEach(
-        key => tutorialCreationObject[key] === undefined ? delete tutorialCreationObject[key] : {}
-      );
+    
 
     return await tutorialRepository
       .registerTutorial(

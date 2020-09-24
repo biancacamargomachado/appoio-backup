@@ -1,7 +1,7 @@
 const tutorialService = require('../services/TutorialService');
 const tagService = require('../services/TagService');
 
-// Função que busca os tutoriais por seu id
+
 async function get(req, res) {
   try {
     let id = req.params.id;
@@ -28,7 +28,7 @@ async function get(req, res) {
   }
 }
 
-//Função que busca os tutoriais retorna um JSON de resposta separado por categoria
+
 async function getAll(req, res) {
   try {
     let tutorials = await tutorialService.getAll();
@@ -54,52 +54,49 @@ async function getAll(req, res) {
   }
 }
 
-// Função que registra um tutorial juntamente com os passos necessários para executá-lo e retorna um JSON de resposta sem corpo
+
 async function register(req, res) {
   let { userId, appoioName, category, appId, appVersion, operatingSystem, operatingSystemVersion, tags, steps } = req.body;
-  let files = req.files;
 
-  // se nenhum passo tiver imagens, o request não passa pelo multer
-  // e tags e steps não são parseadas de string para JSON
-  if (typeof tags === "string") {
+  if (userId)
+    userId = parseInt(userId);
+
+  if (appId)
+    appId = parseInt(appId);
+
+  if (tags)
     tags = JSON.parse(tags);
-  }
 
-  if (typeof steps === "string") {
+
+  if (steps) {
     steps = JSON.parse(steps);
+
+    let files = req.files;
+    if (files)
+      for (let i = 0; i < files.length; i++)
+        steps[i].imgURL = files[i].secureURL
+
   }
 
-  // garantir que estará null para não ter problemas de constraints
-  if (category !== "aplicativos") {
-    appId = null;
+
+  let creationObject = {
+    userId,
+    appoioName,
+    category,
+    appId,
+    appVersion,
+    operatingSystem,
+    operatingSystemVersion,
+    steps,
+    tags
   }
 
-  if (files) files.forEach(file => {
-    // formato do nome de cada imagem: "<step-order>.[jpg,png]"
-    const fileOrder = parseInt(file.originalName.split(".")[0]);
-
-    const step = steps.find(step => parseInt(step.order) === fileOrder);
-    step.imgURL = file.secureUrl
-  });
+  Object.keys(creationObject).forEach(
+    key => creationObject[key] === undefined ? delete creationObject[key] : {}
+  );
 
   try {
-    let tutorial = await tutorialService.registerTutorial(
-      {
-        userId,
-        appoioName,
-        category,
-        appId,
-        appVersion,
-        operatingSystem,
-        operatingSystemVersion,
-        steps,
-        files
-      }
-    );
-
-    if (tags !== undefined) {
-      await tagService.registerTags(tutorial, tags);
-    }
+    await tutorialService.registerTutorial(creationObject);
 
     return res.json({
       resp: true,

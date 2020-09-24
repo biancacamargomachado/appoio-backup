@@ -3,7 +3,7 @@ const Step = require('../models/Step');
 const Tag = require('../models/Tag');
 const User = require('../models/User');
 
-// Função que busca no banco um tutorial dado um ID e retorna em conjunto com seus passos, tags e usuário
+
 async function findById(id) {
     return await Tutorial.findOne(
         {
@@ -50,7 +50,7 @@ async function findById(id) {
     );
 }
 
-// Função que retorna todos os tutoriais contendo ID, nome e categoria de cada
+
 async function findAll() {
     return await Tutorial.findAll(
         {
@@ -66,10 +66,10 @@ async function findAll() {
     );
 }
 
-// Função que registra um tutorial junto com seus passos para serem executados
-async function registerTutorial(tutorialCreationObject) {
-    return await Tutorial.create(
-        tutorialCreationObject,
+
+async function registerTutorial({ userId, appoioName, category, appId, appVersion, operatingSystem, operatingSystemVersion, steps, tags }) {
+    let tutorial = await Tutorial.create(
+        { userId, appoioName, category, appId, appVersion, operatingSystem, operatingSystemVersion, steps, approved: 0 },
         {
             include: [
                 {
@@ -78,6 +78,15 @@ async function registerTutorial(tutorialCreationObject) {
                 }]
         }
     );
+
+    let createdTags = await Tag.bulkCreate(
+        tags,
+        {
+            fields: ['name']
+        }
+    );
+
+    await tutorial.setTags(createdTags.map(tag => tag.id));
 }
 
 
