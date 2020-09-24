@@ -12,8 +12,9 @@ async function getAll(userId) {
             else
                 key = 'not-installed'
 
-            delete apps.users
-            formattedApps[key].push(apps[i]);
+            let app = apps[i].toJSON();
+            delete app.users
+            formattedApps[key].push(app);
         }
 
         return formattedApps;

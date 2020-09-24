@@ -17,7 +17,7 @@ async function getAll(req, res) {
         return res.json({
             resp: true,
             status: 200,
-            msg: 'Tutorial recovered',
+            msg: 'All apps recovered',
             data: {
                 apps: apps
             }
@@ -29,7 +29,7 @@ async function getAll(req, res) {
         return res.json({
             resp: false,
             status: 500,
-            msg: 'Unkown error found on get: ' + err,
+            msg: 'Unkown error found on app getAll: ' + err,
             data: {}
         });
     }
@@ -52,7 +52,7 @@ async function get(req, res) {
         return res.json({
             resp: true,
             status: 200,
-            msg: 'Tutorials recovered',
+            msg: 'Installed apps recovered',
             data: {
                 apps: apps
             }
@@ -64,7 +64,7 @@ async function get(req, res) {
         return res.json({
             resp: false,
             status: 500,
-            msg: 'Unkown error found on getAll: ' + err,
+            msg: 'Unkown error found on app get: ' + err,
             data: {}
         });
     }
@@ -89,7 +89,7 @@ async function register(req, res) {
         return res.json({
             resp: true,
             status: 201,
-            msg: 'Tutorials recovered',
+            msg: 'App registered',
             data: {}
         });
     }
@@ -99,7 +99,7 @@ async function register(req, res) {
         return res.json({
             resp: false,
             status: 500,
-            msg: 'Unkown error found on getAll: ' + err,
+            msg: 'Unkown error found on app registration: ' + err,
             data: {}
         });
     }
@@ -126,7 +126,7 @@ async function update(req, res) {
         return res.json({
             resp: true,
             status: 201,
-            msg: 'Tutorial registered',
+            msg: 'User apps updated',
             data: {}
         });
 
@@ -136,7 +136,7 @@ async function update(req, res) {
         return res.json({
             resp: false,
             status: 500,
-            msg: 'Unkown error found on registration: ' + err,
+            msg: 'Unkown error found on app update: ' + err,
             data: {}
         });
     }
