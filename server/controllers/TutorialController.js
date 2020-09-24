@@ -2,6 +2,14 @@ const tutorialService = require('../services/TutorialService');
 
 
 async function get(req, res) {
+  if (req.session.userId === undefined)
+    return res.json({
+      resp: false,
+      status: 401,
+      msg: 'User not logged',
+      data: {}
+    });
+
   try {
     let id = req.params.id;
     let tutorial = await tutorialService.get(id);
@@ -29,6 +37,14 @@ async function get(req, res) {
 
 
 async function getAll(req, res) {
+  if (req.session.userId === undefined)
+    return res.json({
+      resp: false,
+      status: 401,
+      msg: 'User not logged',
+      data: {}
+    });
+
   try {
     let tutorials = await tutorialService.getAll();
 
@@ -55,10 +71,17 @@ async function getAll(req, res) {
 
 
 async function register(req, res) {
-  let { userId, appoioName, category, appId, appVersion, operatingSystem, operatingSystemVersion, tags, steps } = req.body;
+  let userId = req.session.userId;
 
-  if (userId)
-    userId = parseInt(userId);
+  if (userId === undefined)
+    return res.json({
+      resp: false,
+      status: 401,
+      msg: 'User not logged',
+      data: {}
+    });
+
+  let { appoioName, category, appId, appVersion, operatingSystem, operatingSystemVersion, tags, steps } = req.body;
 
   if (appId)
     appId = parseInt(appId);
@@ -76,7 +99,6 @@ async function register(req, res) {
         steps[i].imgURL = files[i].secureURL
 
   }
-
 
   let creationObject = {
     userId,

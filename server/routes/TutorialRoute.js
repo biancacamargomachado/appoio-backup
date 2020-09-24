@@ -7,13 +7,9 @@ const router = express.Router();
 
 const upload = multer({ storage: storage }).array('images');
 
-//Rota para acessar tutorial por id
+
 router.route('/id/:id').get(tutorialController.get);
-
-//Rota para acessar tutoriais de todas categorias
 router.route('/categories').get(tutorialController.getAll);
-
-// Rota para registrar um tutorial
 router.route('/registration').post(upload, tutorialController.register);
 
 

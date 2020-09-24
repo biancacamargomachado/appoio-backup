@@ -1,15 +1,12 @@
 const userService = require('../services/UserService');
 
-// Função assincrona que realiza o login e retorna um JSON de resposta
+
 async function login(req, res) {
   let { email, password } = req.body;
 
   try {
-    await userService
-      .login(
-        email,
-        password
-      );
+    let user = await userService.login(email, password);
+    req.session.userId = user.id;
 
     return res.json({
       resp: true,
@@ -30,7 +27,7 @@ async function login(req, res) {
   }
 }
 
-// Função assincrona que realiza o regisgtro de um usuário e retorna um JSON de resposta
+
 async function register(req, res) {
   let { name, email, password, birthday, city, uf } = req.body;
 
@@ -45,6 +42,8 @@ async function register(req, res) {
         city,
         uf,
       );
+
+    req.session.userId = user.id;
 
     return res.json({
       resp: true,
