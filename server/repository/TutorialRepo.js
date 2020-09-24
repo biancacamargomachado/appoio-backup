@@ -61,6 +61,9 @@ async function findAll() {
                 'id',
                 'appoioName',
                 'category'
+            ],
+            order: [
+                ['createdAt', 'DESC']
             ]
         }
     );
@@ -82,11 +85,22 @@ async function registerTutorial({ userId, appoioName, category, appId, appVersio
     let createdTags = await Tag.bulkCreate(
         tags,
         {
-            fields: ['name']
+            fields: ['name'],
+            ignoreDuplicates: true
         }
     );
 
-    await tutorial.setTags(createdTags.map(tag => tag.id));
+    for (let i = 0; i < createdTags.length; i++) {
+        let tagId = createdTags[i].id;
+        let tagName = createdTags[i].name;
+
+        if (tagId)
+            createdTags[i] = tagId;
+        else
+            createdTags[i] = (await Tag.findOne({ where: { name: tagName } })).id;
+    }
+
+    await tutorial.setTags(createdTags);
 }
 
 
