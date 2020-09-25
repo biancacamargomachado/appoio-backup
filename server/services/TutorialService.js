@@ -1,6 +1,15 @@
 const tutorialRepository = require('../repository/TutorialRepo');
 
-
+/*
+ * Função que realiza a busca de tutoriais dado o id
+ * 
+ * @example
+ *      get(i); // Tutorial(id:1)
+ * 
+ * @param {id} obrigatório ID do tutorial que se deseja buscar
+ * 
+ * @returns {Tutorial}
+ */
 async function get(id) {
   try {
     let tutorial = await tutorialRepository.findById(id);
@@ -12,7 +21,17 @@ async function get(id) {
   }
 }
 
-
+/*
+ * Função que retorna o id e o nome de todos os tutoriais registrados, organizados em um array para cada categoria registrada
+ * 
+ * @example
+ *    getAll(); // {"tutorials": {
+ *                                 "conceitos": [{"id": 1, "appoioName": "O que é QR Code?"}], 
+ *                                 "celular": [{"id": 2, "appoioName": "Como inverter a câmera no Android?"}]
+ *                 }}
+ * 
+ * @returns {Tutorials}
+ */
 async function getAll() {
   try {
     let tutorials = await tutorialRepository.findAll();
@@ -39,7 +58,13 @@ async function getAll() {
   }
 }
 
-
+/*
+ * Função que registra um novo tutorial a partir dos dados informados
+ * 
+ * @param {tutorialCreationObject} obrigatório o objeto com os dados do tutorial informados na requisição
+ * 
+ * @returns {}
+ */
 async function registerTutorial(tutorialCreationObject) {
   try {
 
