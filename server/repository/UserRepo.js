@@ -5,7 +5,8 @@ async function findByEmail(email) {
   return await User.findOne(
     {
       attributes: [
-        'password'
+        'password',
+        'id'
       ],
       where: {
         email: email
