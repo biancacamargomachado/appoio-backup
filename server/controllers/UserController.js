@@ -7,6 +7,7 @@ async function login(req, res) {
   try {
     let user = await userService.login(email, password);
     req.session.userId = user.id;
+    req.session.adm = user.adm;
 
     return res.json({
       resp: true,

@@ -50,4 +50,19 @@ async function registerTutorial(tutorialCreationObject) {
   }
 }
 
-module.exports = { get, getAll, registerTutorial };
+/*
+ * Função que realiza a busca de todos os tutoriais pendentes (não aprovados)
+ */
+async function getAllPending(){
+  try {
+    let tutorials = await tutorialRepository.findAllPending();
+    tutorials = tutorials.map(tutorial => tutorial.toJSON());
+
+    return tutorials;
+
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports = { get, getAll, registerTutorial, getAllPending };

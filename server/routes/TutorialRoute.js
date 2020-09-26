@@ -13,4 +13,7 @@ router.route('/categories').get(tutorialController.getAll);
 router.route('/registration').post(upload, tutorialController.register);
 
 
+// ADMIN ROUTES
+router.route('/curadoria').get(tutorialController.getAllPending);
+
 module.exports = router;

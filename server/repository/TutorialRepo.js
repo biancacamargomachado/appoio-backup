@@ -54,7 +54,7 @@ async function findById(id) {
 async function findAll() {
     return await Tutorial.findAll(
         {
-            // where: {
+            // where:{
             //     approved: 1
             // },
             attributes: [
@@ -64,6 +64,36 @@ async function findAll() {
             ],
             order: [
                 ['createdAt', 'DESC']
+            ]
+        }
+    );
+}
+
+
+async function findAllPending(){
+    return await Tutorial.findAll(
+
+        {
+            where: {
+                approved: 0,
+            },
+            attributes: [
+                'id',
+                'appoioName',
+                'category',
+                'createdAt'
+            ],
+            order: [
+                ['createdAt', 'DESC']
+            ],
+            include: [
+                {
+                    model: User,
+                    as: 'user',
+                    attributes: [
+                        'name'
+                    ]
+                }
             ]
         }
     );
@@ -104,4 +134,4 @@ async function registerTutorial({ userId, appoioName, category, appId, appVersio
 }
 
 
-module.exports = { findById, findAll, registerTutorial };
+module.exports = { findById, findAll, findAllPending, registerTutorial };
