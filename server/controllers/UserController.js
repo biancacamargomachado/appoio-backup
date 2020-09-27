@@ -22,7 +22,7 @@ async function login(req, res) {
     return res.json({
       resp: false,
       status: 500,
-      msg: 'Unkown error found on login: ' + err,
+      msg: 'Login failed. '+ err,
       data: {}
     });
   }
@@ -60,12 +60,12 @@ async function register(req, res) {
   } catch (err) {
     console.log(err);
 
-    return {
+    return res.json({
       resp: false,
-      status: 500,
-      msg: 'Unkown error found on registration: ' + err,
+      status: 409,
+      msg: 'Registration failed. '+ err,
       data: {}
-    }
+    })
   }
 }
 

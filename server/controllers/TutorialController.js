@@ -28,8 +28,8 @@ async function get(req, res) {
 
     return res.json({
       resp: false,
-      status: 500,
-      msg: 'Unkown error found on get: ' + err,
+      status: 404,
+      msg: 'Tutorial not found. The tutorial you are looking for has not been approved or does not exist',
       data: {}
     });
   }
@@ -181,7 +181,7 @@ async function getAllPending(req, res) {
   return res.json({
     resp: false,
     status: 401,
-    msg: 'User not authorized',
+    msg: 'User not authorized. User must login with administrator account to perform this action',
     data: {}
   });
 
@@ -224,10 +224,10 @@ async function getPending(req, res) {
   return res.json({
     resp: false,
     status: 401,
-    msg: 'User not authorized',
+    msg: 'User not authorized. User must login with administrator account to perform this action',
     data: {}
   });
-  
+
 
   try {
     let id = req.params.id;
@@ -247,8 +247,8 @@ async function getPending(req, res) {
 
     return res.json({
       resp: false,
-      status: 500,
-      msg: 'Unkown error found on get: ' + err,
+      status: 404,
+      msg: 'Tutorial not found. The tutorial you are looking for has been approved or does not exist',
       data: {}
     });
   }
@@ -269,7 +269,7 @@ async function approve(req, res) {
   return res.json({
     resp: false,
     status: 401,
-    msg: 'User not authorized',
+    msg: 'User not authorized. User must login with administrator account to perform this action',
     data: {}
   });
 
@@ -292,8 +292,8 @@ async function approve(req, res) {
 
     return res.json({
       resp: false,
-      status: 500,
-      msg: 'Unkown error found on approve: ' + err,
+      status: 404,
+      msg: 'Tutorial not found. The tutorial you are looking for has already been approved or does not exist',
       data: {}
     });
   }
