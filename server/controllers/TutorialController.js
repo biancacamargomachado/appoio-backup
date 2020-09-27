@@ -180,7 +180,7 @@ async function getAllPending(req, res) {
   if(req.session.adm == false)
   return res.json({
     resp: false,
-    status: 401,
+    status: 403,
     msg: 'User not authorized. User must login with administrator account to perform this action',
     data: {}
   });
@@ -223,7 +223,7 @@ async function getPending(req, res) {
   if(req.session.adm == false)
   return res.json({
     resp: false,
-    status: 401,
+    status: 403,
     msg: 'User not authorized. User must login with administrator account to perform this action',
     data: {}
   });
@@ -268,7 +268,7 @@ async function approve(req, res) {
   if(req.session.adm == false)
   return res.json({
     resp: false,
-    status: 401,
+    status: 403,
     msg: 'User not authorized. User must login with administrator account to perform this action',
     data: {}
   });

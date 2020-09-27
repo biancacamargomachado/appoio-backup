@@ -21,7 +21,7 @@ async function login(req, res) {
 
     return res.json({
       resp: false,
-      status: 500,
+      status: 401,
       msg: 'Login failed. '+ err,
       data: {}
     });
