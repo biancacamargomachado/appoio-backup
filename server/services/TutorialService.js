@@ -65,4 +65,19 @@ async function getAllPending(){
   }
 }
 
-module.exports = { get, getAll, registerTutorial, getAllPending };
+/*
+ * Função que atualiza um tutorial dado seu id, tornando ele aprovado
+ * 
+ * @param {id} obrigatório o id do tutorial a ser atualizado
+ * 
+ */
+async function approve(id){
+  try{
+    await tutorialRepository.approve(id);
+
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports = { get, getAll, registerTutorial, getAllPending, approve };

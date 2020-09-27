@@ -99,6 +99,25 @@ async function findAllPending(){
     );
 }
 
+async function approve(id){
+    const tutorial =  await Tutorial.findOne(
+        {
+            where: {
+                id: id,
+                approved: 0
+            },
+            attributes: [
+                'id',
+                'approved'
+            ]
+        }
+    );
+
+    tutorial.approved = 1;
+
+    await tutorial.save();
+}
+
 
 async function registerTutorial({ userId, appoioName, category, appId, appVersion, operatingSystem, operatingSystemVersion, steps, tags }) {
     let tutorial = await Tutorial.create(
@@ -134,4 +153,4 @@ async function registerTutorial({ userId, appoioName, category, appId, appVersio
 }
 
 
-module.exports = { findById, findAll, findAllPending, registerTutorial };
+module.exports = { findById, findAll, findAllPending, approve, registerTutorial };

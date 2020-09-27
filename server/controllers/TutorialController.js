@@ -209,5 +209,49 @@ async function getAllPending(req, res) {
   }
 }
 
+async function approve(req, res) {
 
-module.exports = { get, getAll, search, register, getAllPending };
+  if (req.session.userId === undefined)
+  return res.json({
+    resp: false,
+    status: 401,
+    msg: 'User not logged',
+    data: {}
+  });
+
+  if(req.session.adm == false)
+  return res.json({
+    resp: false,
+    status: 401,
+    msg: 'User not authorized',
+    data: {}
+  });
+
+  
+  try {
+    let id = req.params.id;
+    let tutorial = await tutorialService.approve(id);
+
+    return res.json({
+      resp: true,
+      status: 200,
+      msg: 'Tutorial approved',
+      data: {
+        tutorial
+      }
+    })
+
+  } catch (err) {
+    console.log(err);
+
+    return res.json({
+      resp: false,
+      status: 500,
+      msg: 'Unkown error found on approve: ' + err,
+      data: {}
+    });
+  }
+}
+
+
+module.exports = { get, getAll, search, register, getAllPending, approve };
