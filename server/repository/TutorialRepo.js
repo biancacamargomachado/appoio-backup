@@ -9,7 +9,7 @@ async function findById(id) {
         {
             where: {
                 id: id,
-                // approved: 1
+                approved: 1
             },
             attributes: [
                 'appoioName',
@@ -54,9 +54,9 @@ async function findById(id) {
 async function findAll() {
     return await Tutorial.findAll(
         {
-            // where:{
-            //     approved: 1
-            // },
+            where:{
+                approved: 1
+            },
             attributes: [
                 'id',
                 'appoioName',
@@ -92,6 +92,52 @@ async function findAllPending(){
                     as: 'user',
                     attributes: [
                         'name'
+                    ]
+                }
+            ]
+        }
+    );
+}
+
+async function findPendingById(id) {
+    return await Tutorial.findOne(
+        {
+            where: {
+                id: id,
+                approved: 0
+            },
+            attributes: [
+                'appoioName',
+                'category',
+                'appId',
+                'appVersion',
+                'operatingSystem',
+                'operatingSystemVersion',
+                ['createdAt', 'date']
+            ],
+            include: [
+                {
+                    model: Step,
+                    as: 'steps',
+                    attributes: [
+                        'description',
+                        'videoURL',
+                        'imgURL'
+                    ]
+                },
+                {
+                    model: Tag,
+                    as: 'tags',
+                    attributes: [
+                        'name'
+                    ],
+                },
+                {
+                    model: User,
+                    as: 'user',
+                    attributes: [
+                        'name',
+                        'email'
                     ]
                 }
             ]
@@ -153,4 +199,4 @@ async function registerTutorial({ userId, appoioName, category, appId, appVersio
 }
 
 
-module.exports = { findById, findAll, findAllPending, approve, registerTutorial };
+module.exports = { findById, findAll, findAllPending, findPendingById, approve, registerTutorial };

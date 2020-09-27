@@ -209,6 +209,52 @@ async function getAllPending(req, res) {
   }
 }
 
+
+async function getPending(req, res) {
+
+  if (req.session.userId === undefined)
+    return res.json({
+      resp: false,
+      status: 401,
+      msg: 'User not logged',
+      data: {}
+    });
+
+  if(req.session.adm == false)
+  return res.json({
+    resp: false,
+    status: 401,
+    msg: 'User not authorized',
+    data: {}
+  });
+  
+
+  try {
+    let id = req.params.id;
+    let tutorial = await tutorialService.getPending(id);
+
+    return res.json({
+      resp: true,
+      status: 200,
+      msg: 'Tutorial recovered',
+      data: {
+        tutorial
+      }
+    })
+
+  } catch (err) {
+    console.log(err);
+
+    return res.json({
+      resp: false,
+      status: 500,
+      msg: 'Unkown error found on get: ' + err,
+      data: {}
+    });
+  }
+}
+
+
 async function approve(req, res) {
 
   if (req.session.userId === undefined)
@@ -254,4 +300,4 @@ async function approve(req, res) {
 }
 
 
-module.exports = { get, getAll, search, register, getAllPending, approve };
+module.exports = { get, getAll, search, register, getAllPending, getPending, approve };

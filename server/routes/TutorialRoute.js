@@ -15,6 +15,7 @@ router.route('/registration').post(upload, tutorialController.register);
 
 // ADMIN ROUTES
 router.route('/curadoria').get(tutorialController.getAllPending);
-router.route('/approve/:id').put(tutorialController.approve);
+router.route('/curadoria/:id').get(tutorialController.getPending);
+router.route('/curadoria/:id').patch(tutorialController.approve);
 
 module.exports = router;

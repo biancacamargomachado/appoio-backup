@@ -52,6 +52,8 @@ async function registerTutorial(tutorialCreationObject) {
 
 /*
  * Função que realiza a busca de todos os tutoriais pendentes (não aprovados)
+  * 
+ * @returns [ { Tutorials} ]
  */
 async function getAllPending(){
   try {
@@ -59,6 +61,24 @@ async function getAllPending(){
     tutorials = tutorials.map(tutorial => tutorial.toJSON());
 
     return tutorials;
+
+  } catch (err) {
+    throw err;
+  }
+}
+
+/*
+ * Função que busca um tutorial não aprovado, dado seu id
+ *
+ * @param {id} obrigatório o id do tutorial a ser atualizado
+ * 
+ * @returns {Tutorial}
+ */
+async function getPending(id){
+  try{
+    let tutorial = await tutorialRepository.findPendingById(id);
+
+    return tutorial.toJSON();
 
   } catch (err) {
     throw err;
@@ -80,4 +100,4 @@ async function approve(id){
   }
 }
 
-module.exports = { get, getAll, registerTutorial, getAllPending, approve };
+module.exports = { get, getAll, registerTutorial, getAllPending, getPending, approve };
