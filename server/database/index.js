@@ -64,4 +64,23 @@ Tag.belongsToMany(Tutorial, {
 // Registra no banco efetivamente
 sequelize.sync();
 
+// async function a() {
+//   await App.create({
+//     name: 'batata 1',
+//     logoURL: 'url'
+//   });
+
+//   await App.create({
+//     name: 'batata 2',
+//     logoURL: 'url'
+//   })
+
+//   await App.create({
+//     name: 'batata 3',
+//     logoURL: 'url'
+//   })
+// };
+
+// a();
+
 module.exports = sequelize;

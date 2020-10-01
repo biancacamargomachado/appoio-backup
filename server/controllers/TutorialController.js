@@ -1,8 +1,15 @@
 const tutorialService = require('../services/TutorialService');
-const tagService = require('../services/TagService');
 
-// Função que busca os tutoriais por seu id
+
 async function get(req, res) {
+  if (req.session.userId === undefined)
+    return res.json({
+      resp: false,
+      status: 401,
+      msg: 'User not logged',
+      data: {}
+    });
+
   try {
     let id = req.params.id;
     let tutorial = await tutorialService.get(id);
@@ -21,15 +28,23 @@ async function get(req, res) {
 
     return res.json({
       resp: false,
-      status: 500,
-      msg: 'Unkown error found on get: ' + err,
+      status: 404,
+      msg: 'Tutorial not found. The tutorial you are looking for has not been approved or does not exist',
       data: {}
     });
   }
 }
 
-//Função que busca os tutoriais retorna um JSON de resposta separado por categoria
+
 async function getAll(req, res) {
+  if (req.session.userId === undefined)
+    return res.json({
+      resp: false,
+      status: 401,
+      msg: 'User not logged',
+      data: {}
+    });
+
   try {
     let tutorials = await tutorialService.getAll();
 
@@ -54,52 +69,80 @@ async function getAll(req, res) {
   }
 }
 
-// Função que registra um tutorial juntamente com os passos necessários para executá-lo e retorna um JSON de resposta sem corpo
+async function search(req, res){
+  let userId = req.session.userId;
+
+  if (userId === undefined)
+    return res.json({
+      resp: false,
+      status: 401,
+      msg: 'User not logged',
+      data: {}
+    });
+
+    // Titulo
+    // Funcao de levenshtein de proximidade
+    // Uso de Like
+    
+    // Tags
+    // Literal
+    // Uso de like
+
+    // Aplicativos
+    // Literal
+    // Uso de like
+
+}
+
+
 async function register(req, res) {
-  let { userId, appoioName, category, appId, appVersion, operatingSystem, operatingSystemVersion, tags, steps } = req.body;
-  let files = req.files;
+  let userId = req.session.userId;
 
-  // se nenhum passo tiver imagens, o request não passa pelo multer
-  // e tags e steps não são parseadas de string para JSON
-  if (typeof tags === "string") {
+  if (userId === undefined)
+    return res.json({
+      resp: false,
+      status: 401,
+      msg: 'User not logged',
+      data: {}
+    });
+
+  let { appoioName, category, appId, appVersion, operatingSystem, operatingSystemVersion, tags, steps } = req.body;
+
+  if (appId)
+    appId = parseInt(appId);
+
+  if (tags)
     tags = JSON.parse(tags);
-  }
 
-  if (typeof steps === "string") {
+
+  if (steps) {
     steps = JSON.parse(steps);
+
+    let files = req.files;
+    if (files)
+      for (let i = 0; i < files.length; i++)
+        steps[i].imgURL = files[i].secureURL
+
   }
 
-  // garantir que estará null para não ter problemas de constraints
-  if (category !== "aplicativos") {
-    appId = null;
+  let creationObject = {
+    userId,
+    appoioName,
+    category,
+    appId,
+    appVersion,
+    operatingSystem,
+    operatingSystemVersion,
+    steps,
+    tags
   }
 
-  if (files) files.forEach(file => {
-    // formato do nome de cada imagem: "<step-order>.[jpg,png]"
-    const fileOrder = parseInt(file.originalName.split(".")[0]);
-
-    const step = steps.find(step => parseInt(step.order) === fileOrder);
-    step.imgURL = file.secureUrl
-  });
+  Object.keys(creationObject).forEach(
+    key => creationObject[key] === undefined ? delete creationObject[key] : {}
+  );
 
   try {
-    let tutorial = await tutorialService.registerTutorial(
-      {
-        userId,
-        appoioName,
-        category,
-        appId,
-        appVersion,
-        operatingSystem,
-        operatingSystemVersion,
-        steps,
-        files
-      }
-    );
-
-    if (tags !== undefined) {
-      await tagService.registerTags(tutorial, tags);
-    }
+    await tutorialService.registerTutorial(creationObject);
 
     return res.json({
       resp: true,
@@ -121,4 +164,140 @@ async function register(req, res) {
 }
 
 
-module.exports = { get, getAll, register };
+
+// ADMINISTRADOR
+
+async function getAllPending(req, res) {
+
+  if (req.session.userId === undefined)
+  return res.json({
+    resp: false,
+    status: 401,
+    msg: 'User not logged',
+    data: {}
+  });
+
+  if(req.session.adm == false)
+  return res.json({
+    resp: false,
+    status: 403,
+    msg: 'User not authorized. User must login with administrator account to perform this action',
+    data: {}
+  });
+
+  try {
+    let tutorials = await tutorialService.getAllPending();
+
+    return res.json({
+      resp: true,
+      status: 200,
+      msg: 'Tutorials recovered',
+      data: {
+        tutorials: tutorials
+      }
+    });
+  }
+  catch (err) {
+    console.log(err);
+
+    return res.json({
+      resp: false,
+      status: 500,
+      msg: 'Unkown error found on getAll: ' + err,
+      data: {}
+    });
+  }
+}
+
+
+async function getPending(req, res) {
+
+  if (req.session.userId === undefined)
+    return res.json({
+      resp: false,
+      status: 401,
+      msg: 'User not logged',
+      data: {}
+    });
+
+  if(req.session.adm == false)
+  return res.json({
+    resp: false,
+    status: 403,
+    msg: 'User not authorized. User must login with administrator account to perform this action',
+    data: {}
+  });
+
+
+  try {
+    let id = req.params.id;
+    let tutorial = await tutorialService.getPending(id);
+
+    return res.json({
+      resp: true,
+      status: 200,
+      msg: 'Tutorial recovered',
+      data: {
+        tutorial
+      }
+    })
+
+  } catch (err) {
+    console.log(err);
+
+    return res.json({
+      resp: false,
+      status: 404,
+      msg: 'Tutorial not found. The tutorial you are looking for has been approved or does not exist',
+      data: {}
+    });
+  }
+}
+
+
+async function approve(req, res) {
+
+  if (req.session.userId === undefined)
+  return res.json({
+    resp: false,
+    status: 401,
+    msg: 'User not logged',
+    data: {}
+  });
+
+  if(req.session.adm == false)
+  return res.json({
+    resp: false,
+    status: 403,
+    msg: 'User not authorized. User must login with administrator account to perform this action',
+    data: {}
+  });
+
+  
+  try {
+    let id = req.params.id;
+    let tutorial = await tutorialService.approve(id);
+
+    return res.json({
+      resp: true,
+      status: 200,
+      msg: 'Tutorial approved',
+      data: {
+        tutorial
+      }
+    })
+
+  } catch (err) {
+    console.log(err);
+
+    return res.json({
+      resp: false,
+      status: 404,
+      msg: 'Tutorial not found. The tutorial you are looking for has already been approved or does not exist',
+      data: {}
+    });
+  }
+}
+
+
+module.exports = { get, getAll, search, register, getAllPending, getPending, approve };

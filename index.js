@@ -1,7 +1,8 @@
 const app = require('./server/config/express');
 const config = require('./server/config/env');
 
-app.get('/status', (req, res) => res.send({status: 'Ok'}));
+
+app.get('/status', (req, res) => res.send({ status: 'Ok' }));
 
 app.listen(config.apiPort, () => {
   console.log(

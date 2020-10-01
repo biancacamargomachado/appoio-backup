@@ -1,13 +1,9 @@
 const tutorialRepository = require('../repository/TutorialRepo');
 
 
-//Função que realiza a busca pelos tutoriais dado o id
 async function get(id) {
   try {
-    let tutorial = await tutorialRepository
-      .findById(
-        id
-      );
+    let tutorial = await tutorialRepository.findById(id);
 
     return tutorial.toJSON();
 
@@ -16,7 +12,7 @@ async function get(id) {
   }
 }
 
-//Função que realiza a busca de todos tutoriais
+
 async function getAll() {
   try {
     let tutorials = await tutorialRepository.findAll();
@@ -43,22 +39,65 @@ async function getAll() {
   }
 }
 
-// Função que registra um tutorial juntamente com os passos necessários para executá-lo
+
 async function registerTutorial(tutorialCreationObject) {
   try {
-    Object
-      .keys(tutorialCreationObject)
-      .forEach(
-        key => tutorialCreationObject[key] === undefined ? delete tutorialCreationObject[key] : {}
-      );
 
-    return await tutorialRepository
-      .registerTutorial(
-        tutorialCreationObject
-      );
+
+    return await tutorialRepository.registerTutorial(tutorialCreationObject);
   } catch (err) {
     throw err;
   }
 }
 
-module.exports = { get, getAll, registerTutorial };
+/*
+ * Função que realiza a busca de todos os tutoriais pendentes (não aprovados)
+  * 
+ * @returns [ { Tutorials} ]
+ */
+async function getAllPending(){
+  try {
+    let tutorials = await tutorialRepository.findAllPending();
+    tutorials = tutorials.map(tutorial => tutorial.toJSON());
+
+    return tutorials;
+
+  } catch (err) {
+    throw err;
+  }
+}
+
+/*
+ * Função que busca um tutorial não aprovado, dado seu id
+ *
+ * @param {id} obrigatório o id do tutorial a ser atualizado
+ * 
+ * @returns {Tutorial}
+ */
+async function getPending(id){
+  try{
+    let tutorial = await tutorialRepository.findPendingById(id);
+
+    return tutorial.toJSON();
+
+  } catch (err) {
+    throw err;
+  }
+}
+
+/*
+ * Função que atualiza um tutorial dado seu id, tornando ele aprovado
+ * 
+ * @param {id} obrigatório o id do tutorial a ser atualizado
+ * 
+ */
+async function approve(id){
+  try{
+    await tutorialRepository.approve(id);
+
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports = { get, getAll, registerTutorial, getAllPending, getPending, approve };

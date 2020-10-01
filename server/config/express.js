@@ -1,4 +1,6 @@
 const express = require('express');
+const session = require('express-session');
+const SQLiteStore = require('connect-sqlite3')(session);
 const bodyParser = require('body-parser');
 const router = require('../routes');
 
@@ -6,6 +8,7 @@ require('../database');
 
 const app = express();
 
+app.use(session({ store: new SQLiteStore, secret: 'ShhEhSegredo', resave: false, saveUninitialized: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

@@ -1,21 +1,19 @@
 const userService = require('../services/UserService');
 
-// Função assincrona que realiza o login e retorna um JSON de resposta
+
 async function login(req, res) {
   let { email, password } = req.body;
 
   try {
-    await userService
-      .login(
-        email,
-        password
-      );
+    let user = await userService.login(email, password);
+    req.session.userId = user.id;
+    req.session.adm = user.adm;
 
     return res.json({
       resp: true,
       status: 200,
       msg: 'User logged',
-      data: {}
+      data: user
     });
 
   } catch (err) {
@@ -23,14 +21,14 @@ async function login(req, res) {
 
     return res.json({
       resp: false,
-      status: 500,
-      msg: 'Unkown error found on login: ' + err,
+      status: 401,
+      msg: 'Login failed. '+ err,
       data: {}
     });
   }
 }
 
-// Função assincrona que realiza o regisgtro de um usuário e retorna um JSON de resposta
+
 async function register(req, res) {
   let { name, email, password, birthday, city, uf } = req.body;
 
@@ -46,6 +44,8 @@ async function register(req, res) {
         uf,
       );
 
+    req.session.userId = user.id;
+
     return res.json({
       resp: true,
       status: 201,
@@ -60,12 +60,12 @@ async function register(req, res) {
   } catch (err) {
     console.log(err);
 
-    return {
+    return res.json({
       resp: false,
-      status: 500,
-      msg: 'Unkown error found on registration: ' + err,
+      status: 409,
+      msg: 'Registration failed. '+ err,
       data: {}
-    }
+    })
   }
 }
 
