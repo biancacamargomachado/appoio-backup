@@ -3,7 +3,17 @@ const Step = require('../models/Step');
 const Tag = require('../models/Tag');
 const User = require('../models/User');
 
-
+ /*
+  * Função que busca um tutorial dado seu id
+  *
+  *  @example
+  *      get(i); // Tutorial(id:1)
+  * 
+  * @param {id} obrigatório id do tutorial o qual se deseja buscar
+  * 
+  * @returns {Tutorial}
+  * 
+  */
 async function findById(id) {
     return await Tutorial.findOne(
         {
@@ -50,7 +60,11 @@ async function findById(id) {
     );
 }
 
-
+/*
+ * Função que busca todos os tutoriais registrados, retornando o id, appoioName e categoria de cada um.
+ * 
+ * @returns {Tutorials} em ordem descrescente da data de criação do tutorial
+ */
 async function findAll() {
     return await Tutorial.findAll(
         {
