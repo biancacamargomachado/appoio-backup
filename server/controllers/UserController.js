@@ -1,71 +1,74 @@
 const userService = require('../services/UserService');
 
 
-async function login(req, res) {
-  let { email, password } = req.body;
-
+async function login(email, password) {
   try {
-    let user = await userService.login(email, password);
-    req.session.userId = user.id;
-    req.session.adm = user.adm;
+    let result = await userService.login(email, password);
 
-    return res.json({
-      resp: true,
-      status: 200,
-      msg: 'User logged',
-      data: user
-    });
+    if (result.result)
+      return {
+        result: true,
+        status: 200,
+        msg: 'Usário realizou login',
+        data: result.data
+      };
+
+    return {
+      result: false,
+      status: result.status,
+      msg: result.msg,
+      data: {}
+    }
 
   } catch (err) {
     console.log(err);
 
-    return res.json({
-      resp: false,
-      status: 401,
-      msg: 'Login failed. '+ err,
+    return {
+      result: false,
+      status: 500,
+      msg: 'Erro desconhecido durante o login do usuário',
       data: {}
-    });
+    };
   }
 }
 
 
-async function register(req, res) {
-  let { name, email, password, birthday, city, uf } = req.body;
-
+async function register(name, email, password, gender, birthYear, city, uf) {
   try {
+    let result = await userService.registerUser(
+      name,
+      email,
+      password,
+      gender,
+      birthYear,
+      city,
+      uf,
+    );
 
-    let user = await userService
-      .registerUser(
-        name,
-        email,
-        password,
-        birthday,
-        city,
-        uf,
-      );
+    if (result.result)
+      return {
+        result: true,
+        status: 201,
+        msg: 'Usário registrado',
+        data: result.data
+      };
 
-    req.session.userId = user.id;
-
-    return res.json({
-      resp: true,
-      status: 201,
-      msg: 'User registered',
-      data: {
-        user: {
-          id: user.id
-        }
-      }
-    });
+    return {
+      result: false,
+      status: result.status,
+      msg: result.msg,
+      data: {}
+    }
 
   } catch (err) {
     console.log(err);
 
-    return res.json({
-      resp: false,
-      status: 409,
-      msg: 'Registration failed. '+ err,
+    return {
+      result: false,
+      status: 500,
+      msg: 'Erro desconhecido durante o registro do usuário',
       data: {}
-    })
+    }
   }
 }
 

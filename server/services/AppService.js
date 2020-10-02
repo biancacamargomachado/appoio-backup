@@ -1,23 +1,19 @@
 const appRepository = require('../repository/AppRepo');
 
 
-async function getAll(userId) {
+async function getAll() {
     try {
         let apps = await appRepository.getAll();
 
-        let formattedApps = { 'installed': [], 'not-installed': [] };
+        let filtered = [];
         for (let i = 0; i < apps.length; i++) {
-            if (userId in apps[i].users)
-                key = 'installed'
-            else
-                key = 'not-installed'
-
-            let app = apps[i].toJSON();
-            delete app.users
-            formattedApps[key].push(app);
+            let app = apps[i];
+            if (app)
+                if (app.tutorials.length > 0)
+                    filtered.push(app.id);
         }
 
-        return formattedApps;
+        return {'Installed': [], 'NotInstalled': filtered};
 
     } catch (err) {
         throw err;
@@ -27,59 +23,50 @@ async function getAll(userId) {
 
 async function getInstalled(userId) {
     try {
-        return (await appRepository.getByUserId(userId)).map(app => {
-            app = app.toJSON();
-            delete app['user_app'];
-            return app;
-        });
+        let installedApps = await appRepository.getByUserId(userId);
+        let notInstalledApps = await appRepository.getExcept(installedApps.map(app => app.id));
 
-    } catch (err) {
-        throw err;
-    }
-}
-
-async function getTutorials(appName) {
-    try {
-        let tutorials = await appRepository.getTutorials(appName);
-        tutorials = tutorials.map(tutorial => tutorial.toJSON());
-
-        let categoryTutorials = {};
-
-        for (let tutorial of tutorials) {
-            let category = tutorial.category;
-            delete tutorial.category;
-
-            if (category in categoryTutorials) {
-                categoryTutorials[category].push(tutorial);
-            }
-            else {
-                categoryTutorials[category] = [tutorial]
-            }
+        let filteredInstalled = [];
+        for (let i = 0; i < installedApps.length; i++) {
+            let app = installedApps[i];
+            if (app)
+                if (app.tutorials.length > 0)
+                    filteredInstalled.push(app.id);
         }
 
-        return categoryTutorials;
+        let filteredNotInstalled = [];
+        for (let i = 0; i < notInstalledApps.length; i++) {
+            let app = notInstalledApps[i];
+            if (app)
+                if (app.tutorials.length > 0)
+                    filteredNotInstalled.push(app.id);
+        }
+
+        return {
+            'Installed': filteredInstalled,
+            'NotInstalled': filteredNotInstalled
+        }
 
     } catch (err) {
         throw err;
     }
 }
 
-
-async function register(userId, appNames) {
+async function getTutorials(appId) {
     try {
-        await appRepository.register(userId, appNames);
+        return (await appRepository.getTutorials(appId)).map(tutorial => tutorial.toJSON());
     } catch (err) {
         throw err;
     }
 }
 
 
-async function update(userId, appNames) {
+async function update(userId, appIds) {
     try {
-        await appRepository.update(userId, appNames);
+        await appRepository.update(userId, appIds);
     } catch (err) {
         throw err;
     }
 }
 
-module.exports = { getAll, getInstalled, getTutorials, register, update };
+module.exports = { getAll, getInstalled, getTutorials, update };

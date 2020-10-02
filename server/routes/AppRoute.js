@@ -1,13 +1,32 @@
 const express = require('express');
 const appController = require('../controllers/AppController.js');
 
-const router = express.Router();
 
-router.route('/all').get(appController.getAll);
-router.route('/tutorials').get(appController.getTutorials);
-router.route('/installed').get(appController.getInstalled);
-router.route('/installed').post(appController.register);
-router.route('/installed').put(appController.update);
+module.exports = function (userAuth) {
+    const router = express.Router();
+
+    router.route('/all').get(
+        (req, res) => {
+            let userId = req.session.userId;
+            return res.json(appController.getAll(userId));
+        }
+    );
+
+    router.route('/tutorials').get(
+        (req, res) => {
+            let appId = req.body.appId;
+            return res.json(appController.getTutorials(appId));
+        }
+    );
+
+    router.route('/installed').patch(
+        userAuth,
+        (req, res) => {
+            let appIds = req.body.appIds;
+            return res.json(appController.update(appIds));
+        }
+    );
 
 
-module.exports = router;
+    return router;
+}

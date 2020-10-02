@@ -1,303 +1,152 @@
 const tutorialService = require('../services/TutorialService');
 
 
-async function get(req, res) {
-  if (req.session.userId === undefined)
-    return res.json({
-      resp: false,
-      status: 401,
-      msg: 'User not logged',
-      data: {}
-    });
-
+async function get(tutorialId) {
   try {
-    let id = req.params.id;
-    let tutorial = await tutorialService.get(id);
+    let result = await tutorialService.get(tutorialId);
 
-    return res.json({
-      resp: true,
-      status: 200,
-      msg: 'Tutorial recovered',
-      data: {
-        tutorial
-      }
-    })
+    if (result.result) {
+      return {
+        result: true,
+        status: 200,
+        msg: 'Tutorial recuperado',
+        data: result.data
+      };
+    }
+
+    return {
+      result: false,
+      status: result.status,
+      msg: result.msg,
+      data: {}
+    }
 
   } catch (err) {
     console.log(err);
 
-    return res.json({
-      resp: false,
-      status: 404,
-      msg: 'Tutorial not found. The tutorial you are looking for has not been approved or does not exist',
+    return {
+      result: false,
+      status: 500,
+      msg: 'Erro desconhecido encontrado durante a recuperação do tutorial',
       data: {}
-    });
+    };
   }
 }
 
 
-async function getAll(req, res) {
-  if (req.session.userId === undefined)
-    return res.json({
-      resp: false,
-      status: 401,
-      msg: 'User not logged',
-      data: {}
-    });
-
+async function getAll(approved) {
   try {
-    let tutorials = await tutorialService.getAll();
+    let result = await tutorialService.getAll(approved);
 
-    return res.json({
-      resp: true,
-      status: 200,
-      msg: 'Tutorials recovered',
-      data: {
-        tutorials: tutorials
-      }
-    });
+    if (result.result)
+      return {
+        result: true,
+        status: 200,
+        msg: 'Tutoriais recuperados',
+        data: result.data
+      };
+
+    return {
+      result: false,
+      status: result.status,
+      msg: result.msg,
+      data: {}
+    }
   }
   catch (err) {
     console.log(err);
 
-    return res.json({
-      resp: false,
+    return {
+      result: false,
       status: 500,
-      msg: 'Unkown error found on getAll: ' + err,
+      msg: 'Erro desconhecido encontrado durante a recuperação dos tutoriais',
       data: {}
-    });
+    };
   }
 }
 
-async function search(req, res){
-  let userId = req.session.userId;
+async function search(searchString) {
+  // Titulo
+  // Funcao de levenshtein de proximidade
+  // Uso de Like
 
-  if (userId === undefined)
-    return res.json({
-      resp: false,
-      status: 401,
-      msg: 'User not logged',
-      data: {}
-    });
+  // Tags
+  // Literal
+  // Uso de like
 
-    // Titulo
-    // Funcao de levenshtein de proximidade
-    // Uso de Like
-    
-    // Tags
-    // Literal
-    // Uso de like
-
-    // Aplicativos
-    // Literal
-    // Uso de like
+  // Aplicativos
+  // Literal
+  // Uso de like
 
 }
 
 
-async function register(req, res) {
-  let userId = req.session.userId;
-
-  if (userId === undefined)
-    return res.json({
-      resp: false,
-      status: 401,
-      msg: 'User not logged',
-      data: {}
-    });
-
-  let { appoioName, category, appId, appVersion, operatingSystem, operatingSystemVersion, tags, steps } = req.body;
-
-  if (appId)
-    appId = parseInt(appId);
-
-  if (tags)
-    tags = JSON.parse(tags);
-
-
-  if (steps) {
-    steps = JSON.parse(steps);
-
-    let files = req.files;
-    if (files)
-      for (let i = 0; i < files.length; i++)
-        steps[i].imgURL = files[i].secureURL
-
-  }
-
-  let creationObject = {
-    userId,
-    appoioName,
-    category,
-    appId,
-    appVersion,
-    operatingSystem,
-    operatingSystemVersion,
-    steps,
-    tags
-  }
-
+async function register(creationObject) {
   Object.keys(creationObject).forEach(
     key => creationObject[key] === undefined ? delete creationObject[key] : {}
   );
 
   try {
-    await tutorialService.registerTutorial(creationObject);
+    let result = await tutorialService.registerTutorial(creationObject);
 
-    return res.json({
-      resp: true,
-      status: 201,
-      msg: 'Tutorial registered',
+    if (result.result)
+      return {
+        result: true,
+        status: 201,
+        msg: 'Tutorial registrado',
+        data: result.data
+      };
+
+    return {
+      result: false,
+      status: result.status,
+      msg: result.msg,
       data: {}
-    });
+    }
 
   } catch (err) {
     console.log(err);
 
-    return res.json({
-      resp: false,
+    return {
+      result: false,
       status: 500,
-      msg: 'Unkown error found on registration: ' + err,
+      msg: 'Erro desconhecido encontrado durante o registro do tutorial',
       data: {}
-    });
+    };
   }
 }
 
 
-
-// ADMINISTRADOR
-
-async function getAllPending(req, res) {
-
-  if (req.session.userId === undefined)
-  return res.json({
-    resp: false,
-    status: 401,
-    msg: 'User not logged',
-    data: {}
-  });
-
-  if(req.session.adm == false)
-  return res.json({
-    resp: false,
-    status: 403,
-    msg: 'User not authorized. User must login with administrator account to perform this action',
-    data: {}
-  });
-
+async function approve(tutorialId) {
   try {
-    let tutorials = await tutorialService.getAllPending();
+    let result = await tutorialService.approve(tutorialId);
 
-    return res.json({
-      resp: true,
-      status: 200,
-      msg: 'Tutorials recovered',
-      data: {
-        tutorials: tutorials
-      }
-    });
-  }
-  catch (err) {
+    if (result.result)
+      return {
+        result: true,
+        status: 204,
+        msg: 'Tutorial aprovado',
+        data: result.data
+      };
+
+    return {
+      result: false,
+      status: result.status,
+      msg: result.msg,
+      data: {}
+    }
+
+  } catch (err) {
     console.log(err);
 
-    return res.json({
-      resp: false,
+    return {
+      result: false,
       status: 500,
-      msg: 'Unkown error found on getAll: ' + err,
+      msg: 'Erro desconhecido encontrado durante a aprovação do tutorial',
       data: {}
-    });
+    };
   }
 }
 
 
-async function getPending(req, res) {
-
-  if (req.session.userId === undefined)
-    return res.json({
-      resp: false,
-      status: 401,
-      msg: 'User not logged',
-      data: {}
-    });
-
-  if(req.session.adm == false)
-  return res.json({
-    resp: false,
-    status: 403,
-    msg: 'User not authorized. User must login with administrator account to perform this action',
-    data: {}
-  });
-
-
-  try {
-    let id = req.params.id;
-    let tutorial = await tutorialService.getPending(id);
-
-    return res.json({
-      resp: true,
-      status: 200,
-      msg: 'Tutorial recovered',
-      data: {
-        tutorial
-      }
-    })
-
-  } catch (err) {
-    console.log(err);
-
-    return res.json({
-      resp: false,
-      status: 404,
-      msg: 'Tutorial not found. The tutorial you are looking for has been approved or does not exist',
-      data: {}
-    });
-  }
-}
-
-
-async function approve(req, res) {
-
-  if (req.session.userId === undefined)
-  return res.json({
-    resp: false,
-    status: 401,
-    msg: 'User not logged',
-    data: {}
-  });
-
-  if(req.session.adm == false)
-  return res.json({
-    resp: false,
-    status: 403,
-    msg: 'User not authorized. User must login with administrator account to perform this action',
-    data: {}
-  });
-
-  
-  try {
-    let id = req.params.id;
-    let tutorial = await tutorialService.approve(id);
-
-    return res.json({
-      resp: true,
-      status: 200,
-      msg: 'Tutorial approved',
-      data: {
-        tutorial
-      }
-    })
-
-  } catch (err) {
-    console.log(err);
-
-    return res.json({
-      resp: false,
-      status: 404,
-      msg: 'Tutorial not found. The tutorial you are looking for has already been approved or does not exist',
-      data: {}
-    });
-  }
-}
-
-
-module.exports = { get, getAll, search, register, getAllPending, getPending, approve };
+module.exports = { get, getAll, search, register, approve };
