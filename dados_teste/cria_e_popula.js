@@ -6,7 +6,7 @@ const Step = require('../server/models/Step');
 const Tag = require('../server/models/Tag');
 const App = require('../server/models/App');
 
-// Cria instancia da conexão
+
 async function criaBanco() {
   const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -22,6 +22,8 @@ async function criaBanco() {
   } catch (err) {
     console.log(err);
   }
+
+  await sequelize.drop();
 
   // Inicializa todas as tabelas
   User.init(sequelize);
@@ -68,72 +70,262 @@ async function criaBanco() {
   await sequelize.sync();
 }
 
-async function criaUsuarios(qtdUsuarios) {
+
+async function criaUsuarios() {
   try {
-    for (let i = 0; i < qtdUsuarios; i++) {
-      await User.create({
-        name: "usuario numero " + i,
-        email: "email_" + i + "@email.com",
-        password: "senha" + i,
-        birthday: "10/10/2019",
-        city: "cidade",
-        uf: "RS",
-      });
-    }
+    await User.create({
+      name: 'usuario',
+      email: 'usuario@gmail.com',
+      password: 'pwd',
+      genre: 'Masculino',
+      birthYear: 2001,
+      city: 'Porto Alegre',
+      uf: 'RS',
+    });
+
+    await User.create({
+      name: 'admin',
+      email: 'admin@gmail.com',
+      password: 'admin',
+      genre: 'Nenhum',
+      birthYear: 0,
+      city: 'Administração',
+      uf: 'AD',
+    });
+
   } catch (err) {
-    console.log("\n\nUsuarios já criados\n\n");
+    console.log('\nCria usuarios:\n', err);
   }
 }
 
-async function criaTutoriais(qtdCategorias, qtdTutorialCategoria, qtdPassosTutorial, qtdTagsTutorial) {
-  let passos = []
-  for (let i = 0; i < qtdPassosTutorial; i++) {
-    passos.push({ description: "passo numero: " + i });
-  }
 
-  let tags = []
-  for (let i = 0; i < qtdTagsTutorial; i++) {
-    tags.push({ name: "tag numero: " + i });
-  }
-
+async function criaTutoriais() {
   try {
-    for (let i = 0; i < qtdCategorias; i++) {
-      let categoria = "categoria numero " + i;
-      for (let j = 0; i < qtdTutorialCategoria; i++) {
-        await Tutorial.create(
-          {
-            userId: 1,
-            appoioName: "tutorial numero " + i + j,
-            category: categoria,
-            tags: tags,
-            steps: passos
-          },
-          {
-            include: [
-              {
-                model: Step,
-                as: 'steps'
-              },
-              {
-                model: Tag,
-                as: 'tags'
-              }
-            ]
-          }
-        );
+    await Tutorial.create({
+      userId: 1,
+      appoioName: 'tutorial 1',
+      category: 'Conceitos',
+      steps: [{ description: 'passo 1' }, { description: 'passo 1' }]
+    }, {
+      include: [
+        {
+          model: Step,
+          as: 'steps'
+        },
+      ]
+    });
+
+    await Tutorial.create({
+      userId: 1,
+      appoioName: 'tutorial 2',
+      category: 'Celular',
+      steps: [{ description: 'passo 1' }, { description: 'passo 1' }]
+    }, {
+      include: [
+        {
+          model: Step,
+          as: 'steps'
+        },
+      ]
+    });
+
+    await Tutorial.create({
+      userId: 1,
+      appoioName: 'tutorial 1',
+      category: 'Aplicativos',
+      steps: [{ description: 'passo 1' }, { description: 'passo 1' }]
+    }, {
+      include: [
+        {
+          model: Step,
+          as: 'steps'
+        },
+      ]
+    });
+
+    await Tutorial.create({
+      userId: 1,
+      appoioName: 'tutorial 2',
+      category: 'Celular',
+      steps: [{ description: 'passo 1' }, { description: 'passo 1' }]
+    }, {
+      include: [
+        {
+          model: Step,
+          as: 'steps'
+        },
+      ]
+    });
+  } catch (err) {
+    console.log('\nCria tutoriais:\n', err);
+  }
+}
+
+
+async function criaTags() {
+  try {
+    await Tag.create({
+      name: 'tag 1'
+    });
+
+    await Tag.create({
+      name: 'tag 2'
+    });
+
+    await Tag.create({
+      name: 'tag 3'
+    });
+
+    await Tag.create({
+      name: 'tag 4'
+    });
+
+  } catch (err) {
+    console.log('\nCria tags:\n', err);
+  }
+}
+
+
+async function criaApps() {
+  try {
+    await App.create({
+      name: 'aplicativo 1',
+      logoURL: 'http://aplicativo-1'
+    });
+
+    await App.create({
+      name: 'aplicativo 2',
+      logoURL: 'http://aplicativo-2'
+    });
+
+    await App.create({
+      name: 'aplicativo 3',
+      logoURL: 'http://aplicativo-3'
+    });
+
+    await App.create({
+      name: 'aplicativo 4',
+      logoURL: 'http://aplicativo-4'
+    });
+
+    await App.create({
+      name: 'aplicativo 5',
+      logoURL: 'http://aplicativo-5'
+    });
+
+    await App.create({
+      name: 'aplicativo 6',
+      logoURL: 'http://aplicativo-6'
+    });
+  } catch (err) {
+    console.log('\nCria apps:\n', err);
+  }
+}
+
+
+async function associaTutoriaisTags() {
+  try {
+    let tutorialUm = await Tutorial.findOne({
+      where: {
+        id: 1
       }
-    }
+    });
+    await tutorialUm.setTags((await Tag.findAll({ where: { id: [1, 2] } })));
+
+
+    let tutorialDois = await Tutorial.findOne({
+      where: {
+        id: 2
+      }
+    });
+    await tutorialDois.setTags((await Tag.findAll({ where: { id: [3, 4] } })));
+
+    let tutorialTres = await Tutorial.findOne({
+      where: {
+        id: 3
+      }
+    });
+    await tutorialTres.setTags((await Tag.findAll({ where: { id: [1, 2] } })));
+
+    let tutorialQuatro = await Tutorial.findOne({
+      where: {
+        id: 4
+      }
+    });
+    await tutorialQuatro.setTags((await Tag.findAll({ where: { id: [3, 4] } })));
+
   } catch (err) {
-    console.log("Tutoriais já criados");
+    console.log('\nAssocia tutoriais tags:\n', err);
   }
 }
 
 
-async function main(){
-  await criaBanco();
-  await criaUsuarios(2);
-  await criaTutoriais(2, 3, 5, 2);
+async function associaAppsUsuarios() {
+  try {
+    let userUm = await User.findOne({
+      where: {
+        id: 1
+      }
+    });
+    await userUm.setApps((await App.findAll({ where: { id: [1, 3, 5] } })));
+
+    let userDois = await User.findOne({
+      where: {
+        id: 2
+      }
+    });
+    await userDois.setApps((await App.findAll()));
+  } catch (err) {
+    console.log('\nAssocia apps usuarios:\n', err);
+  }
+}
+
+async function associaAppsTutoriais() {
+  try {
+    let appUm = await App.findOne({
+      where: {
+        id: 1
+      }
+    });
+
+    let appDois = await App.findOne({
+      where: {
+        id: 2
+      }
+    });
+
+    let appTres = await App.findOne({
+      where: {
+        id: 3
+      }
+    });
+
+    let appCinco = await App.findOne({
+      where: {
+        id: 5
+      }
+    });
+
+    let tutorials = await Tutorial.findAll();
+
+    await appUm.setTutorials(tutorials.slice(0, 2));
+    await appDois.setTutorials(tutorials[2]);
+    await appTres.setTutorials(tutorials[3]);
+    await appCinco.setTutorials(tutorials[4]);
+  } catch (err) {
+    console.log('\nAssocia apps tutoriais:\n', err);
+  }
+
 }
 
 
-main().then();
+(async () => {
+  await criaBanco();
+  await criaUsuarios();
+  await criaTutoriais();
+  await criaTags();
+  await criaApps();
+  await associaTutoriaisTags();
+  await associaAppsUsuarios();
+  await associaAppsTutoriais();
+})().then();
