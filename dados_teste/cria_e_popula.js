@@ -87,10 +87,10 @@ async function criaUsuarios() {
       name: 'admin',
       email: 'admin@gmail.com',
       password: 'admin',
-      genre: 'Nenhum',
+      genre: 'Masculino',
       birthYear: 0,
-      city: 'Administração',
-      uf: 'AD',
+      city: 'Porto Alegre',
+      uf: 'RS',
     });
 
   } catch (err) {
