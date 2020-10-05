@@ -119,6 +119,51 @@ async function register(req, res) {
     });
   }
 }
+// Funcao para deletar um tutorial
+async function deleteTutorial(req,res){
+  if (req.session.userId === undefined)
+    return res.json({
+      resp: false,
+      status: 401,
+      msg: "User not logged",
+      data: {},
+    });
+
+  if (req.session.adm == false)
+    return res.json({
+      resp: false,
+      status: 403,
+      msg:
+        "User not authorized. User must login with administrator account to perform this action",
+      data: {},
+    });
+
+    try {
+      let id = req.params.id;
+      await tutorialService.deleteTutorial(id);
+      return res.json({
+        resp: true,
+        status: 200,
+        msg:'Tutorial deleted',
+        data: {},
+        
+      });
+
+    }
+    catch (err){
+       console.log(err);
+
+      return res.json({
+        resp: false,
+        status: 500,
+        msg: 'Unkown error found on delete: ' + err,
+        data: {}
+     });
+  }
+}
+
+    
 
 
-module.exports = { get, getAll, register };
+
+module.exports = { get, getAll, register, deleteTutorial };

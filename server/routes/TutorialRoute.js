@@ -16,5 +16,7 @@ router.route('/categories').get(tutorialController.getAll);
 // Rota para registrar um tutorial
 router.route('/registration').post(upload, tutorialController.register);
 
+// Rota para deletar um tutorial
+router.route('/delete/:id').delete(tutorialController.deleteTutorial);
 
 module.exports = router;

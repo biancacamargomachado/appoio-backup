@@ -60,5 +60,15 @@ async function registerTutorial(tutorialCreationObject) {
     throw err;
   }
 }
+// // Funcao que busca um tutorial por id e o  deleta  
+async function deleteTutorial(id){
+  try{
+    await tutorialRepository.deleteTutorial(id);
 
-module.exports = { get, getAll, registerTutorial };
+  }
+    catch (err){
+    throw err;
+  }
+}
+
+module.exports = { get, getAll, registerTutorial, deleteTutorial };

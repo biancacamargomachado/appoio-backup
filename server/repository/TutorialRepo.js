@@ -79,6 +79,17 @@ async function registerTutorial(tutorialCreationObject) {
         }
     );
 }
+// Funcao que deleta um tutorial
+async function deleteTutorial(id){
+    const tutorial = await Tutorial.findOne(
+    {
+       where: {
+           approved: 1,
+           id: id 
+       },
+      attributes: ["id"],
+    });
+    await tutorial.destroy();
+}
 
-
-module.exports = { findById, findAll, registerTutorial };
+module.exports = { findById, findAll, registerTutorial, deleteTutorial };
