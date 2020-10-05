@@ -4,9 +4,9 @@ const appService = require('../services/AppService');
 async function getAll(userId) {
     try {
         if (userId === undefined)
-            let result = await appService.getAll();
+            var result = await appService.getAll();
         else
-            let result = await appService.getInstalled(userId);
+            var result = await appService.getInstalled(userId);
 
         if (result.result) {
             return {
