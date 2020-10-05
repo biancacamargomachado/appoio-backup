@@ -8,11 +8,19 @@ async function getAll(userId) {
         else
             let result = await appService.getInstalled(userId);
 
+        if (result.result) {
+            return {
+                result: true,
+                status: 200,
+                msg: 'Applicativos recuperados',
+                data: result.data
+            };
+        }
         return {
-            result: true,
-            status: 200,
-            msg: 'Applicativos recuperados',
-            data: result.data
+            result: false,
+            status: result.status,
+            msg: result.msg,
+            data: {}
         };
     }
     catch (err) {
@@ -32,11 +40,19 @@ async function getTutorials(appId) {
     try {
         let result = await appService.getTutorials(appId);
 
+        if (result.result) {
+            return {
+                result: true,
+                status: 200,
+                msg: 'Tutoriais do aplicativo recuperados',
+                data: result.data
+            };
+        }
         return {
-            result: true,
-            status: 200,
-            msg: 'Tutoriais do aplicativo recuperados',
-            data: result.data
+            result: false,
+            status: result.status,
+            msg: result.msg,
+            data: {}
         };
     }
     catch (err) {
@@ -57,11 +73,19 @@ async function update(appIds) {
     try {
         let result = await appService.update(userId, appIds);
 
+        if (result.result) {
+            return {
+                result: true,
+                status: 204,
+                msg: 'Aplicativos do usuário foram atualizados',
+                data: result.data
+            };
+        }
         return {
-            result: true,
-            status: 204,
-            msg: 'Aplicativos do usuário foram atualizados',
-            data: result.data
+            result: false,
+            status: result.status,
+            msg: result.msg,
+            data: {}
         };
 
     } catch (err) {

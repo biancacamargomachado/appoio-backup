@@ -11,15 +11,15 @@ const tutorialRepository = require('../repository/TutorialRepo');
  * @returns {Tutorial}
  */
 async function get(id) {
-  let result = await tutorialRepository.findById(id);
+    let result = await tutorialRepository.findById(id);
 
-  if (result.result)
-    if (result.data)
-      return result;
+    if (result.result)
+        if (result.data)
+            return result;
+        else
+            return { result: false, status: 404, msg: 'Não foi possível recuperar o tutorial' };
     else
-      return { result: false, status: 404, msg: 'Não foi possível recuperar o tutorial' }
-  else
-    return result;
+        return result;
 }
 
 /*
@@ -33,39 +33,39 @@ async function get(id) {
  * @returns {dict}
  */
 async function getAll() {
-  try {
-    let result = await tutorialRepository.findAll();
+    try {
+        let result = await tutorialRepository.findAll();
 
-    if (result.result) {
-      if (result.data) {
-        let tutorials = result.data;
-        tutorials = tutorials.map(tutorial => tutorial.toJSON());
+        if (result.result) {
+            if (result.data) {
+                let tutorials = result.data;
+                tutorials = tutorials.map(tutorial => tutorial.toJSON());
 
-        let categoryTutorials = {};
+                let categoryTutorials = {};
 
-        for (let tutorial of tutorials) {
-          let category = tutorial.category;
-          delete tutorial.category;
+                for (let tutorial of tutorials) {
+                    let category = tutorial.category;
+                    delete tutorial.category;
 
-          if (category in categoryTutorials) {
-            categoryTutorials[category].push(tutorial);
-          }
-          else {
-            categoryTutorials[category] = [tutorial]
-          }
+                    if (category in categoryTutorials) {
+                        categoryTutorials[category].push(tutorial);
+                    }
+                    else {
+                        categoryTutorials[category] = [tutorial];
+                    }
+                }
+
+                return { result: true, data: categoryTutorials };
+            }
+            else
+                return { result: false, status: 404, msg: 'Não foi possível recuperar o tutorial' };
         }
 
-        return { result: true, data: categoryTutorials };
-      }
-      else
-        return { result: false, status: 404, msg: 'Não foi possível recuperar o tutorial' }
+        return result;
+
+    } catch (err) {
+        return { result: false, status: 500, msg: 'Erro durante a separação das categorias' };
     }
-
-    return result;
-
-  } catch (err) {
-    return { result: false, status: 500, msg: 'Erro durante a separação das categorias' }
-  }
 }
 
 /*
@@ -76,7 +76,7 @@ async function getAll() {
  * @returns {Tutorial}
  */
 async function registerTutorial(tutorialCreationObject) {
-  return await tutorialRepository.registerTutorial(tutorialCreationObject);
+    return await tutorialRepository.registerTutorial(tutorialCreationObject);
 }
 
 /*
@@ -87,7 +87,7 @@ async function registerTutorial(tutorialCreationObject) {
  * @returns {Tutorial}
  */
 async function approve(id) {
-  return await tutorialRepository.approve(id);
+    return await tutorialRepository.approve(id);
 }
 
 module.exports = { get, getAll, registerTutorial, approve };

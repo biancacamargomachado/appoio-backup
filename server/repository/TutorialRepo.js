@@ -86,7 +86,7 @@ async function findAll(approved) {
                     ['createdAt', 'DESC']
                 ]
             })
-        }
+        };
     }
     catch (err) {
         if (err instanceof ValidationError) {
@@ -107,16 +107,16 @@ async function findAll(approved) {
 
 async function approve(id) {
     try {
-        return {
-            result: true,
-            data: await Tutorial.update({
-                approved: 1
-            }, {
-                where: {
-                    id: id
-                }
-            })
-        }
+        await Tutorial.update({
+            approved: 1
+        }, {
+            where: {
+                id: id
+            }
+        });
+
+        return { result: true };
+
     } catch (err) {
         if (err instanceof ValidationError) {
             return { result: false, status: 400, msg: `Constraint referente à coluna: ${err.errors[0].validatorKey} falhou` };
@@ -159,36 +159,51 @@ async function registerTutorial(tutorialCreationObject) {
             }
         );
 
-        if (tags) {
-            let createdTags = await Tag.bulkCreate(
-                tags,
-                {
-                    transaction: transaction,
-                    fields: ['name'],
-                    ignoreDuplicates: true
-                }
-            );
-
-            for (let i = 0; i < createdTags.length; i++) {
-                let tagId = createdTags[i].id;
-                let tagName = createdTags[i].name;
-
-                if (tagId)
-                    createdTags[i] = tagId;
-                else
-                    createdTags[i] = (await Tag.findOne({
+        if (tutorial) {
+            if (tags) {
+                let createdTags = await Tag.bulkCreate(
+                    tags,
+                    {
                         transaction: transaction,
-                        where: { name: tagName }
-                    })).id;
+                        fields: ['name'],
+                        ignoreDuplicates: true
+                    }
+                );
+
+                for (let i = 0; i < createdTags.length; i++) {
+                    let tagId = createdTags[i].id;
+                    let tagName = createdTags[i].name;
+
+                    if (tagId) {
+                        createdTags[i] = tagId;
+                    }
+                    else {
+                        let tag = await Tag.findOne({
+                            transaction: transaction,
+                            attributes: ['id'],
+                            where: { name: tagName }
+                        });
+                        if (tag)
+                            createdTags[i] = tag.id;
+                        else {
+                            await transaction.rollback();
+                            return { result: false, status: 404, msg: `Tag não encontrada e não criada: ${tagName}` }
+                        }
+                    }
+                }
+
+                await tutorial.setTags(createdTags, { transaction: transaction });
             }
 
-            await tutorial.setTags(createdTags, { transaction: transaction });
+            await transaction.commit();
 
-            return {
-                result: true,
-                data: tutorial
-            }
+            return { result: true };
         }
+        else {
+            return { result: false, status: 404, msg: 'Tutorial não encontrado' };
+        }
+
+
     } catch (err) {
         await transaction.rollback();
 

@@ -2,75 +2,76 @@ const express = require('express');
 const multer = require('multer');
 const tutorialController = require('../controllers/TutorialController');
 const storage = require('../helper/ImageHandler');
+const authHandler = require('../helper/AuthHandler');
 
 
-module.exports = function (userAuth, adminAuth) {
-    const router = express.Router();
-    const upload = multer({ storage: storage }).array('images');
+const router = express.Router();
 
-    router.route('/get/:id').get(
-        (req, res) => {
-            return res.json(tutorialController.get(req.params.id));
-        }
-    );
+const upload = multer({ storage: storage }).array('images');
 
-    router.route('/categories').get(
-        adminAuth({
-            'approved': 0
-        }),
-        (req, res) => {
-            return res.json(tutorialController.getAll(req.body.approved));
-        }
-    );
+router.route('/get/:id').get(
+    (req, res) => {
+        return res.json(tutorialController.get(req.params.id));
+    }
+);
 
-    router.route('/registration').post(
-        upload,
-        userAuth,
-        (req, res) => {
-            try {
-                let creationObject = req.body;
+router.route('/categories').get(
+    authHandler.adminAuth({
+        'approved': 0
+    }),
+    (req, res) => {
+        return res.json(tutorialController.getAll(req.body.approved));
+    }
+);
 
-                if (creationObject.appId)
-                    creationObject.appId = parseInt(creationObject.appId);
+router.route('/registration').post(
+    upload,
+    authHandler.userAuth,
+    (req, res) => {
+        try {
+            let creationObject = req.body;
 
-                if (creationObject.tags)
-                    creationObject.tags = JSON.parse(creationObject.tags);
+            if (creationObject.appId)
+                creationObject.appId = parseInt(creationObject.appId);
 
-                if (creationObject.steps) {
-                    creationObject.steps = JSON.parse(creationObject.steps);
+            if (creationObject.tags)
+                creationObject.tags = JSON.parse(creationObject.tags);
 
-                    let files = req.files;
-                    if (files)
-                        for (let i = 0; i < files.length; i++)
-                            creationObject.steps[i].imgURL = files[i].secureURL
-                }
+            if (creationObject.steps) {
+                creationObject.steps = JSON.parse(creationObject.steps);
 
-                return res.json(tutorialController.register(creationObject));
-
-            } catch (err) {
-                return res.json({
-                    resp: false,
-                    status: 400,
-                    msg: 'Erro no formato da mensagem, alguns parametros nao puderam ser parseados',
-                    data: {}
-                });
+                let files = req.files;
+                if (files)
+                    for (let i = 0; i < files.length; i++)
+                        creationObject.steps[i].imgURL = files[i].secureURL
             }
-        }
-    );
 
-    router.route('/approve/:id').patch(
-        adminAuth(),
-        (req, res) => {
-            return res.json(tutorialController.approve(req.body.id));
-        }
-    );
+            return res.json(tutorialController.register(creationObject));
 
-    router.route('/search/:string').get(
-        (req, res) => {
-            return res.json(tutorialController.search(req.params.string));
+        } catch (err) {
+            return res.json({
+                resp: false,
+                status: 400,
+                msg: 'Erro no formato da mensagem, alguns parametros nao puderam ser parseados',
+                data: {}
+            });
         }
-    );
+    }
+);
 
-    return router;
-}
+router.route('/approve/:id').patch(
+    authHandler.adminAuth(),
+    (req, res) => {
+        return res.json(tutorialController.approve(req.body.id));
+    }
+);
+
+router.route('/search/:string').get(
+    (req, res) => {
+        return res.json(tutorialController.search(req.params.string));
+    }
+);
+
+module.exports = router;
+
 

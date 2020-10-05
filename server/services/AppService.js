@@ -8,15 +8,19 @@ async function getAll() {
         let filtered = [];
         for (let i = 0; i < apps.length; i++) {
             let app = apps[i];
-            if (app)
-                if (app.tutorials.length > 0)
-                    filtered.push(app.id);
+            if (app) {
+                if (app.tutorials) {
+                    if (app.tutorials.length > 0) {
+                        filtered.push(app.id);
+                    }
+                }
+            }
         }
 
-        return {'Installed': [], 'NotInstalled': filtered};
+        return { result: true, data: { 'Installed': [], 'NotInstalled': filtered } };
 
     } catch (err) {
-        throw err;
+        return { result: false, status: 500, msg: 'Erro durante o filtro de aplicativos' };
     }
 }
 
@@ -29,44 +33,59 @@ async function getInstalled(userId) {
         let filteredInstalled = [];
         for (let i = 0; i < installedApps.length; i++) {
             let app = installedApps[i];
-            if (app)
-                if (app.tutorials.length > 0)
-                    filteredInstalled.push(app.id);
+            if (app) {
+                if (app.tutorials) {
+                    if (app.tutorials.length > 0) {
+                        filteredInstalled.push(app.id);
+                    }
+                }
+            }
         }
 
         let filteredNotInstalled = [];
         for (let i = 0; i < notInstalledApps.length; i++) {
             let app = notInstalledApps[i];
-            if (app)
-                if (app.tutorials.length > 0)
-                    filteredNotInstalled.push(app.id);
+            if (app) {
+                if (app.tutorials) {
+                    if (app.tutorials.length > 0) {
+                        filteredNotInstalled.push(app.id);
+                    }
+                }
+            }
         }
 
-        return {
-            'Installed': filteredInstalled,
-            'NotInstalled': filteredNotInstalled
+        if (filteredInstalled.length == 0 && filteredNotInstalled.length == 0) {
+            return { result: false, status: 404, msg: 'Nenhum aplicativo encontrado' };
         }
+
+        return { result: true, data: { 'Installed': filteredInstalled, 'NotInstalled': filteredNotInstalled } };
 
     } catch (err) {
-        throw err;
+        return { result: false, status: 500, msg: 'Erro durante o filtro de aplicativos' };
     }
 }
 
 async function getTutorials(appId) {
     try {
-        return (await appRepository.getTutorials(appId)).map(tutorial => tutorial.toJSON());
+        let result = await appRepository.getTutorials(appId);
+        if (result.result) {
+            if (result.data) {
+                return result;
+            }
+            return { result: false, status: 404, msg: 'Não foi possível recuperar os tutoriais do aplicativo' };
+        }
+
+        result.data = result.data.map(tutorial => tutorial.toJSON());
+        return result;
+
     } catch (err) {
-        throw err;
+        return { result: false, status: 500, msg: 'Erro formatando os tutoriais do aplicativo' };
     }
 }
 
 
 async function update(userId, appIds) {
-    try {
-        await appRepository.update(userId, appIds);
-    } catch (err) {
-        throw err;
-    }
+    return await appRepository.update(userId, appIds);
 }
 
 module.exports = { getAll, getInstalled, getTutorials, update };

@@ -13,33 +13,32 @@ const admEmail = require('../config/env').admEmail;
  * 
  */
 async function login(email, password) {
-  try {
-    let result = await userRepository.findByEmail(email);
-    if (result.result) {
-      if (result.data) {
-        let user = result.data.toJSON();
-        let match = await compare(password, user.password);
-        if (!match)
-          return { result: false, status: 403, msg: 'E-mail ou senha incorreto' }
+    try {
+        let result = await userRepository.findByEmail(email);
+        if (result.result) {
+            if (result.data) {
+                let user = result.data.toJSON();
+                let match = await compare(password, user.password);
+                if (!match)
+                    return { result: false, status: 403, msg: 'E-mail ou senha incorreto' };
 
-        if (email === admEmail)
-          user.adm = true;
-        else
-          user.adm = false;
+                if (email === admEmail)
+                    user.adm = true;
+                else
+                    user.adm = false;
 
-        delete user.password;
-        return { result: true, data: user };
-      }
-      else
-        return { result: false, status: 401, msg: 'E-mail ou senha incorreto' }
+                delete user.password;
+                return { result: true, data: user };
+            }
+            else
+                return { result: false, status: 401, msg: 'E-mail ou senha incorreto' };
+        }
+
+        return result;
+
+    } catch (err) {
+        return { result: false, status: 500, msg: 'Erro ao validar identidade do usuário' };
     }
-
-    return result;
-
-
-  } catch (err) {
-    throw err;
-  }
 }
 
 
@@ -58,41 +57,33 @@ async function login(email, password) {
  * 
  */
 async function registerUser(name, email, password, gender, birthYear, city, uf) {
-  try {
+    try {
 
-    let hashedPassword = await hash(password, 8);
+        let hashedPassword = await hash(password, 8);
 
-    let result = await userRepository.registerUser(
-      name,
-      email,
-      hashedPassword,
-      gender,
-      birthYear,
-      city,
-      uf,
-    );
+        let result = await userRepository.registerUser(
+            name,
+            email,
+            hashedPassword,
+            gender,
+            birthYear,
+            city,
+            uf,
+        );
 
-    if (result.result) {
-      if (result.data) {
-        result.data = result.data.toJSON();
-        delete result.data.password;
-
-        if (email === admEmail)
-          result.data.adm = true;
-        else
-          result.data.adm = false;
+        if (result.result) {
+            if (result.data) {
+                return { result: true };
+            }
+            else
+                return { result: false, status: 400, msg: 'Não foi possível registrar o usuário' };
+        }
 
         return result;
-      }
-      else
-        return { result: false, status: 400, msg: 'Não foi possível registrar o usuário' }
+
+    } catch (err) {
+        return { result: false, status: 500, msg: 'Erro durante a formatação dos dados' };
     }
-
-    return result;
-
-  } catch (err) {
-    return { result: false, status: 500, msg: 'Erro durante a formatação dos dados' }
-  }
 }
 
 
