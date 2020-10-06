@@ -1,7 +1,8 @@
 
-const userAuth = function (req, res, next) {
-    if (req.session.userId !== undefined)
-        return next(req, res);
+const userAuth = async function (req, res, next) {
+    if (req.session.userId !== undefined) {
+        return await next();
+    }
 
     return res.json({
         resp: false,
@@ -11,30 +12,32 @@ const userAuth = function (req, res, next) {
     });
 }
 
+
+
 const adminAuth = function (checkObj) {
-    return function (req, res, next) {
-        let adminErrorResp = res.json({
+    return async function (req, res, next) {
+        let adminErrorResp = {
             resp: false,
             status: 403,
             msg: 'Usuário não possui direitos administrativos',
             data: {}
-        });
+        };
 
         if (checkObj === undefined) {
             if (req.session.admin)
-                return next(req, res);
+                return await next();
             else
-                return adminErrorResp;
+                return res.json(adminErrorResp);
         }
         else {
             for (const [key, value] of Object.entries(checkObj)) {
                 if (req.body[key] === value) {
                     if (req.session.admin)
-                        return next(req, res);
-                    return adminErrorResp;
+                        return await next();
+                    return res.json(adminErrorResp);
                 }
             }
-            return next(req, res);
+            return await next();
         }
     }
 }

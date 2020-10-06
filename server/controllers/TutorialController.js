@@ -85,7 +85,7 @@ async function register(creationObject) {
     Object.keys(creationObject).forEach(
         key => creationObject[key] === undefined ? delete creationObject[key] : {}
     );
-
+    
     try {
         let result = await tutorialService.registerTutorial(creationObject);
 

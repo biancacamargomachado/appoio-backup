@@ -2,6 +2,9 @@ const Tutorial = require('../models/Tutorial');
 const Step = require('../models/Step');
 const Tag = require('../models/Tag');
 const User = require('../models/User');
+const sequelize = require('../database');
+const { UniqueConstraintError, ForeignKeyConstraintError, TimeoutError, ValidationError } = require('sequelize');
+const App = require('../models/App');
 
 /*
  * Função que busca um tutorial dado seu id
@@ -52,13 +55,21 @@ async function findById(id) {
                         'name',
                         'email'
                     ]
-                }
-                ]
+                }]
             })
         };
 
     } catch (err) {
-        if (err instanceof ValidationError) {
+        if (err instanceof UniqueConstraintError) {
+            return { result: false, status: 400, msg: 'E-mail do usuário já existe no banco' };
+        }
+        else if (err instanceof ForeignKeyConstraintError) {
+            return { result: false, status: 400, msg: `Valor informado não foi encontrado para referencia: ${err.index}` };
+        }
+        else if (err instanceof TimeoutError) {
+            return { result: false, status: 408, msg: 'Tempo de execução da query excedeu o limite de tempo' };
+        }
+        else if (err instanceof ValidationError) {
             return { result: false, status: 400, msg: `Constraint referente à coluna: ${err.errors[0].validatorKey} falhou` };
         }
     }
@@ -89,17 +100,17 @@ async function findAll(approved) {
         };
     }
     catch (err) {
-        if (err instanceof ValidationError) {
-            return { result: false, status: 400, msg: `Constraint referente à coluna: ${err.errors[0].validatorKey} falhou` };
-        }
-        else if (err instanceof UniqueConstraintError) {
-            return { result: false, status: 400, msg: `Valor informado não pode ser repetido: ${err.index}` };
+        if (err instanceof UniqueConstraintError) {
+            return { result: false, status: 400, msg: 'E-mail do usuário já existe no banco' };
         }
         else if (err instanceof ForeignKeyConstraintError) {
             return { result: false, status: 400, msg: `Valor informado não foi encontrado para referencia: ${err.index}` };
         }
         else if (err instanceof TimeoutError) {
             return { result: false, status: 408, msg: 'Tempo de execução da query excedeu o limite de tempo' };
+        }
+        else if (err instanceof ValidationError) {
+            return { result: false, status: 400, msg: `Constraint referente à coluna: ${err.errors[0].validatorKey} falhou` };
         }
     }
 }
@@ -118,17 +129,17 @@ async function approve(id) {
         return { result: true };
 
     } catch (err) {
-        if (err instanceof ValidationError) {
-            return { result: false, status: 400, msg: `Constraint referente à coluna: ${err.errors[0].validatorKey} falhou` };
-        }
-        else if (err instanceof UniqueConstraintError) {
-            return { result: false, status: 400, msg: `Valor informado não pode ser repetido: ${err.index}` };
+        if (err instanceof UniqueConstraintError) {
+            return { result: false, status: 400, msg: 'E-mail do usuário já existe no banco' };
         }
         else if (err instanceof ForeignKeyConstraintError) {
             return { result: false, status: 400, msg: `Valor informado não foi encontrado para referencia: ${err.index}` };
         }
         else if (err instanceof TimeoutError) {
             return { result: false, status: 408, msg: 'Tempo de execução da query excedeu o limite de tempo' };
+        }
+        else if (err instanceof ValidationError) {
+            return { result: false, status: 400, msg: `Constraint referente à coluna: ${err.errors[0].validatorKey} falhou` };
         }
     }
 }
@@ -160,7 +171,7 @@ async function registerTutorial(tutorialCreationObject) {
         );
 
         if (tutorial) {
-            if (tags) {
+            if (tags.length) {
                 let createdTags = await Tag.bulkCreate(
                     tags,
                     {
@@ -207,17 +218,17 @@ async function registerTutorial(tutorialCreationObject) {
     } catch (err) {
         await transaction.rollback();
 
-        if (err instanceof ValidationError) {
-            return { result: false, status: 400, msg: `Constraint referente à coluna: ${err.errors[0].validatorKey} falhou` };
-        }
-        else if (err instanceof UniqueConstraintError) {
-            return { result: false, status: 400, msg: `Valor informado não pode ser repetido: ${err.index}` };
+        if (err instanceof UniqueConstraintError) {
+            return { result: false, status: 400, msg: 'E-mail do usuário já existe no banco' };
         }
         else if (err instanceof ForeignKeyConstraintError) {
             return { result: false, status: 400, msg: `Valor informado não foi encontrado para referencia: ${err.index}` };
         }
         else if (err instanceof TimeoutError) {
             return { result: false, status: 408, msg: 'Tempo de execução da query excedeu o limite de tempo' };
+        }
+        else if (err instanceof ValidationError) {
+            return { result: false, status: 400, msg: `Constraint referente à coluna: ${err.errors[0].validatorKey} falhou` };
         }
     }
 }

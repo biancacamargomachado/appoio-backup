@@ -50,7 +50,7 @@ async function register(name, email, password, gender, birthYear, city, uf) {
                 result: true,
                 status: 201,
                 msg: 'Usário registrado',
-                data: {}
+                data: result.data
             };
 
         return {

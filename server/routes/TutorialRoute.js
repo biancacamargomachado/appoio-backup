@@ -9,25 +9,25 @@ const router = express.Router();
 
 const upload = multer({ storage: storage }).array('images');
 
-router.route('/get/:id').get(
-    (req, res) => {
-        return res.json(tutorialController.get(req.params.id));
+router.get('/get/:id',
+    async (req, res, _) => {
+        return res.json(await tutorialController.get(req.params.id));
     }
 );
 
-router.route('/categories').get(
+router.get('/categories',
     authHandler.adminAuth({
         'approved': 0
     }),
-    (req, res) => {
-        return res.json(tutorialController.getAll(req.body.approved));
+    async (req, res, _) => {
+        return res.json(await tutorialController.getAll(req.body.approved));
     }
 );
 
-router.route('/registration').post(
+router.post('/registration',
     upload,
     authHandler.userAuth,
-    (req, res) => {
+    async (req, res, _) => {
         try {
             let creationObject = req.body;
 
@@ -46,7 +46,9 @@ router.route('/registration').post(
                         creationObject.steps[i].imgURL = files[i].secureURL
             }
 
-            return res.json(tutorialController.register(creationObject));
+            creationObject.admin = req.session.admin;
+
+            return res.json(await tutorialController.register(creationObject));
 
         } catch (err) {
             return res.json({
@@ -59,16 +61,16 @@ router.route('/registration').post(
     }
 );
 
-router.route('/approve/:id').patch(
+router.patch('/approve/:id',
     authHandler.adminAuth(),
-    (req, res) => {
-        return res.json(tutorialController.approve(req.body.id));
+    async (req, res, _) => {
+        return res.json(await tutorialController.approve(req.body.id));
     }
 );
 
-router.route('/search/:string').get(
-    (req, res) => {
-        return res.json(tutorialController.search(req.params.string));
+router.get('/search/:string',
+    async (req, res, _) => {
+        return res.json(await tutorialController.search(req.params.string));
     }
 );
 

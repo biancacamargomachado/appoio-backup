@@ -23,9 +23,9 @@ async function login(email, password) {
                     return { result: false, status: 403, msg: 'E-mail ou senha incorreto' };
 
                 if (email === admEmail)
-                    user.adm = true;
+                    user.admin = true;
                 else
-                    user.adm = false;
+                    user.admin = false;
 
                 delete user.password;
                 return { result: true, data: user };
@@ -73,7 +73,19 @@ async function registerUser(name, email, password, gender, birthYear, city, uf) 
 
         if (result.result) {
             if (result.data) {
-                return { result: true };
+                let user = result.data.toJSON();
+
+                user.admin = false;
+
+                delete user.password;
+                delete user.name;
+                delete user.email;
+                delete user.gender;
+                delete user.birthYear;
+                delete user.city;
+                delete user.uf;
+
+                return { result: true, data: user };
             }
             else
                 return { result: false, status: 400, msg: 'Não foi possível registrar o usuário' };

@@ -5,25 +5,25 @@ const authHandler = require('../helper/AuthHandler');
 
 const router = express.Router();
 
-router.route('/all').get(
-    (req, res) => {
+router.get('/all',
+    async (req, res, _) => {
         let userId = req.session.userId;
-        return res.json(appController.getAll(userId));
+        return res.json(await appController.getAll(userId));
     }
 );
 
-router.route('/tutorials').get(
-    (req, res) => {
+router.get('/tutorials',
+    async (req, res, _) => {
         let appId = req.body.appId;
-        return res.json(appController.getTutorials(appId));
+        return res.json(await appController.getTutorials(appId));
     }
 );
 
-router.route('/installed').patch(
+router.patch('/installed',
     authHandler.userAuth,
-    (req, res) => {
+    async (req, res, _) => {
         let appIds = req.body.appIds;
-        return res.json(appController.update(appIds));
+        return res.json(await appController.update(appIds));
     }
 );
 

@@ -69,7 +69,7 @@ async function getTutorials(appId) {
     try {
         let result = await appRepository.getTutorials(appId);
         if (result.result) {
-            if (result.data) {
+            if (result.data.length) {
                 return result;
             }
             return { result: false, status: 404, msg: 'Não foi possível recuperar os tutoriais do aplicativo' };

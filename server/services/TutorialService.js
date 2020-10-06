@@ -32,12 +32,12 @@ async function get(id) {
  * 
  * @returns {dict}
  */
-async function getAll() {
+async function getAll(approved) {
     try {
-        let result = await tutorialRepository.findAll();
+        let result = await tutorialRepository.findAll(approved);
 
         if (result.result) {
-            if (result.data) {
+            if (result.data.length) {
                 let tutorials = result.data;
                 tutorials = tutorials.map(tutorial => tutorial.toJSON());
 
@@ -58,7 +58,7 @@ async function getAll() {
                 return { result: true, data: categoryTutorials };
             }
             else
-                return { result: false, status: 404, msg: 'Não foi possível recuperar o tutorial' };
+                return { result: false, status: 404, msg: 'Não foi possível recuperar os tutoriais' };
         }
 
         return result;
