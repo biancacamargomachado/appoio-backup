@@ -12,7 +12,7 @@ async function getAll(userId) {
             return {
                 result: true,
                 status: 200,
-                msg: 'Applicativos recuperados',
+                msg: 'Aplicativos recuperados',
                 data: result.data
             };
         }

@@ -9,7 +9,7 @@ async function login(email, password) {
             return {
                 result: true,
                 status: 200,
-                msg: 'Usário realizou login',
+                msg: 'Usuário realizou login',
                 data: result.data
             };
 
@@ -49,7 +49,7 @@ async function register(name, email, password, gender, birthYear, city, uf) {
             return {
                 result: true,
                 status: 201,
-                msg: 'Usário registrado',
+                msg: 'Usuário registrado',
                 data: result.data
             };
 
