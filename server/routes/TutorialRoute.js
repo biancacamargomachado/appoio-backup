@@ -64,7 +64,7 @@ router.post('/registration',
 router.patch('/approve/:id',
     authHandler.adminAuth(),
     async (req, res, _) => {
-        return res.json(await tutorialController.approve(req.body.id));
+        return res.json(await tutorialController.approve(req.params.id));
     }
 );
 
