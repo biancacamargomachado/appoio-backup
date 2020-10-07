@@ -172,37 +172,12 @@ async function registerTutorial(tutorialCreationObject) {
 
         if (tutorial) {
             if (tags.length) {
-                let createdTags = await Tag.bulkCreate(
-                    tags,
-                    {
-                        transaction: transaction,
-                        fields: ['name'],
-                        ignoreDuplicates: true
-                    }
-                );
-
-                for (let i = 0; i < createdTags.length; i++) {
-                    let tagId = createdTags[i].id;
-                    let tagName = createdTags[i].name;
-
-                    if (tagId) {
-                        createdTags[i] = tagId;
-                    }
-                    else {
-                        let tag = await Tag.findOne({
-                            transaction: transaction,
-                            attributes: ['id'],
-                            where: { name: tagName }
-                        });
-                        if (tag)
-                            createdTags[i] = tag.id;
-                        else {
-                            await transaction.rollback();
-                            return { result: false, status: 404, msg: `Tag não encontrada e não criada: ${tagName}` }
-                        }
-                    }
+                let createdTags = [];
+                for (let i = 0; i < tags.length; i++) {
+                    createdTags.push((await Tag.findOrCreate({ transaction: transaction, where: tags[i] }))[0]);
                 }
 
+                console.log("\n\nCreated tags after:", createdTags, "\n\n");
                 await tutorial.setTags(createdTags, { transaction: transaction });
             }
 
