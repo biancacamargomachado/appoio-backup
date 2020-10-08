@@ -6,7 +6,7 @@ if (args.length >= 1)
     if (args[0] == 'dev')
         module.exports = {
             env: 'development',
-            admEmail: 'adm@gmail.com',
+            admEmail: 'admin@gmail.com',
             nomeApi: 'appoio-backend',
             apiURL: 'http://localhost',
             apiPort: 3000,
