@@ -17,8 +17,12 @@ class User extends Model {
           type: DataTypes.STRING(255),
           allowNull: false,
         },
-        birthday: {
-          type: DataTypes.DATE,
+        gender: {
+          type: DataTypes.STRING(9),
+          allowNull: false,
+        },
+        birthYear: {
+          type: DataTypes.INTEGER,
           allowNull: false,
         },
         city: {

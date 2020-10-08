@@ -5,9 +5,10 @@ const appRoute = require('./AppRoute');
 
 const router = express.Router();
 
+
 router.use('/user', userRoute);
-router.use('/tutorial', tutorialRoute);
 router.use('/app', appRoute);
+router.use('/tutorial', tutorialRoute);
 
 
 module.exports = router;

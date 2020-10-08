@@ -1,6 +1,5 @@
 const userRepository = require('../repository/UserRepo');
 const { compare, hash } = require('bcrypt');
-const User = require('../models/User');
 const admEmail = require('../config/env').admEmail;
 
 /*
@@ -14,65 +13,90 @@ const admEmail = require('../config/env').admEmail;
  * 
  */
 async function login(email, password) {
-  try {
-    let user = await userRepository.findByEmail(email)
-    
-    if(user !== null) 
-      user = user.toJSON();
-    else
-      throw Error('the email address does not match any user account');
+    try {
+        let result = await userRepository.findByEmail(email);
+        if (result.result) {
+            if (result.data) {
+                let user = result.data.toJSON();
+                let match = await compare(password, user.password);
+                if (!match)
+                    return { result: false, status: 403, msg: 'E-mail ou senha incorreto' };
 
-    let match = await compare(password, user.password);
-    if (!match)
-      throw Error('password does not match your account');
+                if (email === admEmail)
+                    user.admin = true;
+                else
+                    user.admin = false;
 
-    delete user.password;
-    if (email === admEmail)
-      user.adm = true;
-    else
-      user.adm = false;
+                delete user.password;
+                return { result: true, data: user };
+            }
+            else
+                return { result: false, status: 401, msg: 'E-mail ou senha incorreto' };
+        }
 
-    return user;
+        return result;
 
-  } catch (err) {
-    throw err;
-  }
+    } catch (err) {
+        return { result: false, status: 500, msg: 'Erro ao validar identidade do usuário' };
+    }
 }
+
 
 /*
  * Função que registra um novo usuário a partir dos dados informados, após criptografar a senha
  * 
  * @param {name} obrigatório o nome do usuário a ser criado
  * @param {email} obrigatório o email do usuário a ser criado
- * @param {password} obrigatória a senha do usuário a ser criado
- * @param {birthday} obrigtória a data de nascimento do usuário a ser criado
- * @param {city} obrigatória a cidade do usuário a ser criado
+ * @param {password} obrigatório a senha do usuário a ser criado
+ * @param {gender} obrigatório o gênero do usuário
+ * @param {birthYear} obrigtório o ano de nascimento do usuário a ser criado
+ * @param {city} obrigatório a cidade do usuário a ser criado
  * @param {uf} obrigatório a unidade federativa do usuário a ser criado
  * 
- * @returns {}
+ * @returns {User}
  * 
  */
-async function registerUser(name, email, password, birthday, city, uf) {
-  try {
+async function registerUser(name, email, password, gender, birthYear, city, uf) {
+    try {
 
-    let user = await userRepository.findByEmail(email);
-    if(user !== null)
-      throw Error('this email address is already in use by other account');
-      
-    let hashedPassword = await hash(password, 8);
+        let hashedPassword = await hash(password, 8);
 
-    return await userRepository.registerUser(
-      name,
-      email,
-      hashedPassword,
-      birthday,
-      city,
-      uf,
-    );
+        let result = await userRepository.registerUser(
+            name,
+            email,
+            hashedPassword,
+            gender,
+            birthYear,
+            city,
+            uf,
+        );
 
-  } catch (err) {
-    throw err;
-  }
+        if (result.result) {
+            if (result.data) {
+                let user = result.data.toJSON();
+
+                user.admin = false;
+
+                delete user.password;
+                delete user.name;
+                delete user.email;
+                delete user.gender;
+                delete user.birthYear;
+                delete user.city;
+                delete user.uf;
+
+                return { result: true, data: user };
+            }
+            else
+                return { result: false, status: 400, msg: 'Não foi possível registrar o usuário' };
+        }
+
+        return result;
+
+    } catch (err) {
+        return { result: false, status: 500, msg: 'Erro durante a formatação dos dados' };
+    }
 }
+
 
 module.exports = { login, registerUser };

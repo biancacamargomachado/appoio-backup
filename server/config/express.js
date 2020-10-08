@@ -6,9 +6,10 @@ const router = require('../routes');
 
 require('../database');
 
-const app = express();
+let config = require('./env');
 
-app.use(session({ store: new SQLiteStore, secret: 'ShhEhSegredo', resave: false, saveUninitialized: false }));
+const app = express();
+app.use(session({ store: new SQLiteStore, secret: config.secret, resave: false, saveUninitialized: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

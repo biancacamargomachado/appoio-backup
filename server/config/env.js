@@ -6,7 +6,8 @@ if (args.length >= 1)
     if (args[0] == 'dev')
         module.exports = {
             env: 'development',
-            admEmail: 'adm@gmail.com',
+            secret: 'Shhh eh segredo',
+            admEmail: 'admin@gmail.com',
             nomeApi: 'appoio-backend',
             apiURL: 'http://localhost',
             apiPort: 3000,
@@ -21,6 +22,7 @@ if (args.length >= 1)
     else
         module.exports = {
             env: 'production',
+            secret: process.env.SECRET,
             admEmail: 'adm@gmail.com',
             nomeApi: 'appoio-backend',
             apiURL: 'http://localhost',

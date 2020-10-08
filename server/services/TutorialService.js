@@ -4,58 +4,67 @@ const tutorialRepository = require('../repository/TutorialRepo');
  * Função que realiza a busca de tutoriais dado o id
  * 
  * @example
- *      get(i); // Tutorial(id:1)
+ *      get(1); // Tutorial
  * 
  * @param {id} obrigatório ID do tutorial que se deseja buscar
  * 
  * @returns {Tutorial}
  */
 async function get(id) {
-  try {
-    let tutorial = await tutorialRepository.findById(id);
+    let result = await tutorialRepository.findById(id);
 
-    return tutorial.toJSON();
-
-  } catch (err) {
-    throw err;
-  }
+    if (result.result)
+        if (result.data)
+            return result;
+        else
+            return { result: false, status: 404, msg: 'Não foi possível recuperar o tutorial' };
+    else
+        return result;
 }
 
 /*
- * Função que retorna o id e o nome de todos os tutoriais registrados, organizados em um array para cada categoria registrada
+ * Função que retorna o id e o nome de todos os tutoriais registrados, em um array organizado por categoria
  * 
  * @example
- *    getAll(); // {"tutorials": {
- *                                 "conceitos": [{"id": 1, "appoioName": "O que é QR Code?"}], 
- *                                 "celular": [{"id": 2, "appoioName": "Como inverter a câmera no Android?"}]
- *                 }}
+ *    getAll(); // {
+ *                   "category": [Tutorial, Tutorial], 
+ *                 }
  * 
- * @returns {Tutorials}
+ * @returns {dict}
  */
-async function getAll() {
-  try {
-    let tutorials = await tutorialRepository.findAll();
-    tutorials = tutorials.map(tutorial => tutorial.toJSON());
+async function getAll(approved) {
+    try {
+        let result = await tutorialRepository.findAll(approved);
 
-    let categoryTutorials = {};
+        if (result.result) {
+            if (approved == 0) {
+                return result;
+            }
 
-    for (let tutorial of tutorials) {
-      let category = tutorial.category;
-      delete tutorial.category;
+            let tutorials = result.data.map(tutorial => tutorial.toJSON());
+            let categoryTutorials = {};
 
-      if (category in categoryTutorials) {
-        categoryTutorials[category].push(tutorial);
-      }
-      else {
-        categoryTutorials[category] = [tutorial]
-      }
+            for (let tutorial of tutorials) {
+                let category = tutorial.category;
+                delete tutorial.category;
+
+                if (category in categoryTutorials) {
+                    categoryTutorials[category].push(tutorial);
+                }
+                else {
+                    categoryTutorials[category] = [tutorial];
+                }
+            }
+
+            return { result: true, data: categoryTutorials };
+
+        }
+
+        return result;
+
+    } catch (err) {
+        return { result: false, status: 500, msg: 'Erro durante a separação das categorias' };
     }
-
-    return categoryTutorials;
-
-  } catch (err) {
-    throw err;
-  }
 }
 
 /*
@@ -63,51 +72,10 @@ async function getAll() {
  * 
  * @param {tutorialCreationObject} obrigatório o objeto com os dados do tutorial informados na requisição
  * 
- * @returns {}
- */
-async function registerTutorial(tutorialCreationObject) {
-  try {
-
-
-    return await tutorialRepository.registerTutorial(tutorialCreationObject);
-  } catch (err) {
-    throw err;
-  }
-}
-
-/*
- * Função que realiza a busca de todos os tutoriais pendentes (não aprovados)
-  * 
- * @returns [ { Tutorials} ]
- */
-async function getAllPending(){
-  try {
-    let tutorials = await tutorialRepository.findAllPending();
-    tutorials = tutorials.map(tutorial => tutorial.toJSON());
-
-    return tutorials;
-
-  } catch (err) {
-    throw err;
-  }
-}
-
-/*
- * Função que busca um tutorial não aprovado, dado seu id
- *
- * @param {id} obrigatório o id do tutorial a ser atualizado
- * 
  * @returns {Tutorial}
  */
-async function getPending(id){
-  try{
-    let tutorial = await tutorialRepository.findPendingById(id);
-
-    return tutorial.toJSON();
-
-  } catch (err) {
-    throw err;
-  }
+async function registerTutorial(tutorialCreationObject) {
+    return await tutorialRepository.registerTutorial(tutorialCreationObject);
 }
 
 /*
@@ -115,14 +83,10 @@ async function getPending(id){
  * 
  * @param {id} obrigatório o id do tutorial a ser atualizado
  * 
+ * @returns {Tutorial}
  */
-async function approve(id){
-  try{
-    await tutorialRepository.approve(id);
-
-  } catch (err) {
-    throw err;
-  }
+async function approve(id) {
+    return await tutorialRepository.approve(id);
 }
 
-module.exports = { get, getAll, registerTutorial, getAllPending, getPending, approve };
+module.exports = { get, getAll, registerTutorial, approve };

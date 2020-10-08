@@ -1,186 +1,104 @@
 const appService = require('../services/AppService');
 
 
-async function getAll(req, res) {
-    let userId = req.session.userId;
-    if (userId === undefined)
-        return res.json({
-            resp: false,
-            status: 401,
-            msg: 'User not logged',
-            data: {}
-        });
-
+async function getAll(userId) {
     try {
-        let apps = await appService.getAll(userId);
+        if (userId === undefined)
+            var result = await appService.getAll();
+        else
+            var result = await appService.getInstalled(userId);
 
-        return res.json({
-            resp: true,
-            status: 200,
-            msg: 'All apps recovered',
-            data: {
-                apps: apps
-            }
-        })
+        if (result.result) {
+            return {
+                result: true,
+                status: 200,
+                msg: 'Aplicativos recuperados',
+                data: result.data
+            };
+        }
+        return {
+            result: false,
+            status: result.status,
+            msg: result.msg,
+            data: {}
+        };
+    }
+    catch (err) {
+        console.log(err);
+
+        return {
+            result: false,
+            status: 500,
+            msg: 'Erro desconhecido durante a recuperação dos aplicativos',
+            data: {}
+        };
+    }
+}
+
+
+async function getTutorials(appId) {
+    try {
+        let result = await appService.getTutorials(appId);
+
+        if (result.result) {
+            return {
+                result: true,
+                status: 200,
+                msg: 'Tutoriais do aplicativo recuperados',
+                data: result.data
+            };
+        }
+        return {
+            result: false,
+            status: result.status,
+            msg: result.msg,
+            data: {}
+        };
+    }
+    catch (err) {
+        console.log(err);
+
+        return {
+            result: false,
+            status: 500,
+            msg: 'Erro desconhecido durante a recuperação dos tutoriais do aplicativo',
+            data: {}
+        };
+    }
+
+}
+
+
+async function update(appIds) {
+    try {
+        let result = await appService.update(userId, appIds);
+
+        if (result.result) {
+            return {
+                result: true,
+                status: 204,
+                msg: 'Aplicativos do usuário foram atualizados',
+                data: result.data
+            };
+        }
+        return {
+            result: false,
+            status: result.status,
+            msg: result.msg,
+            data: {}
+        };
 
     } catch (err) {
         console.log(err);
 
-        return res.json({
-            resp: false,
+        return {
+            result: false,
             status: 500,
-            msg: 'Unkown error found on app getAll: ' + err,
+            msg: 'Erro desconhecido durante a atualização dos aplicativos do usuário',
             data: {}
-        });
+        };
     }
 }
 
 
-async function getInstalled(req, res) {
-    let userId = req.session.userId;
-    if (userId === undefined)
-        return res.json({
-            resp: false,
-            status: 401,
-            msg: 'User not logged',
-            data: {}
-        });
-
-    try {
-        let apps = await appService.getInstalled(userId);
-
-        return res.json({
-            resp: true,
-            status: 200,
-            msg: 'Installed apps recovered',
-            data: {
-                apps: apps
-            }
-        });
-    }
-    catch (err) {
-        console.log(err);
-
-        return res.json({
-            resp: false,
-            status: 500,
-            msg: 'Unkown error found on app get: ' + err,
-            data: {}
-        });
-    }
-}
-
-
-async function getTutorials(req, res) {
-    let userId = req.session.userId;
-
-    if (userId === undefined)
-        return res.json({
-            resp: false,
-            status: 401,
-            msg: 'User not logged',
-            data: {}
-        });
-
-    try {
-        let { appName } = req.body;
-
-        let tutorials = await appService.getTutorials(appName);
-
-        return res.json({
-            resp: true,
-            status: 201,
-            msg: 'App registered',
-            data: {
-                tutorials: tutorials
-            }
-        });
-    }
-    catch (err) {
-        console.log(err);
-
-        return res.json({
-            resp: false,
-            status: 500,
-            msg: 'Unkown error found on app registration: ' + err,
-            data: {}
-        });
-    }
-
-}
-
-
-async function register(req, res) {
-    let userId = req.session.userId;
-
-    if (userId === undefined)
-        return res.json({
-            resp: false,
-            status: 401,
-            msg: 'User not logged',
-            data: {}
-        });
-
-    try {
-        let { appNames } = req.body;
-
-        await appService.register(userId, appNames);
-
-        return res.json({
-            resp: true,
-            status: 201,
-            msg: 'App registered',
-            data: {}
-        });
-    }
-    catch (err) {
-        console.log(err);
-
-        return res.json({
-            resp: false,
-            status: 500,
-            msg: 'Unkown error found on app registration: ' + err,
-            data: {}
-        });
-    }
-
-}
-
-
-async function update(req, res) {
-    let userId = req.session.userId;
-
-    if (userId === undefined)
-        return res.json({
-            resp: false,
-            status: 401,
-            msg: 'User not logged',
-            data: {}
-        });
-
-
-    try {
-        let { appNames } = req.body;
-        await appService.update(userId, appNames);
-
-        return res.json({
-            resp: true,
-            status: 201,
-            msg: 'User apps updated',
-            data: {}
-        });
-
-    } catch (err) {
-        console.log(err);
-
-        return res.json({
-            resp: false,
-            status: 500,
-            msg: 'Unkown error found on app update: ' + err,
-            data: {}
-        });
-    }
-}
-
-
-module.exports = { getAll, getInstalled, getTutorials, register, update };
+module.exports = { getAll, getTutorials, update };

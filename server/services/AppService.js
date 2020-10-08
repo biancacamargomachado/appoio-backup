@@ -1,85 +1,106 @@
 const appRepository = require('../repository/AppRepo');
 
 
-async function getAll(userId) {
+async function getAll() {
     try {
-        let apps = await appRepository.getAll();
+        let appsResult = await appRepository.getAll();
 
-        let formattedApps = { 'installed': [], 'not-installed': [] };
-        for (let i = 0; i < apps.length; i++) {
-            if (userId in apps[i].users)
-                key = 'installed'
-            else
-                key = 'not-installed'
-
-            let app = apps[i].toJSON();
-            delete app.users
-            formattedApps[key].push(app);
+        let filtered = [];
+        if (appsResult.result) {
+            let apps = appsResult.data;
+            for (let app of apps) {
+                if (app) {
+                    if (app.tutorials) {
+                        if (app.tutorials.length > 0) {
+                            filtered.push(app.id);
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            return appsResult;
         }
 
-        return formattedApps;
+        return { result: true, data: { 'Installed': [], 'NotInstalled': filtered } };
 
     } catch (err) {
-        throw err;
+        return { result: false, status: 500, msg: 'Erro durante o filtro de aplicativos' };
     }
 }
 
 
 async function getInstalled(userId) {
     try {
-        return (await appRepository.getByUserId(userId)).map(app => {
-            app = app.toJSON();
-            delete app['user_app'];
-            return app;
-        });
+        let installedResult = await appRepository.getByUserId(userId);
+        let filteredInstalled = [];
 
-    } catch (err) {
-        throw err;
-    }
-}
+        let installedApps = []
+        if (installedResult.result) {
+            installedApps = installedResult.data;
 
-async function getTutorials(appName) {
-    try {
-        let tutorials = await appRepository.getTutorials(appName);
-        tutorials = tutorials.map(tutorial => tutorial.toJSON());
-
-        let categoryTutorials = {};
-
-        for (let tutorial of tutorials) {
-            let category = tutorial.category;
-            delete tutorial.category;
-
-            if (category in categoryTutorials) {
-                categoryTutorials[category].push(tutorial);
-            }
-            else {
-                categoryTutorials[category] = [tutorial]
+            for (let app of installedApps) {
+                if (app) {
+                    if (app.tutorials) {
+                        if (app.tutorials.length > 0) {
+                            filteredInstalled.push(app.id);
+                        }
+                    }
+                }
             }
         }
+        else {
+            return installedResult;
+        }
 
-        return categoryTutorials;
+        let notInstalledResult = await appRepository.getExcept(installedApps.map(app => app.id));
+        let filteredNotInstalled = [];
+
+        if (notInstalledResult.result) {
+            let notInstalledApps = notInstalledResult.data;
+
+            for (let app of notInstalledApps) {
+                if (app) {
+                    if (app.tutorials) {
+                        if (app.tutorials.length > 0) {
+                            filteredNotInstalled.push(app.id);
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            return notInstalledResult;
+        }
+
+        return { result: true, data: { 'Installed': filteredInstalled, 'NotInstalled': filteredNotInstalled } };
 
     } catch (err) {
-        throw err;
+
+        return { result: false, status: 500, msg: 'Erro durante o filtro de aplicativos' };
     }
 }
 
-
-async function register(userId, appNames) {
+async function getTutorials(appId) {
     try {
-        await appRepository.register(userId, appNames);
+        let result = await appRepository.getTutorials(appId);
+        if (result.result) {
+            if (result.data.length) {
+                return result;
+            }
+            return { result: false, status: 404, msg: 'Não foi possível recuperar os tutoriais do aplicativo' };
+        }
+
+        return result;
+
     } catch (err) {
-        throw err;
+        return { result: false, status: 500, msg: 'Erro formatando os tutoriais do aplicativo' };
     }
 }
 
 
-async function update(userId, appNames) {
-    try {
-        await appRepository.update(userId, appNames);
-    } catch (err) {
-        throw err;
-    }
+async function update(userId, appIds) {
+    return await appRepository.update(userId, appIds);
 }
 
-module.exports = { getAll, getInstalled, getTutorials, register, update };
+module.exports = { getAll, getInstalled, getTutorials, update };
