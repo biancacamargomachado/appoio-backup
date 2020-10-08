@@ -4,7 +4,6 @@ const Tag = require('../models/Tag');
 const User = require('../models/User');
 const sequelize = require('../database');
 const { UniqueConstraintError, ForeignKeyConstraintError, TimeoutError, ValidationError } = require('sequelize');
-const App = require('../models/App');
 
 /*
  * Função que busca um tutorial dado seu id

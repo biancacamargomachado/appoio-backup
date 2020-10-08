@@ -1,4 +1,3 @@
-
 const App = require('../models/App');
 const User = require('../models/User');
 const Tutorial = require('../models/Tutorial');

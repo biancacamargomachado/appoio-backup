@@ -14,8 +14,6 @@ const { UniqueConstraintError, ForeignKeyConstraintError, TimeoutError, Validati
  */
 async function findByEmail(email) {
     try {
-
-
         return {
             result: true,
             data: await User.findOne({
