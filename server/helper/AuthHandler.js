@@ -5,7 +5,7 @@ const userAuth = async function (req, res, next) {
     }
 
     return res.json({
-        resp: false,
+        result: false,
         status: 401,
         msg: 'Usuário não realizou login',
         data: {}
@@ -17,7 +17,7 @@ const userAuth = async function (req, res, next) {
 const adminAuth = function (checkObj) {
     return async function (req, res, next) {
         let adminErrorResp = {
-            resp: false,
+            result: false,
             status: 403,
             msg: 'Usuário não possui direitos administrativos',
             data: {}
