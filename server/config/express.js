@@ -6,9 +6,10 @@ const router = require('../routes');
 
 require('../database');
 
+let config = require('./env');
+
 const app = express();
-process.env.SECRET = 'batata';
-app.use(session({ store: new SQLiteStore, secret: process.env.SECRET, resave: false, saveUninitialized: false }));
+app.use(session({ store: new SQLiteStore, secret: config.secret, resave: false, saveUninitialized: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
