@@ -37,28 +37,27 @@ async function getAll(approved) {
         let result = await tutorialRepository.findAll(approved);
 
         if (result.result) {
-            if (result.data.length) {
-                let tutorials = result.data;
-                tutorials = tutorials.map(tutorial => tutorial.toJSON());
-
-                let categoryTutorials = {};
-
-                for (let tutorial of tutorials) {
-                    let category = tutorial.category;
-                    delete tutorial.category;
-
-                    if (category in categoryTutorials) {
-                        categoryTutorials[category].push(tutorial);
-                    }
-                    else {
-                        categoryTutorials[category] = [tutorial];
-                    }
-                }
-
-                return { result: true, data: categoryTutorials };
+            if (approved == 0) {
+                return result;
             }
-            else
-                return { result: false, status: 404, msg: 'Não foi possível recuperar os tutoriais' };
+
+            let tutorials = result.data.map(tutorial => tutorial.toJSON());
+            let categoryTutorials = {};
+
+            for (let tutorial of tutorials) {
+                let category = tutorial.category;
+                delete tutorial.category;
+
+                if (category in categoryTutorials) {
+                    categoryTutorials[category].push(tutorial);
+                }
+                else {
+                    categoryTutorials[category] = [tutorial];
+                }
+            }
+
+            return { result: true, data: categoryTutorials };
+
         }
 
         return result;

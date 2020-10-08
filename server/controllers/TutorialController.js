@@ -54,8 +54,6 @@ async function getAll(approved) {
         };
     }
     catch (err) {
-        console.log(err);
-
         return {
             result: false,
             status: 500,
