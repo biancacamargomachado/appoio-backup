@@ -77,7 +77,7 @@ async function criaUsuarios() {
       name: 'usuario',
       email: 'usuario@gmail.com',
       password: 'pwd',
-      genre: 'Masculino',
+      gender: 'Masculino',
       birthYear: 2001,
       city: 'Porto Alegre',
       uf: 'RS',
@@ -87,7 +87,7 @@ async function criaUsuarios() {
       name: 'admin',
       email: 'admin@gmail.com',
       password: 'admin',
-      genre: 'Masculino',
+      gender: 'Masculino',
       birthYear: 0,
       city: 'Porto Alegre',
       uf: 'RS',
@@ -105,6 +105,7 @@ async function criaTutoriais() {
       userId: 1,
       appoioName: 'tutorial 1',
       category: 'Conceitos',
+      approved: 0,
       steps: [{ description: 'passo 1' }, { description: 'passo 1' }]
     }, {
       include: [
@@ -119,6 +120,7 @@ async function criaTutoriais() {
       userId: 1,
       appoioName: 'tutorial 2',
       category: 'Celular',
+      approved: 0,
       steps: [{ description: 'passo 1' }, { description: 'passo 1' }]
     }, {
       include: [
@@ -133,6 +135,7 @@ async function criaTutoriais() {
       userId: 1,
       appoioName: 'tutorial 1',
       category: 'Aplicativos',
+      approved: 0,
       steps: [{ description: 'passo 1' }, { description: 'passo 1' }]
     }, {
       include: [
@@ -147,6 +150,7 @@ async function criaTutoriais() {
       userId: 1,
       appoioName: 'tutorial 2',
       category: 'Celular',
+      approved: 0,
       steps: [{ description: 'passo 1' }, { description: 'passo 1' }]
     }, {
       include: [
