@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const { hash } = require('bcrypt');
 
 const User = require('../server/models/User');
 const Tutorial = require('../server/models/Tutorial');
@@ -13,7 +14,7 @@ async function criaBanco() {
     dialectOptions: {
       useUTC: false
     },
-    storage: '../database.sqlite3'
+    storage: './database.sqlite3'
   });
 
   // Realiza a conexão com o banco
@@ -76,7 +77,7 @@ async function criaUsuarios() {
     await User.create({
       name: 'usuario',
       email: 'usuario@gmail.com',
-      password: 'pwd',
+      password: await hash('pwd',8),
       gender: 'Masculino',
       birthYear: 2001,
       city: 'Porto Alegre',
@@ -86,7 +87,7 @@ async function criaUsuarios() {
     await User.create({
       name: 'admin',
       email: 'admin@gmail.com',
-      password: 'admin',
+      password: await hash('admin',8),
       gender: 'Masculino',
       birthYear: 0,
       city: 'Porto Alegre',
