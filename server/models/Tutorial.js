@@ -26,7 +26,7 @@ class Tutorial extends Model {
         },
         approved: {          
           type: DataTypes.TINYINT,
-          default: 0
+          allowNull: false,
         },
       },
       {

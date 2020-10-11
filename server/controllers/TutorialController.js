@@ -1,125 +1,120 @@
 const tutorialService = require('../services/TutorialService');
-const tagService = require('../services/TagService');
 
-// Função que busca os tutoriais por seu id
-async function get(req, res) {
+
+async function get(tutorialId) {
     try {
-        let id = req.params.id;
-        let tutorial = await tutorialService.get(id);
+        let result = await tutorialService.get(tutorialId);
 
-        return res.json({
-            resp: true,
-            status: 200,
-            msg: 'Tutorial recovered',
-            data: {
-                tutorial
-            }
-        })
-
-    } catch (err) {
-        console.log(err);
-
-        return res.json({
-            resp: false,
-            status: 500,
-            msg: 'Unkown error found on get: ' + err,
-            data: {}
-        });
-    }
-}
-
-//Função que busca os tutoriais retorna um JSON de resposta separado por categoria
-async function getAll(req, res) {
-    try {
-        let tutorials = await tutorialService.getAll();
-
-        return res.json({
-            resp: true,
-            status: 200,
-            msg: 'Tutorials recovered',
-            data: {
-                tutorials: tutorials
-            }
-        });
-    }
-    catch (err) {
-        console.log(err);
-
-        return res.json({
-            resp: false,
-            status: 500,
-            msg: 'Unkown error found on getAll: ' + err,
-            data: {}
-        });
-    }
-}
-
-// Função que registra um tutorial juntamente com os passos necessários para executá-lo e retorna um JSON de resposta sem corpo
-async function register(req, res) {
-    let { userId, appoioName, category, appId, appVersion, operatingSystem, operatingSystemVersion, tags, steps } = req.body;
-    let files = req.files;
-
-    // se nenhum passo tiver imagens, o request não passa pelo multer
-    // e tags e steps não são parseadas de string para JSON
-    if (typeof tags === "string") {
-        tags = JSON.parse(tags);
-    }
-
-    if (typeof steps === "string") {
-        steps = JSON.parse(steps);
-    }
-
-    // garantir que estará null para não ter problemas de constraints
-    if (category !== "aplicativos") {
-        appId = null;
-    }
-
-    if (files) files.forEach(file => {
-        // formato do nome de cada imagem: "<step-order>.[jpg,png]"
-        const fileOrder = parseInt(file.originalName.split(".")[0]);
-
-        const step = steps.find(step => parseInt(step.order) === fileOrder);
-        step.imgURL = file.secureUrl
-    });
-
-    try {
-        let tutorial = await tutorialService.registerTutorial(
-            {
-                userId,
-                appoioName,
-                category,
-                appId,
-                appVersion,
-                operatingSystem,
-                operatingSystemVersion,
-                steps,
-                files
-            }
-        );
-
-        if (tags !== undefined) {
-            await tagService.registerTags(tutorial, tags);
+        if (result.result) {
+            return {
+                result: true,
+                status: 200,
+                msg: 'Tutorial recuperado',
+                data: result.data
+            };
         }
 
-        return res.json({
-            resp: true,
-            status: 201,
-            msg: 'Tutorial registered',
+        return {
+            result: false,
+            status: result.status,
+            msg: result.msg,
             data: {}
-        });
+        };
 
     } catch (err) {
         console.log(err);
 
-        return res.json({
-            resp: false,
+        return {
+            result: false,
             status: 500,
-            msg: 'Unkown error found on registration: ' + err,
+            msg: 'Erro desconhecido encontrado durante a recuperação do tutorial',
             data: {}
-        });
+        };
     }
 }
-// Funcao para deletar um tutorial
+
+
+async function getAll(approved) {
+    try {
+        let result = await tutorialService.getAll(approved);
+
+        if (result.result)
+            return {
+                result: true,
+                status: 200,
+                msg: 'Tutoriais recuperados',
+                data: result.data
+            };
+
+        return {
+            result: false,
+            status: result.status,
+            msg: result.msg,
+            data: {}
+        };
+    }
+    catch (err) {
+        return {
+            result: false,
+            status: 500,
+            msg: 'Erro desconhecido encontrado durante a recuperação dos tutoriais',
+            data: {}
+        };
+    }
+}
+
+async function search(searchString) {
+    // Titulo
+    // Funcao de levenshtein de proximidade
+    // Uso de Like
+
+    // Tags
+    // Literal
+    // Uso de like
+
+    // Aplicativos
+    // Literal
+    // Uso de like
+
+}
+
+
+async function register(creationObject) {
+    Object.keys(creationObject).forEach(
+        key => creationObject[key] === undefined ? delete creationObject[key] : {}
+    );
+    
+    try {
+        let result = await tutorialService.registerTutorial(creationObject);
+
+        if (result.result)
+            return {
+                result: true,
+                status: 201,
+                msg: 'Tutorial registrado',
+                data: {}
+            };
+
+        return {
+            result: false,
+            status: result.status,
+            msg: result.msg,
+            data: {}
+        };
+
+    } catch (err) {
+        console.log(err);
+
+        return {
+            result: false,
+            status: 500,
+            msg: 'Erro desconhecido encontrado durante o registro do tutorial',
+            data: {}
+        };
+
+    }
+}
+
 async function deleteTutorial(tutorialId) {
     try {
         let result = await tutorialService.deleteTutorial(tutorialId);
@@ -150,11 +145,37 @@ async function deleteTutorial(tutorialId) {
             msg: 'Erro desconhecido encontrado durante a remoção do tutorial',
             data: {}
         };
+}
+
+async function approve(tutorialId) {
+    try {
+        let result = await tutorialService.approve(tutorialId);
+
+        if (result.result)
+            return {
+                result: true,
+                status: 204,
+                msg: 'Tutorial aprovado',
+                data: {}
+            };
+
+        return {
+            result: false,
+            status: result.status,
+            msg: result.msg,
+            data: {}
+        };
+
+    } catch (err) {
+        console.log(err);
+
+        return {
+            result: false,
+            status: 500,
+            msg: 'Erro desconhecido encontrado durante a aprovação do tutorial',
+            data: {}
+        };
     }
 }
 
-
-
-
-
-module.exports = { get, getAll, register, deleteTutorial };
+module.exports = { get, getAll, search, register, approve, deleteTutorial };

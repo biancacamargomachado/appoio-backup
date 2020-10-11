@@ -61,7 +61,7 @@ Tag.belongsToMany(Tutorial, {
   as: 'tutorials'
 });
 
-// Registra no banco efetivamente
+// Registra o banco efetivamente
 sequelize.sync();
 
 module.exports = sequelize;

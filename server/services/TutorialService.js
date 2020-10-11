@@ -1,68 +1,97 @@
 const tutorialRepository = require('../repository/TutorialRepo');
 
-
-//Função que realiza a busca pelos tutoriais dado o id
+/*
+ * Função que realiza a busca de tutoriais dado o id
+ * 
+ * @example
+ *      get(1); // Tutorial
+ * 
+ * @param {id} obrigatório ID do tutorial que se deseja buscar
+ * 
+ * @returns {Tutorial}
+ */
 async function get(id) {
-    try {
-        let tutorial = await tutorialRepository
-            .findById(
-                id
-            );
+    let result = await tutorialRepository.findById(id);
 
-        return tutorial.toJSON();
-
-    } catch (err) {
-        throw err;
-    }
+    if (result.result)
+        if (result.data)
+            return result;
+        else
+            return { result: false, status: 404, msg: 'Não foi possível recuperar o tutorial' };
+    else
+        return result;
 }
 
-//Função que realiza a busca de todos tutoriais
-async function getAll() {
+/*
+ * Função que retorna o id e o nome de todos os tutoriais registrados, em um array organizado por categoria
+ * 
+ * @example
+ *    getAll(); // {
+ *                   "category": [Tutorial, Tutorial], 
+ *                 }
+ * 
+ * @returns {dict}
+ */
+async function getAll(approved) {
     try {
-        let tutorials = await tutorialRepository.findAll();
-        tutorials = tutorials.map(tutorial => tutorial.toJSON());
+        let result = await tutorialRepository.findAll(approved);
 
-        let categoryTutorials = {};
-
-        for (let tutorial of tutorials) {
-            let category = tutorial.category;
-            delete tutorial.category;
-
-            if (category in categoryTutorials) {
-                categoryTutorials[category].push(tutorial);
+        if (result.result) {
+            if (approved == 0) {
+                return result;
             }
-            else {
-                categoryTutorials[category] = [tutorial]
+
+            let tutorials = result.data.map(tutorial => tutorial.toJSON());
+            let categoryTutorials = {};
+
+            for (let tutorial of tutorials) {
+                let category = tutorial.category;
+                delete tutorial.category;
+
+                if (category in categoryTutorials) {
+                    categoryTutorials[category].push(tutorial);
+                }
+                else {
+                    categoryTutorials[category] = [tutorial];
+                }
             }
+
+            return { result: true, data: categoryTutorials };
+
         }
 
-        return categoryTutorials;
+        return result;
 
     } catch (err) {
-        throw err;
+        return { result: false, status: 500, msg: 'Erro durante a separação das categorias' };
     }
 }
 
-// Função que registra um tutorial juntamente com os passos necessários para executá-lo
+/*
+ * Função que registra um novo tutorial a partir dos dados informados
+ * 
+ * @param {tutorialCreationObject} obrigatório o objeto com os dados do tutorial informados na requisição
+ * 
+ * @returns {Tutorial}
+ */
 async function registerTutorial(tutorialCreationObject) {
-    try {
-        Object
-            .keys(tutorialCreationObject)
-            .forEach(
-                key => tutorialCreationObject[key] === undefined ? delete tutorialCreationObject[key] : {}
-            );
-
-        return await tutorialRepository
-            .registerTutorial(
-                tutorialCreationObject
-            );
-    } catch (err) {
-        throw err;
-    }
+    return await tutorialRepository.registerTutorial(tutorialCreationObject);
 }
-// // Funcao que busca um tutorial por id e o  deleta  
+
+/*
+ * Função que atualiza um tutorial dado seu id, tornando ele aprovado
+ * 
+ * @param {id} obrigatório o id do tutorial a ser atualizado
+ * 
+ * @returns {Tutorial}
+ */
+async function approve(id) {
+    return await tutorialRepository.approve(id);
+}
+
 async function deleteTutorial(tutorialId) {
     let result = await tutorialRepository.deleteTutorial(tutorialId);
+    
     if (result.data == 0) {
         return { result: false, status: 400, msg: 'Tutorial não encontrado para remoção' };
     }
@@ -70,4 +99,4 @@ async function deleteTutorial(tutorialId) {
     return result;
 }
 
-module.exports = { get, getAll, registerTutorial, deleteTutorial };
+module.exports = { get, getAll, registerTutorial, approve, deleteTutorial };

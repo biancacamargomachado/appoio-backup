@@ -1,72 +1,75 @@
 const userService = require('../services/UserService');
 
-// Função assincrona que realiza o login e retorna um JSON de resposta
-async function login(req, res) {
-  let { email, password } = req.body;
 
-  try {
-    await userService
-      .login(
-        email,
-        password
-      );
+async function login(email, password) {
+    try {
+        let result = await userService.login(email, password);
 
-    return res.json({
-      resp: true,
-      status: 200,
-      msg: 'User logged',
-      data: {}
-    });
+        if (result.result)
+            return {
+                result: true,
+                status: 200,
+                msg: 'Usuário realizou login',
+                data: result.data
+            };
 
-  } catch (err) {
-    console.log(err);
+        return {
+            result: false,
+            status: result.status,
+            msg: result.msg,
+            data: {}
+        };
 
-    return res.json({
-      resp: false,
-      status: 500,
-      msg: 'Unkown error found on login: ' + err,
-      data: {}
-    });
-  }
+    } catch (err) {
+        console.log(err);
+
+        return {
+            result: false,
+            status: 500,
+            msg: 'Erro desconhecido durante o login do usuário',
+            data: {}
+        };
+    }
 }
 
-// Função assincrona que realiza o regisgtro de um usuário e retorna um JSON de resposta
-async function register(req, res) {
-  let { name, email, password, birthday, city, uf } = req.body;
 
-  try {
+async function register(name, email, password, gender, birthYear, city, uf) {
+    try {
+        let result = await userService.registerUser(
+            name,
+            email,
+            password,
+            gender,
+            birthYear,
+            city,
+            uf,
+        );
 
-    let user = await userService
-      .registerUser(
-        name,
-        email,
-        password,
-        birthday,
-        city,
-        uf,
-      );
+        if (result.result)
+            return {
+                result: true,
+                status: 201,
+                msg: 'Usuário registrado',
+                data: result.data
+            };
 
-    return res.json({
-      resp: true,
-      status: 201,
-      msg: 'User registered',
-      data: {
-        user: {
-          id: user.id
-        }
-      }
-    });
+        return {
+            result: false,
+            status: result.status,
+            msg: result.msg,
+            data: {}
+        };
 
-  } catch (err) {
-    console.log(err);
+    } catch (err) {
+        console.log(err);
 
-    return {
-      resp: false,
-      status: 500,
-      msg: 'Unkown error found on registration: ' + err,
-      data: {}
+        return {
+            result: false,
+            status: 500,
+            msg: 'Erro desconhecido durante o registro do usuário',
+            data: {}
+        };
     }
-  }
 }
 
 module.exports = { login, register };
