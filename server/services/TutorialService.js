@@ -89,4 +89,14 @@ async function approve(id) {
     return await tutorialRepository.approve(id);
 }
 
-module.exports = { get, getAll, registerTutorial, approve };
+async function deleteTutorial(tutorialId) {
+    let result = await tutorialRepository.deleteTutorial(tutorialId);
+    
+    if (result.data == 0) {
+        return { result: false, status: 400, msg: 'Tutorial não encontrado para remoção' };
+    }
+
+    return result;
+}
+
+module.exports = { get, getAll, registerTutorial, approve, deleteTutorial };

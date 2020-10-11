@@ -111,9 +111,41 @@ async function register(creationObject) {
             msg: 'Erro desconhecido encontrado durante o registro do tutorial',
             data: {}
         };
+
     }
 }
 
+async function deleteTutorial(tutorialId) {
+    try {
+        let result = await tutorialService.deleteTutorial(tutorialId);
+
+        if (result.result) {
+            return {
+                result: true,
+                status: 204,
+                msg: 'Tutorial deletado',
+                data: {},
+
+            };
+        }
+        return {
+            result: true,
+            status: result.status,
+            msg: result.msg,
+            data: {}
+        }
+
+    }
+    catch (err) {
+        console.log(err);
+
+        return {
+            resp: false,
+            status: 500,
+            msg: 'Erro desconhecido encontrado durante a remoção do tutorial',
+            data: {}
+        };
+}
 
 async function approve(tutorialId) {
     try {
@@ -146,5 +178,4 @@ async function approve(tutorialId) {
     }
 }
 
-
-module.exports = { get, getAll, search, register, approve };
+module.exports = { get, getAll, search, register, approve, deleteTutorial };

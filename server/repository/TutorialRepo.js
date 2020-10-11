@@ -207,7 +207,31 @@ async function registerTutorial(tutorialCreationObject) {
     }
 }
 
+async function deleteTutorial(tutorialId) {
+    try{
+        return {
+            result: true,
+            data: await Tutorial.destroy({
+                where: {
+                    approved: 0,
+                    id: tutorialId
+                },
+            })
+        };
+    } catch (err) {
+        if (err instanceof UniqueConstraintError) {
+            return { result: false, status: 400, msg: 'E-mail do usuário já existe no banco' };
+        }
+        else if (err instanceof ForeignKeyConstraintError) {
+            return { result: false, status: 400, msg: `Valor informado não foi encontrado para referencia: ${err.index}` };
+        }
+        else if (err instanceof TimeoutError) {
+            return { result: false, status: 408, msg: 'Tempo de execução da query excedeu o limite de tempo' };
+        }
+        else if (err instanceof ValidationError) {
+            return { result: false, status: 400, msg: `Constraint referente à coluna: ${err.errors[0].validatorKey} falhou` };
+        }
+    }
+}
 
-
-
-module.exports = { findById, findAll, approve, registerTutorial };
+module.exports = { findById, findAll, approve, registerTutorial, deleteTutorial };

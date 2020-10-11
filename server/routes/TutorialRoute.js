@@ -74,6 +74,13 @@ router.get('/search/:string',
     }
 );
 
+router.delete('/delete/:id',
+    authHandler.adminAuth(),
+    async (req, res) => {
+        return res.json(tutorialController.deleteTutorial(req.params.id));
+    }
+);
+
 module.exports = router;
 
 
