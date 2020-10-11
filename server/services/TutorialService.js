@@ -3,72 +3,71 @@ const tutorialRepository = require('../repository/TutorialRepo');
 
 //Função que realiza a busca pelos tutoriais dado o id
 async function get(id) {
-  try {
-    let tutorial = await tutorialRepository
-      .findById(
-        id
-      );
+    try {
+        let tutorial = await tutorialRepository
+            .findById(
+                id
+            );
 
-    return tutorial.toJSON();
+        return tutorial.toJSON();
 
-  } catch (err) {
-    throw err;
-  }
+    } catch (err) {
+        throw err;
+    }
 }
 
 //Função que realiza a busca de todos tutoriais
 async function getAll() {
-  try {
-    let tutorials = await tutorialRepository.findAll();
-    tutorials = tutorials.map(tutorial => tutorial.toJSON());
+    try {
+        let tutorials = await tutorialRepository.findAll();
+        tutorials = tutorials.map(tutorial => tutorial.toJSON());
 
-    let categoryTutorials = {};
+        let categoryTutorials = {};
 
-    for (let tutorial of tutorials) {
-      let category = tutorial.category;
-      delete tutorial.category;
+        for (let tutorial of tutorials) {
+            let category = tutorial.category;
+            delete tutorial.category;
 
-      if (category in categoryTutorials) {
-        categoryTutorials[category].push(tutorial);
-      }
-      else {
-        categoryTutorials[category] = [tutorial]
-      }
+            if (category in categoryTutorials) {
+                categoryTutorials[category].push(tutorial);
+            }
+            else {
+                categoryTutorials[category] = [tutorial]
+            }
+        }
+
+        return categoryTutorials;
+
+    } catch (err) {
+        throw err;
     }
-
-    return categoryTutorials;
-
-  } catch (err) {
-    throw err;
-  }
 }
 
 // Função que registra um tutorial juntamente com os passos necessários para executá-lo
 async function registerTutorial(tutorialCreationObject) {
-  try {
-    Object
-      .keys(tutorialCreationObject)
-      .forEach(
-        key => tutorialCreationObject[key] === undefined ? delete tutorialCreationObject[key] : {}
-      );
+    try {
+        Object
+            .keys(tutorialCreationObject)
+            .forEach(
+                key => tutorialCreationObject[key] === undefined ? delete tutorialCreationObject[key] : {}
+            );
 
-    return await tutorialRepository
-      .registerTutorial(
-        tutorialCreationObject
-      );
-  } catch (err) {
-    throw err;
-  }
+        return await tutorialRepository
+            .registerTutorial(
+                tutorialCreationObject
+            );
+    } catch (err) {
+        throw err;
+    }
 }
 // // Funcao que busca um tutorial por id e o  deleta  
-async function deleteTutorial(id){
-  try{
-    await tutorialRepository.deleteTutorial(id);
+async function deleteTutorial(tutorialId) {
+    let result = await tutorialRepository.deleteTutorial(tutorialId);
+    if (result.data == 0) {
+        return { result: false, status: 400, msg: 'Tutorial não encontrado para remoção' };
+    }
 
-  }
-    catch (err){
-    throw err;
-  }
+    return result;
 }
 
 module.exports = { get, getAll, registerTutorial, deleteTutorial };

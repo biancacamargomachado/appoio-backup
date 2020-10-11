@@ -17,6 +17,10 @@ router.route('/categories').get(tutorialController.getAll);
 router.route('/registration').post(upload, tutorialController.register);
 
 // Rota para deletar um tutorial
-router.route('/delete/:id').delete(tutorialController.deleteTutorial);
+router.delete('/delete/:id',
+    authHandler.adminAuth(),
+    async (req, res) => {
+        return res.json(tutorialController.deleteTutorial(req.params.id));
+    });
 
 module.exports = router;
