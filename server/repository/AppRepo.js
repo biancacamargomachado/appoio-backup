@@ -3,6 +3,7 @@ const User = require('../models/User');
 const Tutorial = require('../models/Tutorial');
 const { UniqueConstraintError, ForeignKeyConstraintError, TimeoutError, ValidationError } = require('sequelize');
 const { Op } = require("sequelize");
+const sequelize = require('../database');
 
 
 async function getAll() {
@@ -180,7 +181,7 @@ async function update(userId, appIds) {
         });
         if (user) {
             let apps = await App.findAll({ transaction: transaction, where: { id: appIds } });
-
+            
             if (apps.length != appIds.length) {
                 return { result: false, status: 404, msg: 'Alguns aplicativos não foram encontrados' };
             }

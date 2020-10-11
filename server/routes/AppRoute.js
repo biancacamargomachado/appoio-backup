@@ -22,8 +22,9 @@ router.get('/tutorials',
 router.patch('/installed',
     authHandler.userAuth,
     async (req, res, _) => {
+        let userId = req.session.userId;
         let appIds = req.body.appIds;
-        return res.json(await appController.update(appIds));
+        return res.json(await appController.update(userId,appIds));
     }
 );
 

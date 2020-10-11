@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const { hashSync } = require('bcrypt');
 
 const User = require('../server/models/User');
 const Tutorial = require('../server/models/Tutorial');
@@ -76,7 +77,7 @@ async function criaUsuarios() {
     await User.create({
       name: 'usuario',
       email: 'usuario@gmail.com',
-      password: 'pwd',
+      password: hashSync('pwd',8),
       gender: 'Masculino',
       birthYear: 2001,
       city: 'Porto Alegre',
@@ -86,7 +87,7 @@ async function criaUsuarios() {
     await User.create({
       name: 'admin',
       email: 'admin@gmail.com',
-      password: 'admin',
+      password: hashSync('admin',8),
       gender: 'Masculino',
       birthYear: 0,
       city: 'Porto Alegre',
