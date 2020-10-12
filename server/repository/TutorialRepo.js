@@ -209,7 +209,7 @@ async function registerTutorial(tutorialCreationObject) {
 
 async function deleteTutorial(tutorialId) {
     try{
-        const tutorial = await Tutorial.findOne({
+        let tutorial = await Tutorial.findOne({
             where: {
                 id: tutorialId,
                 approved: 0,
@@ -219,6 +219,7 @@ async function deleteTutorial(tutorialId) {
                 as: 'steps'
             }]
         })
+        
         return {
             result: true,
             data: await tutorial.destroy()
