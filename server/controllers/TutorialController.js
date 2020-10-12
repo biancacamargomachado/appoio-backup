@@ -124,7 +124,7 @@ async function deleteTutorial(tutorialId) {
                 result: true,
                 status: 204,
                 msg: 'Tutorial deletado',
-                data: {},
+                data: {}
 
             };
         }
@@ -145,6 +145,7 @@ async function deleteTutorial(tutorialId) {
             msg: 'Erro desconhecido encontrado durante a remoção do tutorial',
             data: {}
         };
+    }
 }
 
 async function approve(tutorialId) {
