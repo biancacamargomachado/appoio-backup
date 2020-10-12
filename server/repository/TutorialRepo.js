@@ -224,8 +224,7 @@ async function deleteTutorial(tutorialId) {
             data: await tutorial.destroy()
         }
         
-    }
-    catch (err) {
+    } catch (err) {
         if (err instanceof UniqueConstraintError) {
             return { result: false, status: 400, msg: 'E-mail do usuário já existe no banco' };
         }

@@ -69,10 +69,10 @@ async function getTutorials(appId) {
 }
 
 
-async function update(appIds) {
+async function update(userId, appIds) {
     try {
         let result = await appService.update(userId, appIds);
-
+        console.log(result)
         if (result.result) {
             return {
                 result: true,
