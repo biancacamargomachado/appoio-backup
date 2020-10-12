@@ -47,8 +47,8 @@ Tutorial.belongsTo(App, { foreignKey: { name: 'userId', allowNull: true }, as: '
 App.hasMany(Tutorial, { as: 'tutorials' });
 
 // One to Many entre Tutorial e Step
-Step.belongsTo(Tutorial, { foreignKey: { name: 'tutorialId', allowNull: false }, as: 'tutorial' });
-Tutorial.hasMany(Step, {onDelete: 'cascade', hooks: true}, { as: 'steps' });
+Step.belongsTo(Tutorial, { foreignKey: { name: 'tutorialId', allowNull: false }, as: 'tutorial', hooks: true});
+Tutorial.hasMany(Step, { as: 'steps', onDelete: 'cascade', hooks: true });
 
 // Many to Many entre Tutorial e Tag utilizando tabela intermediária "TUTORIAL_TAG"
 const TutorialTag = sequelize.define('tutorial_tag', {}, { timestamps: false });
