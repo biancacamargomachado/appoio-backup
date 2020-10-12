@@ -14,7 +14,7 @@ async function criaBanco() {
     dialectOptions: {
       useUTC: false
     },
-    storage: './database.sqlite3'
+    storage: '../database.sqlite3'
   });
 
   // Realiza a conexão com o banco
