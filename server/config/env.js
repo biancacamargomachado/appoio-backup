@@ -27,18 +27,15 @@ if (args.length >= 1)
             nomeApi: 'appoio-backend',
             apiURL: 'http://localhost',
             apiPort: 3000,
+            database: '',
+            username: '',
+            password: '',
             dataConfig: {
-                database: args[1],
-                username: args[2],
-                password: args[3],
-                host: args[4],
-                port: args[5],
+                host: '',
+                port: 3306,
                 dialect: 'mysql',
-                dialectOptions: {
-                    useUTC: false,
-                    ssl: 'Amazon RDS'
-                },
-                pool: { maxConnections: 10, maxIdleTime: 30 },
+                ssl: 'Amazon RDS',
+                pool: { maxConnections: 1, maxIdleTime: 30 },
                 language: 'en',
             }
         };

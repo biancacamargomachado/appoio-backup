@@ -8,7 +8,7 @@ const Tag = require('../models/Tag');
 const App = require('../models/App');
 
 // Cria instancia da conexão
-const sequelize = new Sequelize(config.dataConfig);
+const sequelize = new Sequelize(config.database, config.username, config.password, config.dataConfig);
 
 // Realiza a conexão com o banco
 sequelize
