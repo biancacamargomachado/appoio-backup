@@ -209,15 +209,22 @@ async function registerTutorial(tutorialCreationObject) {
 
 async function deleteTutorial(tutorialId) {
     try{
+        let tutorial = await Tutorial.findOne({
+            where: {
+                id: tutorialId,
+                approved: 0,
+            },
+            include: [{
+                model: Step,
+                as: 'steps'
+            }]
+        })
+        
         return {
             result: true,
-            data: await Tutorial.destroy({
-                where: {
-                    approved: 0,
-                    id: tutorialId
-                },
-            })
-        };
+            data: await tutorial.destroy()
+        }
+        
     } catch (err) {
         if (err instanceof UniqueConstraintError) {
             return { result: false, status: 400, msg: 'E-mail do usuário já existe no banco' };

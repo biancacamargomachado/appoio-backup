@@ -23,22 +23,19 @@ if (args.length >= 1)
         module.exports = {
             env: 'production',
             secret: process.env.SECRET,
-            admEmail: 'adm@gmail.com',
+            admEmail: process.env.ADMIN_EMAIL,
             nomeApi: 'appoio-backend',
-            apiURL: 'http://localhost',
+            apiURL: process.env.API_URL,
             apiPort: 3000,
+            database: process.env.DATABASE_NAME,
+            username: process.env.DATABASE_USERNAME,
+            password: process.env.DATABASE_PASSWORD,
             dataConfig: {
-                database: args[1],
-                username: args[2],
-                password: args[3],
-                host: args[4],
-                port: args[5],
+                host: process.env.DATABASE_HOST,
+                port: process.env.DATABASE_PORT,
                 dialect: 'mysql',
-                dialectOptions: {
-                    useUTC: false,
-                    ssl: 'Amazon RDS'
-                },
-                pool: { maxConnections: 10, maxIdleTime: 30 },
+                ssl: 'Amazon RDS',
+                pool: { maxConnections: 1, maxIdleTime: 30 },
                 language: 'en',
             }
         };

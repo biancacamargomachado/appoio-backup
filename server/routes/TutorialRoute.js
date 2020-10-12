@@ -77,7 +77,7 @@ router.get('/search/:string',
 router.delete('/delete/:id',
     authHandler.adminAuth(),
     async (req, res) => {
-        return res.json(tutorialController.deleteTutorial(req.params.id));
+        return res.json(await tutorialController.deleteTutorial(req.params.id));
     }
 );
 
