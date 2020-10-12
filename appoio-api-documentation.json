@@ -1,0 +1,1775 @@
+{
+	"info": {
+		"_postman_id": "25dc63cf-7a23-40d7-901a-a95f92ca1374",
+		"name": "Doc APPOIO",
+		"description": "Documentação para utilização da API do projeto APPOIO.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Usuário",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"login"
+							]
+						},
+						"description": "Requisição para login do usuário."
+					},
+					"response": [
+						{
+							"name": "Login incorreto",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"ana.medeiros@hotmail.cm\",\r\n    \"password\": \"s3gr3do\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/user/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"user",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "73"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"49-1T/RQj8jUrihFGnvmsVM9UEWSDk\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 Oct 2020 16:14:57 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": false,\n    \"status\": 401,\n    \"msg\": \"E-mail ou senha incorreto\",\n    \"data\": {}\n}"
+						},
+						{
+							"name": "Login do administrador",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"adm@gmail.com\",\r\n    \"password\": \"admin\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/user/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"user",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "89"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"59-+l8kCuapmXil/JAUsy1a8Z7VdTg\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 Oct 2020 16:34:57 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": true,\n    \"status\": 200,\n    \"msg\": \"Usuário realizou login\",\n    \"data\": {\n        \"id\": 3,\n        \"admin\": true\n    }\n}"
+						},
+						{
+							"name": "Login bem sucedido do usuário comum",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"ana.medeiros@hotmail.com\",\r\n    \"password\": \"s3gr3do\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/user/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"user",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "90"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5a-HaAQ1T96UsABQigsxDv86UP92ec\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 Oct 2020 16:14:13 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": true,\n    \"status\": 200,\n    \"msg\": \"Usuário realizou login\",\n    \"data\": {\n        \"id\": 1,\n        \"admin\": false\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Cadastro",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Henrique Schmidt\",\r\n    \"email\": \"henrique@email.com\",\r\n    \"password\": \"14011955\",\r\n    \"gender\": \"masculino\",\r\n    \"birthYear\": \"1955\",\r\n    \"city\": \"Novo Hamburgo\",\r\n    \"uf\": \"RS\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/registration",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"registration"
+							]
+						},
+						"description": "Requisição para cadastro do usuário no aplicativo Appoio."
+					},
+					"response": [
+						{
+							"name": "Cadastro bem sucedido",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Ana Medeiros\",\r\n    \"email\": \"ana.medeiros@hotmail.com\",\r\n    \"password\": \"s3gr3do\",\r\n    \"gender\": \"feminino\",\r\n    \"birthYear\": \"1970\",\r\n    \"city\": \"Porto Alegre\",\r\n    \"uf\": \"RS\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/user/registration",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"user",
+										"registration"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "86"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"56-BKoVLo4vqECWkgCS3YqQD1HAbAQ\""
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "connect.sid=s%3AVV8wnxC6LcxqgeLEM3hSUAcQ1bO0orRU.08iLZ1q3salmfW0oHRVI5QDAhT2LPVYiSjoY4ec%2FQGw; Path=/; HttpOnly"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 Oct 2020 15:27:02 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": true,\n    \"status\": 201,\n    \"msg\": \"Usuário registrado\",\n    \"data\": {\n        \"id\": 1,\n        \"admin\": false\n    }\n}"
+						},
+						{
+							"name": "Cadastro incompleto",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Henrique Schmidt\",\r\n    \"password\": \"14011955\",\r\n    \"gender\": \"masculino\",\r\n    \"birthYear\": \"1955\",\r\n    \"city\": \"Novo Hamburgo\",\r\n    \"uf\": \"RS\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/user/registration",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"user",
+										"registration"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "94"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5e-zO/uHkuWJRF64cxGpOMw6K8qKBc\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 Oct 2020 16:24:39 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": false,\n    \"status\": 400,\n    \"msg\": \"Constraint referente à coluna: is_null falhou\",\n    \"data\": {}\n}"
+						},
+						{
+							"name": "Falha no cadastro - outro usuário com este email no banco",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Ana Medeiros\",\r\n    \"email\": \"ana.medeiros@hotmail.com\",\r\n    \"password\": \"um@senh@\",\r\n    \"gender\": \"feminino\",\r\n    \"birthYear\": \"1996\",\r\n    \"city\": \"Curitiba\",\r\n    \"uf\": \"PR\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/user/registration",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"user",
+										"registration"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "86"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"56-dDZ8rbCbfPSBD1Ghp77w7p/IskI\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 Oct 2020 16:20:55 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": false,\n    \"status\": 400,\n    \"msg\": \"E-mail do usuário já existe no banco\",\n    \"data\": {}\n}"
+						}
+					]
+				}
+			],
+			"description": "Documentação de rotas relacionadas ao usuário comum.",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Tutorial",
+			"item": [
+				{
+					"name": "Registro de novo tutorial",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "appoioName",
+									"value": "O que significa #TBT?",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "conceitos",
+									"type": "text"
+								},
+								{
+									"key": "tags",
+									"value": "[{\"name\":\"redes sociais\"},{\"name\":\"post\"},{\"name\":\"timeline\"},{\"name\":\"hashtag\"}]",
+									"type": "text"
+								},
+								{
+									"key": "steps",
+									"value": "[{\"order\":1,\"videoURL\":\"\",\"description\":\"Você com certeza já viu muitas vezes esta #TBT, ou #tbt. É uma hashtag (#) com a sigla do termo ThrowBack Thursday, em inglês. Em português, poderia  ser algo como de volta à quinta-feira.\\\\nMas ela designa lembrança de algo que passou e por isto é utilizada em posts junto à uma foto de tempos anteriores sempre nas quintas-feiras.\\\\nOs posts com estas fotos também podem ser acompanhadas de hashtags como #throwback ou #throwbackthursday.\\\\nPortanto, todas quintas-feiras, as redes sociais como Facebook e Instagram podem estar cheias de #TBT´s com belas recordações.\"}]",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/tutorial/registration",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"tutorial",
+								"registration"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Erro no registro - campo não foi preenchido",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "userId",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "appoioName",
+											"value": "O que significa #TBT?",
+											"type": "text"
+										},
+										{
+											"key": "tags",
+											"value": "[{\"name\":\"redes sociais\"},{\"name\":\"post\"},{\"name\":\"timeline\"},{\"name\":\"hashtag\"}]",
+											"type": "text"
+										},
+										{
+											"key": "steps",
+											"value": "[{\"order\":1,\"videoURL\":\"\",\"description\":\"Você com certeza já viu muitas vezes esta #TBT, ou #tbt. É uma hashtag (#) com a sigla do termo ThrowBack Thursday, em inglês. Em português, poderia  ser algo como de volta à quinta-feira.\\\\nMas ela designa lembrança de algo que passou e por isto é utilizada em posts junto à uma foto de tempos anteriores sempre nas quintas-feiras.\\\\nOs posts com estas fotos também podem ser acompanhadas de hashtags como #throwback ou #throwbackthursday.\\\\nPortanto, todas quintas-feiras, as redes sociais como Facebook e Instagram podem estar cheias de #TBT´s com belas recordações.\"}]",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/tutorial/registration",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tutorial",
+										"registration"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "94"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5e-zO/uHkuWJRF64cxGpOMw6K8qKBc\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 Oct 2020 17:21:31 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": false,\n    \"status\": 400,\n    \"msg\": \"Constraint referente à coluna: is_null falhou\",\n    \"data\": {}\n}"
+						},
+						{
+							"name": "Registro de tutorial bem sucedido",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "userId",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "appoioName",
+											"value": "O que é QR Code?",
+											"type": "text"
+										},
+										{
+											"key": "category",
+											"value": "conceitos",
+											"type": "text"
+										},
+										{
+											"key": "tags",
+											"value": "[{\"name\":\"câmera\"},{\"name\":\"códigoQR\"},{\"name\":\"QRcode\"},{\"name\":\"link\"}]",
+											"type": "text"
+										},
+										{
+											"key": "steps",
+											"value": "[{\"order\":1,\"videoURL\":\"\",\"description\":\"O QR CODE, ou CÓDIGO QR, em português, é um código de barras bidimensional, utilizado em celulares e serve para abrir geralmente um link, mas também pode ser direcionado a contatos, número de telefone, ou localização, por exemplo.\\\\nEm geral, funciona com a câmera do aparelho que, quando posicionada para capturar a imagem do código, abre o link para onde ele é direcionado.\"}]",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/tutorial/registration",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tutorial",
+										"registration"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "66"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"42-hq/86ZKknNey433ZglVE1BxvwEY\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 Oct 2020 17:06:18 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": true,\n    \"status\": 201,\n    \"msg\": \"Tutorial registrado\",\n    \"data\": {}\n}"
+						}
+					]
+				},
+				{
+					"name": "GetAll tutoriais",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"approved\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/tutorial/categories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"tutorial",
+								"categories"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GetAll de não aprovados se não é administrador",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"approved\": 0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/tutorial/categories",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tutorial",
+										"categories"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "91"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5b-cWppOr6xK86AfbCdzNp3RgJY8+I\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 Oct 2020 20:26:57 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"resp\": false,\n    \"status\": 403,\n    \"msg\": \"Usuário não possui direitos administrativos\",\n    \"data\": {}\n}"
+						},
+						{
+							"name": "GetAll de tutoriais não aprovados - admin",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"approved\": 0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/tutorial/categories",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tutorial",
+										"categories"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "247"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"f7-tEaG14sZDL61580m05DWMxgcsU4\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 Oct 2020 20:35:47 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": true,\n    \"status\": 200,\n    \"msg\": \"Tutoriais recuperados\",\n    \"data\": {\n        \"conceitos\": [\n            {\n                \"id\": 3,\n                \"appoioName\": \"O que significa #TBT?\"\n            },\n            {\n                \"id\": 1,\n                \"appoioName\": \"O que é QR Code?\"\n            }\n        ],\n        \"aplicativos\": [\n            {\n                \"id\": 2,\n                \"appoioName\": \"Qual a diferença entre post e story?\"\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get tutorial por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/tutorial/get/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"tutorial",
+								"get",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get tutorial por id bem sucedido",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/tutorial/get/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tutorial",
+										"get",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1005"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3ed-OmCoZ/0hKjTjbp6ojH8h1TD+dfg\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 Oct 2020 20:41:21 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": true,\n    \"status\": 200,\n    \"msg\": \"Tutorial recuperado\",\n    \"data\": {\n        \"appoioName\": \"O que é QR Code?\",\n        \"category\": \"conceitos\",\n        \"appId\": null,\n        \"appVersion\": null,\n        \"operatingSystem\": null,\n        \"operatingSystemVersion\": null,\n        \"date\": \"2020-10-07 17:06:17.516 +00:00\",\n        \"steps\": [\n            {\n                \"description\": \"O QR CODE, ou CÓDIGO QR, em português, é um código de barras bidimensional, utilizado em celulares e serve para abrir geralmente um link, mas também pode ser direcionado a contatos, número de telefone, ou localização, por exemplo.\\\\nEm geral, funciona com a câmera do aparelho que, quando posicionada para capturar a imagem do código, abre o link para onde ele é direcionado.\",\n                \"videoURL\": \"\",\n                \"imgURL\": null\n            }\n        ],\n        \"tags\": [\n            {\n                \"name\": \"câmera\",\n                \"tutorial_tag\": {\n                    \"tutorialId\": 1,\n                    \"tagId\": 1\n                }\n            },\n            {\n                \"name\": \"códigoQR\",\n                \"tutorial_tag\": {\n                    \"tutorialId\": 1,\n                    \"tagId\": 2\n                }\n            },\n            {\n                \"name\": \"QRcode\",\n                \"tutorial_tag\": {\n                    \"tutorialId\": 1,\n                    \"tagId\": 3\n                }\n            },\n            {\n                \"name\": \"link\",\n                \"tutorial_tag\": {\n                    \"tutorialId\": 1,\n                    \"tagId\": 4\n                }\n            }\n        ],\n        \"user\": {\n            \"name\": \"Ana Medeiros\",\n            \"email\": \"ana.medeiros@hotmail.com\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Erro no get - id não existe (fora dos limites)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/tutorial/get/6",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tutorial",
+										"get",
+										"6"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "87"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"57-tdgvRap74J1/aU2kmySSmUb6SWA\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 Oct 2020 20:42:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": false,\n    \"status\": 404,\n    \"msg\": \"Não foi possível recuperar o tutorial\",\n    \"data\": {}\n}"
+						}
+					]
+				},
+				{
+					"name": "Aprovar tutorial - admin",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/tutorial/approve/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"tutorial",
+								"approve",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Tutorial aprovado",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/tutorial/approve/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tutorial",
+										"approve",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "64"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"40-69D4DtuRJxW/VL/p0yoOAUPSwOQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 Oct 2020 21:30:42 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": true,\n    \"status\": 204,\n    \"msg\": \"Tutorial aprovado\",\n    \"data\": {}\n}"
+						},
+						{
+							"name": "Erro - usuário comum não pode aprovar tutorial",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/tutorial/approve/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tutorial",
+										"approve",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "91"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5b-cWppOr6xK86AfbCdzNp3RgJY8+I\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 Oct 2020 21:32:19 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"resp\": false,\n    \"status\": 403,\n    \"msg\": \"Usuário não possui direitos administrativos\",\n    \"data\": {}\n}"
+						}
+					]
+				},
+				{
+					"name": "Busca",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/tutorial/search/code",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"tutorial",
+								"search",
+								"code"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar tutorial",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/tutorial/delete/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"tutorial",
+								"delete",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Erro - tutorial não existe",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/tutorial/delete/7",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tutorial",
+										"delete",
+										"7"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "86"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"56-3ENhX3+4j25uNRj9anEPEEubiM0\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 12 Oct 2020 18:39:14 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": true,\n    \"status\": 400,\n    \"msg\": \"Tutorial não encontrado para remoção\",\n    \"data\": {}\n}"
+						},
+						{
+							"name": "Erro - usuário não é admin",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/tutorial/delete/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tutorial",
+										"delete",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "93"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5d-UhJ2uoBz53yKVm2DKHRXF430aFE\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 12 Oct 2020 02:10:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": false,\n    \"status\": 403,\n    \"msg\": \"Usuário não possui direitos administrativos\",\n    \"data\": {}\n}"
+						},
+						{
+							"name": "Deletar tutorial bem sucedido",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/tutorial/delete/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tutorial",
+										"delete",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "64"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"40-ySBtoBgjGwf4W4RLsTYXj/69NTQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 12 Oct 2020 18:38:21 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": true,\n    \"status\": 204,\n    \"msg\": \"Tutorial deletado\",\n    \"data\": {}\n}"
+						}
+					]
+				}
+			],
+			"description": "Documentação de rotas relacionadas aos tutoriais.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2b692e88-8107-4971-927b-61f791403519",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "78123c33-09bc-4547-9caf-5673cf05d755",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Aplicativos",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/app/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"app",
+								"all"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GetAll bem sucedido",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/app/all",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"app",
+										"all"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "106"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"6a-z/aGJZtVhJecYEypFLYzMisOybk\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Oct 2020 02:52:35 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": true,\n    \"status\": 200,\n    \"msg\": \"Aplicativos recuperados\",\n    \"data\": {\n        \"Installed\": [\n            1,\n            3\n        ],\n        \"NotInstalled\": [\n            2\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Atualizar apps instalados",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"appIds\": [\r\n        2,8\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/app/installed",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"app",
+								"installed"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Erro - aplicativo com id informado não existe",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"appIds\": [\r\n        2,8\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/app/installed",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"app",
+										"installed"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "89"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"59-8gvSzqt7hR0hZLnRf3K/0GSiigM\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Oct 2020 03:25:23 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": false,\n    \"status\": 404,\n    \"msg\": \"Alguns aplicativos não foram encontrados\",\n    \"data\": {}\n}"
+						},
+						{
+							"name": "Apps instalados atualizados com sucesso",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"appIds\": [\r\n        2,4\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/app/installed",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"app",
+										"installed"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "78"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4e-gd3J7+buiYmy4+0RkV7sKZ5CiyY\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Oct 2020 03:24:44 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": true,\n    \"status\": 204,\n    \"msg\": \"Aplicativos do usuário foram atualizados\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get tutoriais",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"appId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/app/tutorials",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"app",
+								"tutorials"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Erro - aplicativo com id informado não existe",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"appId\": 7\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/app/tutorials",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"app",
+										"tutorials"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "74"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4a-CAgk/CB1oktEIoLvr+YTY/jcATw\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Oct 2020 03:00:34 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": false,\n    \"status\": 404,\n    \"msg\": \"Aplicativo não encontrado\",\n    \"data\": {}\n}"
+						},
+						{
+							"name": "Get tutoriais de aplicativos pelo id do app",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"appId\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/app/tutorials",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"app",
+										"tutorials"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "141"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"8d-+3MdlgE36eFttpLMKpxZiiR2WbU\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Oct 2020 02:59:28 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": true,\n    \"status\": 200,\n    \"msg\": \"Tutoriais do aplicativo recuperados\",\n    \"data\": [\n        {\n            \"id\": 3,\n            \"appoioName\": \"tutorial 1\",\n            \"category\": \"Aplicativos\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "Erro - o aplicativo não possui tutoriais",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"appId\": 5\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/app/tutorials",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"app",
+										"tutorials"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "103"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"67-ZWi3IO0i0itXl2mtO3OCehczPCI\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Oct 2020 03:01:21 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": false,\n    \"status\": 404,\n    \"msg\": \"Não foi possível recuperar os tutoriais do aplicativo\",\n    \"data\": {}\n}"
+						}
+					]
+				}
+			],
+			"description": "Documentação de rotas relacionadas aos aplicativos.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "29ff4097-f2a1-485f-ab05-ed6321cd98d5",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "ed293176-795c-4722-b49f-53db83aae322",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
