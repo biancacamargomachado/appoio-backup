@@ -4,9 +4,9 @@ const appService = require('../services/AppService');
 async function getAll(userId) {
     try {
         if (userId === undefined)
-            var result = await appService.getAll();
+            var result = await appService.getFilteredAll();
         else
-            var result = await appService.getInstalled(userId);
+            var result = await appService.getFilteredInstalled(userId);
 
         if (result.result) {
             return {
@@ -69,6 +69,38 @@ async function getTutorials(appId) {
 }
 
 
+async function getInstalled(userId){
+    try {
+        let result = await appService.getInstalled(userId);
+        
+        if (result.result) {
+            return {
+                result: true,
+                status: 200,
+                msg: 'Aplicativos recuperados',
+                data: result.data
+            };
+        }
+        return {
+            result: false,
+            status: result.status,
+            msg: result.msg,
+            data: {}
+        };
+
+    } catch (err) {
+        console.log(err);
+
+        return {
+            result: false,
+            status: 500,
+            msg: 'Erro desconhecido durante a recuperação dos aplicativos do usuário',
+            data: {}
+        };
+    }
+}
+
+
 async function update(userId, appIds) {
     try {
         let result = await appService.update(userId, appIds);
@@ -101,4 +133,4 @@ async function update(userId, appIds) {
 }
 
 
-module.exports = { getAll, getTutorials, update };
+module.exports = { getAll, getTutorials, getInstalled, update };

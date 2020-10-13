@@ -1,7 +1,7 @@
 const appRepository = require('../repository/AppRepo');
 
 
-async function getAll() {
+async function getFilteredAll() {
     try {
         let appsResult = await appRepository.getAll();
 
@@ -30,7 +30,7 @@ async function getAll() {
 }
 
 
-async function getInstalled(userId) {
+async function getFilteredInstalled(userId) {
     try {
         let installedResult = await appRepository.getByUserId(userId);
         let filteredInstalled = [];
@@ -76,25 +76,39 @@ async function getInstalled(userId) {
         return { result: true, data: { 'Installed': filteredInstalled, 'NotInstalled': filteredNotInstalled } };
 
     } catch (err) {
-
         return { result: false, status: 500, msg: 'Erro durante o filtro de aplicativos' };
     }
 }
 
 async function getTutorials(appId) {
-    try {
-        let result = await appRepository.getTutorials(appId);
-        if (result.result) {
-            if (result.data.length) {
-                return result;
+    let result = await appRepository.getTutorials(appId);
+    if (result.result) {
+        if (result.data.length) {
+            return result;
+        }
+        return { result: false, status: 404, msg: 'Não foi possível recuperar os tutoriais do aplicativo' };
+    }
+
+    return result;
+}
+
+async function getInstalled(userId) {
+    try{
+        let result = await appRepository.getInstalled(userId);
+        
+        if(result.result){
+            let formatted = [];
+            for(let obj of result.data){
+                formatted.push(obj.id);
             }
-            return { result: false, status: 404, msg: 'Não foi possível recuperar os tutoriais do aplicativo' };
+
+            result.data = formatted;
         }
 
         return result;
 
     } catch (err) {
-        return { result: false, status: 500, msg: 'Erro formatando os tutoriais do aplicativo' };
+        return { result: false, status: 500, msg: 'Erro formatando os aplicativos' };
     }
 }
 
@@ -103,4 +117,4 @@ async function update(userId, appIds) {
     return await appRepository.update(userId, appIds);
 }
 
-module.exports = { getAll, getInstalled, getTutorials, update };
+module.exports = { getFilteredAll, getFilteredInstalled, getInstalled, getTutorials, update };
