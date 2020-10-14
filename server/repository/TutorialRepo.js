@@ -211,8 +211,7 @@ async function deleteTutorial(tutorialId) {
     try{
         let tutorial = await Tutorial.findOne({
             where: {
-                id: tutorialId,
-                approved: 1,
+                id: tutorialId
             },
             include: [{
                 model: Step,
