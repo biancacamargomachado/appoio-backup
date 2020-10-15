@@ -2,8 +2,10 @@ const Tutorial = require('../models/Tutorial');
 const Step = require('../models/Step');
 const Tag = require('../models/Tag');
 const User = require('../models/User');
+const App = require('../models/App');
 const sequelize = require('../database');
 const { UniqueConstraintError, ForeignKeyConstraintError, TimeoutError, ValidationError } = require('sequelize');
+const { Op } = require('sequelize');
 
 /*
  * Função que busca um tutorial dado seu id
@@ -208,7 +210,7 @@ async function registerTutorial(tutorialCreationObject) {
 }
 
 async function deleteTutorial(tutorialId) {
-    try{
+    try {
         let tutorial = await Tutorial.findOne({
             where: {
                 id: tutorialId
@@ -218,12 +220,12 @@ async function deleteTutorial(tutorialId) {
                 as: 'steps'
             }]
         })
-        
+
         return {
             result: true,
             data: await tutorial.destroy()
         }
-        
+
     } catch (err) {
         if (err instanceof UniqueConstraintError) {
             return { result: false, status: 400, msg: 'E-mail do usuário já existe no banco' };
@@ -240,4 +242,84 @@ async function deleteTutorial(tutorialId) {
     }
 }
 
-module.exports = { findById, findAll, approve, registerTutorial, deleteTutorial };
+async function search(searchString) {
+    try {
+        let tutorials = await Tutorial.findAll({
+            where: {
+                appoioName: sequelize.where(sequelize.fn('LOWER', sequelize.col('appoioName')), 'LIKE', `%${searchString}%`)
+            },
+            attributes: [
+                'id',
+                'appoioName',
+                'category',
+                'createdAt'
+            ]
+        });
+
+        let tutorialsIds = tutorials.map(tutorial => tutorial.id);
+
+        let tagTutorials = (await Tag.findAll({
+            where: {
+                appoioName: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), 'LIKE', `%${searchString}%`)
+            },
+            attributes: [],
+            include: [{
+                model: Tutorial,
+                as: 'tutorials',
+                attributes: [
+                    'id',
+                    'appoioName',
+                    'category',
+                    'createdAt'
+                ],
+                where: {
+                    id: {
+                        [Op.notIn]: tutorialsIds
+                    }
+                }
+            }]
+        })).map(tag => tag.tutorials).flat();
+
+        tutorialsIds.push(...tagTutorials.map(tutorial => tutorial.id));
+
+        let appTutorials = (await App.findAll({
+            where: {
+                appoioName: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), 'LIKE', `%${searchString}%`)
+            },
+            attributes: [],
+            include: [{
+                model: Tutorial,
+                as: 'tutorials',
+                attributes: [
+                    'id',
+                    'appoioName',
+                    'category',
+                    'createdAt'
+                ],
+                where: {
+                    id: {
+                        [Op.notIn]: tutorialsIds
+                    }
+                }
+            }]
+        })).map(app => app.tutorials).flat();
+
+        return { result: true, data: [...tutorials, ...tagTutorials, ...appTutorials] };
+
+    } catch (err) {
+        if (err instanceof UniqueConstraintError) {
+            return { result: false, status: 400, msg: 'E-mail do usuário já existe no banco' };
+        }
+        else if (err instanceof ForeignKeyConstraintError) {
+            return { result: false, status: 400, msg: `Valor informado não foi encontrado para referencia: ${err.index}` };
+        }
+        else if (err instanceof TimeoutError) {
+            return { result: false, status: 408, msg: 'Tempo de execução da query excedeu o limite de tempo' };
+        }
+        else if (err instanceof ValidationError) {
+            return { result: false, status: 400, msg: `Constraint referente à coluna: ${err.errors[0].validatorKey} falhou` };
+        }
+    }
+}
+
+module.exports = { findById, findAll, approve, registerTutorial, deleteTutorial, search };

@@ -91,7 +91,7 @@ async function approve(id) {
 
 async function deleteTutorial(tutorialId) {
     let result = await tutorialRepository.deleteTutorial(tutorialId);
-    
+
     if (result.data == 0) {
         return { result: false, status: 400, msg: 'Tutorial não encontrado para remoção' };
     }
@@ -99,4 +99,38 @@ async function deleteTutorial(tutorialId) {
     return result;
 }
 
-module.exports = { get, getAll, registerTutorial, approve, deleteTutorial };
+async function search(searchString) {
+    try {
+        searchString = searchString.toLowerCase();
+    } catch (err) {
+        return { result: false, status: 400, msg: 'Formato de mensagem incorreto' };
+    }
+
+    try {
+        let result = await tutorialRepository.search(searchString);
+
+        if (result.result) {
+            result.data = result.data.sort((a, b) => {
+                let dateA = new Date(a.createdAt);
+                let dateB = new Date(b.createdAt);
+
+                return (dateA > dateB) - (dateA < dateB)
+            });
+
+            result.data = result.data.map(tutorial => {
+                tutorial = tutorial.toJSON();
+                delete tutorial['createdAt'];
+
+                return tutorial;
+            })
+        }
+
+        return result;
+
+    } catch (err) {
+        return { result: false, status: 500, msg: 'Erro durante a ordenação dos tutoriais' };
+    }
+
+}
+
+module.exports = { get, getAll, registerTutorial, approve, deleteTutorial, search };

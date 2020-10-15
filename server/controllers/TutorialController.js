@@ -64,18 +64,35 @@ async function getAll(approved) {
 }
 
 async function search(searchString) {
-    // Titulo
-    // Funcao de levenshtein de proximidade
-    // Uso de Like
+    try {
+        let result = await tutorialService.search(searchString);
 
-    // Tags
-    // Literal
-    // Uso de like
+        if (result.result) {
+            return {
+                result: true,
+                status: 200,
+                msg: 'Tutoriais recuperados',
+                data: result.data
+            };
+        }
 
-    // Aplicativos
-    // Literal
-    // Uso de like
+        return {
+            result: false,
+            status: result.status,
+            msg: result.msg,
+            data: {}
+        };
 
+    } catch (err) {
+        console.log(err);
+
+        return {
+            result: false,
+            status: 500,
+            msg: 'Erro desconhecido durante a busca de tutoriais',
+            data: {}
+        };
+    }
 }
 
 
@@ -83,7 +100,7 @@ async function register(creationObject) {
     Object.keys(creationObject).forEach(
         key => creationObject[key] === undefined ? delete creationObject[key] : {}
     );
-    
+
     try {
         let result = await tutorialService.registerTutorial(creationObject);
 
