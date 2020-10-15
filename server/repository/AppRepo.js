@@ -221,7 +221,7 @@ async function update(userId, appIds) {
 
             await transaction.commit();
 
-            return { result: true };
+            return { result: true, data: {} };
         }
         else {
             return { result: false, status: 404, msg: 'Usuário não encontrado' };
