@@ -12,10 +12,9 @@ router.get('/all',
     }
 );
 
-router.get('/tutorials',
+router.get('/tutorials/:appId',
     async (req, res, _) => {
-        let appId = req.body.appId;
-        return res.json(await appController.getTutorials(appId));
+        return res.json(await appController.getTutorials(req.params.appId));
     }
 );
 
