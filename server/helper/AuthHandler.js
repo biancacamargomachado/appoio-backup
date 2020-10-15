@@ -30,11 +30,13 @@ const adminAuth = function (checkObj) {
                 return res.json(adminErrorResp);
         }
         else {
-            for (const [key, value] of Object.entries(checkObj)) {
-                if (req.body[key] === value) {
-                    if (req.session.admin)
-                        return await next();
-                    return res.json(adminErrorResp);
+            for (let [key, obj] of Object.entries(checkObj)) {
+                for (let [objKey, objVal] of Object.entries(obj)) {
+                    if (req[key][objKey] === objVal) {
+                        if (!req.session.admin) {
+                            return res.json(adminErrorResp);
+                        }
+                    }
                 }
             }
             return await next();

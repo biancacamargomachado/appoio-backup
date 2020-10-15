@@ -15,12 +15,12 @@ router.get('/get/:id',
     }
 );
 
-router.get('/categories',
+router.get('/categories/:approved',
     authHandler.adminAuth({
-        'approved': 0
+        params: { approved: '0' }
     }),
     async (req, res, _) => {
-        return res.json(await tutorialController.getAll(req.body.approved));
+        return res.json(await tutorialController.getAll(req.params.approved));
     }
 );
 
