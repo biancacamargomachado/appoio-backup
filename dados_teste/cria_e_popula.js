@@ -105,7 +105,7 @@ async function criaTutoriais() {
     await Tutorial.create({
       userId: 1,
       appoioName: 'tutorial 1',
-      category: 'Conceitos',
+      category: 'conceitos',
       approved: 0,
       steps: [{ description: 'passo 1' }, { description: 'passo 1' }]
     }, {
@@ -120,7 +120,7 @@ async function criaTutoriais() {
     await Tutorial.create({
       userId: 1,
       appoioName: 'tutorial 2',
-      category: 'Celular',
+      category: 'celular',
       approved: 0,
       steps: [{ description: 'passo 1' }, { description: 'passo 1' }]
     }, {
@@ -135,7 +135,7 @@ async function criaTutoriais() {
     await Tutorial.create({
       userId: 1,
       appoioName: 'tutorial 1',
-      category: 'Aplicativos',
+      category: 'aplicativos',
       approved: 0,
       steps: [{ description: 'passo 1' }, { description: 'passo 1' }]
     }, {
@@ -150,7 +150,7 @@ async function criaTutoriais() {
     await Tutorial.create({
       userId: 1,
       appoioName: 'tutorial 2',
-      category: 'Celular',
+      category: 'celular',
       approved: 0,
       steps: [{ description: 'passo 1' }, { description: 'passo 1' }]
     }, {
