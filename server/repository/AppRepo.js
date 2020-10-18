@@ -140,7 +140,8 @@ async function getTutorials(appId) {
                         attributes: [
                             'id',
                             'appoioName',
-                            'category'
+                            'category',
+                            'operatingSystem'
                         ],
                         order: [
                             ['createdAt', 'DESC']

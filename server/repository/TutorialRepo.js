@@ -92,7 +92,8 @@ async function findAll(approved) {
                 attributes: [
                     'id',
                     'appoioName',
-                    'category'
+                    'category',
+                    'operatingSystem'
                 ],
                 order: [
                     ['createdAt', 'DESC']
