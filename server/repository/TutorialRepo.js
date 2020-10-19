@@ -128,7 +128,7 @@ async function approve(id) {
             }
         });
 
-        return { result: true };
+        return { result: true, data: {} };
 
     } catch (err) {
         if (err instanceof UniqueConstraintError) {
@@ -185,9 +185,11 @@ async function registerTutorial(tutorialCreationObject) {
 
             await transaction.commit();
 
-            return { result: true };
+            return { result: true, data: {} };
         }
         else {
+            await transaction.rollback();
+
             return { result: false, status: 404, msg: 'Tutorial não encontrado' };
         }
 

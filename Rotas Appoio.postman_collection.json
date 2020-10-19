@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "25dc63cf-7a23-40d7-901a-a95f92ca1374",
-		"name": "Doc APPOIO",
+		"_postman_id": "2624f3d7-9f38-478d-9b42-66a791f2a06f",
+		"name": "Rotas Appoio",
 		"description": "Documentação para utilização da API do projeto APPOIO.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -192,6 +192,66 @@
 					},
 					"response": [
 						{
+							"name": "Erro",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Ana Medeiros\",\r\n    \"email\": \"ana.medeiros@hotmail.com\",\r\n    \"password\": \"um@senh@\",\r\n    \"gender\": \"feminino\",\r\n    \"birthYear\": \"1996\",\r\n    \"city\": \"Curitiba\",\r\n    \"uf\": \"PR\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/user/registration",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"user",
+										"registration"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "86"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"56-dDZ8rbCbfPSBD1Ghp77w7p/IskI\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 Oct 2020 16:20:55 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": false,\n    \"status\": 400,\n    \"msg\": \"E-mail do usuário já existe no banco\",\n    \"data\": {}\n}"
+						},
+						{
 							"name": "Sucesso",
 							"originalRequest": {
 								"method": "POST",
@@ -254,66 +314,6 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"result\": true,\n    \"status\": 201,\n    \"msg\": \"Usuário registrado\",\n    \"data\": {\n        \"id\": 1,\n        \"admin\": false\n    }\n}"
-						},
-						{
-							"name": "Erro",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"Ana Medeiros\",\r\n    \"email\": \"ana.medeiros@hotmail.com\",\r\n    \"password\": \"um@senh@\",\r\n    \"gender\": \"feminino\",\r\n    \"birthYear\": \"1996\",\r\n    \"city\": \"Curitiba\",\r\n    \"uf\": \"PR\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:3000/api/user/registration",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "3000",
-									"path": [
-										"api",
-										"user",
-										"registration"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "X-Powered-By",
-									"value": "Express"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "86"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"56-dDZ8rbCbfPSBD1Ghp77w7p/IskI\""
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 07 Oct 2020 16:20:55 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"result\": false,\n    \"status\": 400,\n    \"msg\": \"E-mail do usuário já existe no banco\",\n    \"data\": {}\n}"
 						}
 					]
 				}
@@ -323,7 +323,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "68d366f4-bbba-4ac9-9199-8c3baafebb95",
+						"id": "56372575-4636-4d20-b3b9-4ac37450200c",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -333,7 +333,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "2d21ab37-8bc7-4ca4-8b94-1c641d76d8c6",
+						"id": "5595a367-6652-4ed4-9aab-fff74e36c08a",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -569,7 +569,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"approved\": 1\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -577,7 +577,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/tutorial/categories",
+							"raw": "http://localhost:3000/api/tutorial/categories/0",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -586,28 +586,20 @@
 							"path": [
 								"api",
 								"tutorial",
-								"categories"
+								"categories",
+								"0"
 							]
 						},
 						"description": "Requisição para buscar todos os tutoriais registrados, optando pela busca de tutoriais aprovados ou não."
 					},
 					"response": [
 						{
-							"name": "Erro",
+							"name": "Sucesso (não aprovados)",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"approved\": 0\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
 								"url": {
-									"raw": "http://localhost:3000/api/tutorial/categories",
+									"raw": "http://localhost:3000/api/tutorial/categories/0",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -616,7 +608,8 @@
 									"path": [
 										"api",
 										"tutorial",
-										"categories"
+										"categories",
+										"0"
 									]
 								}
 							},
@@ -634,40 +627,35 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "91"
+									"value": "297"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"5b-cWppOr6xK86AfbCdzNp3RgJY8+I\""
+									"value": "W/\"129-4ttBSwc+oNE3iuyXdcHRM0NLXRc\""
 								},
 								{
 									"key": "Date",
-									"value": "Wed, 07 Oct 2020 20:26:57 GMT"
+									"value": "Wed, 14 Oct 2020 21:18:23 GMT"
 								},
 								{
 									"key": "Connection",
 									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"resp\": false,\n    \"status\": 403,\n    \"msg\": \"Usuário não possui direitos administrativos\",\n    \"data\": {}\n}"
+							"body": "{\n    \"result\": true,\n    \"status\": 200,\n    \"msg\": \"Tutoriais recuperados\",\n    \"data\": [\n        {\n            \"id\": 4,\n            \"appoioName\": \"tutorial 2\",\n            \"category\": \"Celular\"\n        },\n        {\n            \"id\": 3,\n            \"appoioName\": \"tutorial 1\",\n            \"category\": \"Aplicativos\"\n        },\n        {\n            \"id\": 2,\n            \"appoioName\": \"tutorial 2\",\n            \"category\": \"Celular\"\n        },\n        {\n            \"id\": 1,\n            \"appoioName\": \"tutorial 1\",\n            \"category\": \"Conceitos\"\n        }\n    ]\n}"
 						},
 						{
 							"name": "Sucesso (aprovados)",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"approved\": 1\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
 								"url": {
-									"raw": "http://localhost:3000/api/tutorial/categories",
+									"raw": "http://localhost:3000/api/tutorial/categories/1",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -676,7 +664,8 @@
 									"path": [
 										"api",
 										"tutorial",
-										"categories"
+										"categories",
+										"1"
 									]
 								}
 							},
@@ -717,21 +706,12 @@
 							"body": "{\n    \"result\": true,\n    \"status\": 200,\n    \"msg\": \"Tutoriais recuperados\",\n    \"data\": {\n        \"Aplicativos\": [\n            {\n                \"id\": 3,\n                \"appoioName\": \"tutorial 1\"\n            }\n        ],\n        \"Celular\": [\n            {\n                \"id\": 2,\n                \"appoioName\": \"tutorial 2\"\n            }\n        ],\n        \"Conceitos\": [\n            {\n                \"id\": 1,\n                \"appoioName\": \"tutorial 1\"\n            }\n        ]\n    }\n}"
 						},
 						{
-							"name": "Sucesso (não aprovados)",
+							"name": "Erro",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"approved\": 0\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
 								"url": {
-									"raw": "http://localhost:3000/api/tutorial/categories",
+									"raw": "http://localhost:3000/api/tutorial/categories/0",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -740,7 +720,8 @@
 									"path": [
 										"api",
 										"tutorial",
-										"categories"
+										"categories",
+										"0"
 									]
 								}
 							},
@@ -758,27 +739,23 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "297"
+									"value": "91"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"129-4ttBSwc+oNE3iuyXdcHRM0NLXRc\""
+									"value": "W/\"5b-cWppOr6xK86AfbCdzNp3RgJY8+I\""
 								},
 								{
 									"key": "Date",
-									"value": "Wed, 14 Oct 2020 21:18:23 GMT"
+									"value": "Wed, 07 Oct 2020 20:26:57 GMT"
 								},
 								{
 									"key": "Connection",
 									"value": "keep-alive"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=5"
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"result\": true,\n    \"status\": 200,\n    \"msg\": \"Tutoriais recuperados\",\n    \"data\": [\n        {\n            \"id\": 4,\n            \"appoioName\": \"tutorial 2\",\n            \"category\": \"Celular\"\n        },\n        {\n            \"id\": 3,\n            \"appoioName\": \"tutorial 1\",\n            \"category\": \"Aplicativos\"\n        },\n        {\n            \"id\": 2,\n            \"appoioName\": \"tutorial 2\",\n            \"category\": \"Celular\"\n        },\n        {\n            \"id\": 1,\n            \"appoioName\": \"tutorial 1\",\n            \"category\": \"Conceitos\"\n        }\n    ]\n}"
+							"body": "{\n    \"resp\": false,\n    \"status\": 403,\n    \"msg\": \"Usuário não possui direitos administrativos\",\n    \"data\": {}\n}"
 						}
 					]
 				},
@@ -933,58 +910,6 @@
 					},
 					"response": [
 						{
-							"name": "Sucesso",
-							"originalRequest": {
-								"method": "PATCH",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:3000/api/tutorial/approve/1",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "3000",
-									"path": [
-										"api",
-										"tutorial",
-										"approve",
-										"1"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "X-Powered-By",
-									"value": "Express"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "64"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"40-69D4DtuRJxW/VL/p0yoOAUPSwOQ\""
-								},
-								{
-									"key": "Date",
-									"value": "Wed, 07 Oct 2020 21:30:42 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"result\": true,\n    \"status\": 204,\n    \"msg\": \"Tutorial aprovado\",\n    \"data\": {}\n}"
-						},
-						{
 							"name": "Erro",
 							"originalRequest": {
 								"method": "PATCH",
@@ -1035,6 +960,58 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"resp\": false,\n    \"status\": 403,\n    \"msg\": \"Usuário não possui direitos administrativos\",\n    \"data\": {}\n}"
+						},
+						{
+							"name": "Sucesso",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/tutorial/approve/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tutorial",
+										"approve",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "64"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"40-69D4DtuRJxW/VL/p0yoOAUPSwOQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 Oct 2020 21:30:42 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": true,\n    \"status\": 204,\n    \"msg\": \"Tutorial aprovado\",\n    \"data\": {}\n}"
 						}
 					]
 				},
@@ -1044,7 +1021,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/tutorial/search/",
+							"raw": "http://localhost:3000/api/tutorial/search/t",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1054,12 +1031,65 @@
 								"api",
 								"tutorial",
 								"search",
-								""
+								"t"
 							]
 						},
 						"description": "Requisição para buscar tutoriais a partir de seus títulos, tags ou nome dos aplicativos."
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Sucesso",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/tutorial/search/t",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"tutorial",
+										"search",
+										"t"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "297"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"129-9Vth5Tj/furY2KfdCm13jHA153o\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 15 Oct 2020 21:21:14 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": true,\n    \"status\": 200,\n    \"msg\": \"Tutoriais recuperados\",\n    \"data\": [\n        {\n            \"id\": 4,\n            \"appoioName\": \"tutorial 2\",\n            \"category\": \"Celular\"\n        },\n        {\n            \"id\": 2,\n            \"appoioName\": \"tutorial 2\",\n            \"category\": \"Celular\"\n        },\n        {\n            \"id\": 3,\n            \"appoioName\": \"tutorial 1\",\n            \"category\": \"Aplicativos\"\n        },\n        {\n            \"id\": 1,\n            \"appoioName\": \"tutorial 1\",\n            \"category\": \"Conceitos\"\n        }\n    ]\n}"
+						}
+					]
 				},
 				{
 					"name": "Deletar tutorial - admin",
@@ -1203,7 +1233,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "2b692e88-8107-4971-927b-61f791403519",
+						"id": "124446ae-648d-46f2-a971-4f6ab1df4dd2",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1213,7 +1243,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "78123c33-09bc-4547-9caf-5673cf05d755",
+						"id": "11eccf6f-803f-4d5f-b8a5-434feac5f3ec",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1650,7 +1680,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"appId\": 2\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1658,7 +1688,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/app/tutorials",
+							"raw": "http://localhost:3000/api/app/tutorials/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1667,7 +1697,8 @@
 							"path": [
 								"api",
 								"app",
-								"tutorials"
+								"tutorials",
+								"2"
 							]
 						},
 						"description": "Requisição que busca os tutoriais de um app específico a partir do seu id informado no body da request."
@@ -1678,17 +1709,8 @@
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"appId\": 7\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
 								"url": {
-									"raw": "http://localhost:3000/api/app/tutorials",
+									"raw": "http://localhost:3000/api/app/tutorials/-1",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1697,7 +1719,8 @@
 									"path": [
 										"api",
 										"app",
-										"tutorials"
+										"tutorials",
+										"-1"
 									]
 								}
 							},
@@ -1738,17 +1761,8 @@
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"appId\": 2\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
 								"url": {
-									"raw": "http://localhost:3000/api/app/tutorials",
+									"raw": "http://localhost:3000/api/app/tutorials/2",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1757,7 +1771,8 @@
 									"path": [
 										"api",
 										"app",
-										"tutorials"
+										"tutorials",
+										"2"
 									]
 								}
 							},
@@ -1801,7 +1816,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "29ff4097-f2a1-485f-ab05-ed6321cd98d5",
+						"id": "5128200b-e90f-4201-8b4b-e71e3da19a2d",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1811,7 +1826,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "ed293176-795c-4722-b49f-53db83aae322",
+						"id": "081a1f1e-4f50-468e-adff-93a9332d068b",
 						"type": "text/javascript",
 						"exec": [
 							""
