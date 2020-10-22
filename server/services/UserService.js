@@ -2,7 +2,7 @@ const userRepository = require('../repository/UserRepo');
 const { compare, hash } = require('bcrypt');
 const admEmail = require('../config/env').admEmail;
 const json2xls = require('json2xls');
-const fs = require('file-system');
+const fs = require('fs');
 
 /*
  * Função que realiza o login do usuário dado seu email e senha, buscando o usuário e 
