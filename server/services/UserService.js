@@ -1,7 +1,7 @@
 const userRepository = require('../repository/UserRepo');
 const { compare, hash } = require('bcrypt');
 const admEmail = require('../config/env').admEmail;
-const json2xls = require('json2xls');
+const excel = require('exceljs');
 const fs = require('fs');
 
 /*
@@ -104,16 +104,30 @@ async function exportData(){
     try{
         let result = await userRepository.findAll();
         if(result.result) {
-            result.data = result.data.map(user => {
-                user = user.toJSON();
-                return user;
-            })
+            let workbook = new excel.Workbook();
+            let worksheet = workbook.addWorksheet('Usuários');
+            const filename = 'userData.xlsx';
+
+            worksheet.columns = [ 
+                { header: 'Nome', key: 'name', width: 20},
+                { header: 'E-mail', key: 'email', width: 20},
+                { header: 'Gênero', key: 'gender', width: 15},
+                { header: 'Nascimento', key: 'birthYear', width: 15},
+                { header: 'Cidade', key: 'city', width: 15},
+                { header: 'Estado', key: 'uf', width: 10},
+            ];
+
+            worksheet.getRow(1).font =  { bold: true };
+            worksheet.getRow(1).alignment = { vertical: 'middle', horizontal: 'center' };
+            
+            worksheet.addRows(result.data);
+            await workbook.xlsx.writeFile(filename);
+
+            return { result: true, data: {} };
         }
-        const filename = 'userData.xlsx';
-        let xslx = json2xls(result.data);
-        fs.writeFileSync(filename, xslx, 'binary');
 
         return result;
+
     } catch (err) {
         return { result: false, status: 500, msg: 'Erro durante a geração do arquivo xlsx' };
     }

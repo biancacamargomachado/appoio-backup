@@ -96,7 +96,7 @@ async function exportData(){
         return {
             result: false,
             status: 500,
-            msg: 'Erro desconhecido durante geração do arquivo xlsx',
+            msg: 'Erro desconhecido durante exportação de dados',
             data: {}
         };
     }
