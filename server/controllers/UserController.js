@@ -72,4 +72,34 @@ async function register(name, email, password, gender, birthYear, city, uf) {
     }
 }
 
-module.exports = { login, register };
+async function exportData(){
+    try {
+        let result = await userService.exportData();
+
+        if (result.result)
+            return {
+                result: true,
+                status: 201,
+                msg: 'Arquivo xlsx gerado',
+                data: {}
+            };
+
+        return {
+            result: false,
+            status: result.status,
+            msg: result.msg,
+            data: {}
+        };
+    } catch (err) {
+        console.log(err);
+
+        return {
+            result: false,
+            status: 500,
+            msg: 'Erro desconhecido durante geração do arquivo xlsx',
+            data: {}
+        };
+    }
+}
+
+module.exports = { login, register, exportData };

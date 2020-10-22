@@ -1,6 +1,6 @@
 const express = require('express');
 const userController = require('../controllers/UserController');
-
+const authHandler = require('../helper/AuthHandler');
 
 const router = express.Router();
 
@@ -31,5 +31,11 @@ router.post('/registration',
     }
 );
 
+router.get('/export',
+    authHandler.adminAuth(),
+    async (req,res) => {
+        return res.json(await userController.exportData());
+    }
+);
 
 module.exports = router;

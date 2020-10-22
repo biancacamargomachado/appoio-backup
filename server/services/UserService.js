@@ -1,6 +1,8 @@
 const userRepository = require('../repository/UserRepo');
 const { compare, hash } = require('bcrypt');
 const admEmail = require('../config/env').admEmail;
+const json2xls = require('json2xls');
+const fs = require('file-system');
 
 /*
  * Função que realiza o login do usuário dado seu email e senha, buscando o usuário e 
@@ -98,5 +100,24 @@ async function registerUser(name, email, password, gender, birthYear, city, uf) 
     }
 }
 
+async function exportData(){
+    try{
+        let result = await userRepository.findAll();
+        if(result.result) {
+            result.data = result.data.map(user => {
+                user = user.toJSON();
+                return user;
+            })
+        }
+        const filename = 'userData.xlsx';
+        let xslx = json2xls(result.data);
+        fs.writeFileSync(filename, xslx, 'binary');
 
-module.exports = { login, registerUser };
+        return result;
+    } catch (err) {
+        return { result: false, status: 500, msg: 'Erro durante a geração do arquivo xlsx' };
+    }
+}
+
+
+module.exports = { login, registerUser, exportData };
