@@ -106,7 +106,7 @@ async function exportData(){
         if(result.result) {
             let workbook = new excel.Workbook();
             let worksheet = workbook.addWorksheet('Usuários');
-            const filename = 'userData.xlsx';
+            const filename = 'dados_exportados/userData.xlsx';
 
             worksheet.columns = [ 
                 { header: 'Nome', key: 'name', width: 20},

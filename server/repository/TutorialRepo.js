@@ -93,8 +93,16 @@ async function findAll(approved) {
                     'id',
                     'appoioName',
                     'category',
-                    'operatingSystem'
+                    'operatingSystem',
+                    ['createdAt', 'date']
                 ],
+                include: [{
+                    model: User,
+                    as: 'user',
+                    attributes: [
+                        'name',
+                    ]
+                }],
                 order: [
                     ['createdAt', 'DESC']
                 ]
