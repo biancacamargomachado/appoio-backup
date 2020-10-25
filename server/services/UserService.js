@@ -119,8 +119,24 @@ async function exportData(){
 
             worksheet.getRow(1).font =  { bold: true };
             worksheet.getRow(1).alignment = { vertical: 'middle', horizontal: 'center' };
+            worksheet.getRow(1).eachCell(cell => {
+                cell.fill = { 
+                    type: 'pattern',
+                    pattern:'lightGray'
+                }
+            })
             
             worksheet.addRows(result.data);
+
+            worksheet.columns.forEach(column => {
+                column.border = {
+                    top: {style:'thin'},
+                    left: {style:'thin'},
+                    bottom: {style:'thin'},
+                    right: {style:'thin'}
+                };
+            })
+
             await workbook.xlsx.writeFile(filename);
 
             return { result: true, data: {} };
@@ -129,6 +145,7 @@ async function exportData(){
         return result;
 
     } catch (err) {
+        console.log(err)
         return { result: false, status: 500, msg: 'Erro durante a geração do arquivo xlsx' };
     }
 }
