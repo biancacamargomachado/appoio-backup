@@ -2,16 +2,9 @@ const nodemailer = require('nodemailer');
 const userRepository = require('../repository/UserRepo');
 const stream = require('stream');
 const excel = require('exceljs');
-const fs = require('fs')
 
 async function enviarEmail(email) {
     try {
-
-        let readableStream =  new stream.Readable({
-            read(size) {
-                return true;
-            }
-        });
 
         let fileGenerator = await exportData();
 
@@ -32,19 +25,16 @@ async function enviarEmail(email) {
                 from: usuario,
                 to: destinatario,
                 subject: 'Lista de usuários Appoio',
-                text: 'Segue em anexo o arquivo para visualizar os usuários!',
+                text: 'Segue em anexo o arquivo pcom os dados dos usuários .',
                 attachments: [{
                     filename: 'appoio_user_data.xlsx',
-                    //content: fileGenerator.data,
-                    streamSource: readableStream.pipe(fileGenerator.data)
+                    content: fileGenerator.data,
                 }]
             };
 
-            transporter.sendMail(mailOptions, function(error, info){
+            transporter.sendMail(mailOptions, function(error, _){
                 if (error) {
                     console.log(error);
-                } else {
-                    console.log('Email enviado: ' + info.response);
                 }
             });
 
@@ -63,14 +53,12 @@ async function exportData(){
         let result = await userRepository.findAll();
         
         if(result.result) {
-            let excelStream = new stream.Writable({
-                write: function(chunk, encoding, next) {
-                  console.log(chunk.toString());
-                  next();
+            let workbook = new excel.stream.xlsx.WorkbookWriter(
+                { 
+                    useStyles: true
                 }
-            });
-
-            let workbook = new excel.stream.xlsx.WorkbookWriter({ stream: excelStream });
+            );
+            
             let worksheet = workbook.addWorksheet('Usuários');
 
             worksheet.columns = [ 
@@ -87,14 +75,16 @@ async function exportData(){
             worksheet.getRow(1).eachCell(cell => {
                 cell.fill = { 
                     type: 'pattern',
-                    pattern: 'lightGray'
+                    pattern: 'solid',
+                    fgColor: {
+                        argb: "DCDCDC"
+                    },
+                    bgColor: {
+                        argb: "FF000000"
+                    }
                 }
             })
             
-            result.data.forEach((row) => {
-                worksheet.addRow(row).commit();
-            })
-
             worksheet.columns.forEach(column => {
                 column.border = {
                     top: {style:'thin'},
@@ -103,20 +93,21 @@ async function exportData(){
                     right: {style:'thin'}
                 };
             })
+            
+            result.data.forEach((row) => {
+                worksheet.addRow(row).commit();
+            })
 
             worksheet.commit();
             await workbook.commit();
 
-           // await workbook.xlsx.write(excelStream);
-           // excelStream.write(workbook);
-
-            return { result: true, status: 201, data: excelStream }
+            return { result: true, status: 201, data: workbook.stream }
         }
 
         return result;
 
     } catch (err) {
-        console.log(err)
+        console.log(err);
         return { result: false, status: 500, msg: 'Erro durante a geração do arquivo xlsx' };
     }
 }
