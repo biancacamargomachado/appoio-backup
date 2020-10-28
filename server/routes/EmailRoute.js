@@ -1,15 +1,15 @@
 const express = require('express');
-const EmailController = require('../controllers/EmailController');
-
+const emailController = require('../controllers/EmailController');
+const authHandler = require('../helper/AuthHandler');
 
 const router = express.Router();
 
 
-router.post('/',async (req, res, _) => {
-        let { email, titulo, mensagem } = req.body;
-        let resp = await EmailController.enviarEmail(email, titulo, mensagem);
-
-        return res.json(resp);
+router.post('/',
+    authHandler.adminAuth(),
+    async (req, res, _) => {
+        let { email } = req.body;
+        return res.json(await emailController.enviarEmail(email));
     }
 );
 

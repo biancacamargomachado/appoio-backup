@@ -1,8 +1,6 @@
 const userRepository = require('../repository/UserRepo');
 const { compare, hash } = require('bcrypt');
 const admEmail = require('../config/env').admEmail;
-const excel = require('exceljs');
-const fs = require('fs');
 
 /*
  * Função que realiza o login do usuário dado seu email e senha, buscando o usuário e 
@@ -100,55 +98,5 @@ async function registerUser(name, email, password, gender, birthYear, city, uf) 
     }
 }
 
-async function exportData(){
-    try{
-        let result = await userRepository.findAll();
-        if(result.result) {
-            let workbook = new excel.Workbook();
-            let worksheet = workbook.addWorksheet('Usuários');
-            const filename = 'dados_exportados/userData.xlsx';
 
-            worksheet.columns = [ 
-                { header: 'Nome', key: 'name', width: 20},
-                { header: 'E-mail', key: 'email', width: 20},
-                { header: 'Gênero', key: 'gender', width: 15},
-                { header: 'Nascimento', key: 'birthYear', width: 15},
-                { header: 'Cidade', key: 'city', width: 15},
-                { header: 'Estado', key: 'uf', width: 10},
-            ];
-
-            worksheet.getRow(1).font =  { bold: true };
-            worksheet.getRow(1).alignment = { vertical: 'middle', horizontal: 'center' };
-            worksheet.getRow(1).eachCell(cell => {
-                cell.fill = { 
-                    type: 'pattern',
-                    pattern:'lightGray'
-                }
-            })
-            
-            worksheet.addRows(result.data);
-
-            worksheet.columns.forEach(column => {
-                column.border = {
-                    top: {style:'thin'},
-                    left: {style:'thin'},
-                    bottom: {style:'thin'},
-                    right: {style:'thin'}
-                };
-            })
-
-            await workbook.xlsx.writeFile(filename);
-
-            return { result: true, data: {} };
-        }
-
-        return result;
-
-    } catch (err) {
-        console.log(err)
-        return { result: false, status: 500, msg: 'Erro durante a geração do arquivo xlsx' };
-    }
-}
-
-
-module.exports = { login, registerUser, exportData };
+module.exports = { login, registerUser };

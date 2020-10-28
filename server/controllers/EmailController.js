@@ -1,9 +1,9 @@
 const emailService = require('../services/EmailService');
 
-async function enviarEmail(email, titulo, mensagem) {
-    //chamar função de gerar arquido em excel
+async function enviarEmail(email) {
+    //chamar função de gerar arquivo em excel
     try {
-        let result = await emailService.enviarEmail(email, titulo, mensagem);
+        let result = await emailService.enviarEmail(email);
 
         if (result.result)
             return {

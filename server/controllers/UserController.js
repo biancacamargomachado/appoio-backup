@@ -74,7 +74,7 @@ async function register(name, email, password, gender, birthYear, city, uf) {
 
 async function exportData(){
     try {
-        let result = await userService.exportData();
+        let result = await userService.exportData(res);
 
         if (result.result)
             return {
