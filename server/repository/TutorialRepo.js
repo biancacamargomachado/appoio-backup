@@ -181,19 +181,26 @@ async function registerTutorial(tutorialCreationObject) {
         );
 
         if (tutorial) {
-            if (tags.length) {
-                let createdTags = [];
+            let createdTags = [];
+
+            if (tags.length) {    
                 for (let i = 0; i < tags.length; i++) {
                     createdTags.push((await Tag.findOrCreate({ transaction: transaction, where: tags[i] }))[0]);
                 }
 
-                console.log("\n\nCreated tags after:", createdTags, "\n\n");
                 await tutorial.setTags(createdTags, { transaction: transaction });
             }
 
             await transaction.commit();
 
-            return { result: true, data: {} };
+            return {
+                result: true,
+                data: {
+                    tutorial: tutorial,
+                    tags: createdTags,
+                    user: (await User.findByPk(tutorialCreationObject.userId))
+                }
+            };
         }
         else {
             await transaction.rollback();

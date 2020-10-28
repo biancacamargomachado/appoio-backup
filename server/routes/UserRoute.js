@@ -1,4 +1,5 @@
 const express = require('express');
+const authHandler = require('../helper/AuthHandler');
 const userController = require('../controllers/UserController');
 
 const router = express.Router();
@@ -27,6 +28,14 @@ router.post('/registration',
         }
 
         return res.json(resp);
+    }
+);
+
+router.post('/export',
+    authHandler.adminAuth(),
+    async (req, res, _) => {
+        let { email } = req.body;
+        return res.json(await userController.exportData(email));
     }
 );
 

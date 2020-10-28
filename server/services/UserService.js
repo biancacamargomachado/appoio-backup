@@ -1,6 +1,7 @@
 const userRepository = require('../repository/UserRepo');
+const config = require('../config/env');
 const { compare, hash } = require('bcrypt');
-const admEmail = require('../config/env').admEmail;
+const excel = require('exceljs');
 
 /*
  * Função que realiza o login do usuário dado seu email e senha, buscando o usuário e 
@@ -22,7 +23,7 @@ async function login(email, password) {
                 if (!match)
                     return { result: false, status: 403, msg: 'E-mail ou senha incorreto' };
 
-                if (email === admEmail)
+                if (email === config.admEmail)
                     user.admin = true;
                 else
                     user.admin = false;
@@ -99,4 +100,96 @@ async function registerUser(name, email, password, gender, birthYear, city, uf) 
 }
 
 
-module.exports = { login, registerUser };
+async function exportData(email) {
+    try {
+        let result = await userRepository.findAll();
+
+        if (result.result) {
+            let workbook = new excel.stream.xlsx.WorkbookWriter({
+                useStyles: true
+            });
+
+            let worksheetResult = addStyle(workbook.addWorksheet('Usuários'));
+            if (worksheetResult.result) {
+                let worksheet = worksheetResult.data;
+
+                result.data.forEach((row) => {
+                    if (row.email != config.admEmail) {
+                        worksheet.addRow(row).commit();
+                    }
+                })
+
+                worksheet.commit();
+                await workbook.commit();
+
+                return {
+                    result: true,
+                    data: {
+                        email: email,
+                        subject: 'Lista de usuários Appoio',
+                        text: 'Segue em anexo o arquivo com os dados dos usuários.',
+                        attachments: [{
+                            filename: 'appoio_user_data.xlsx',
+                            content: workbook.stream
+                        }]
+                    }
+                }
+            }
+
+            return worksheetResult;
+        }
+
+        return result;
+
+    } catch (err) {
+        console.log(err);
+        return { result: false, status: 500, msg: 'Erro durante a geração do arquivo xlsx' };
+    }
+}
+
+function addStyle(worksheet) {
+    try {
+        worksheet.columns = [
+            { header: 'Nome', key: 'name', width: 20 },
+            { header: 'E-mail', key: 'email', width: 20 },
+            { header: 'Gênero', key: 'gender', width: 15 },
+            { header: 'Nascimento', key: 'birthYear', width: 15 },
+            { header: 'Cidade', key: 'city', width: 15 },
+            { header: 'Estado', key: 'uf', width: 10 },
+        ];
+
+        worksheet.getRow(1).font = { bold: true };
+        worksheet.getRow(1).alignment = { vertical: 'middle', horizontal: 'center' };
+        worksheet.getRow(1).eachCell(cell => {
+            cell.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: {
+                    argb: "DCDCDC"
+                },
+                bgColor: {
+                    argb: "FF000000"
+                }
+            }
+        });
+
+        worksheet.columns.forEach(column => {
+            column.border = {
+                top: { style: 'thin' },
+                left: { style: 'thin' },
+                bottom: { style: 'thin' },
+                right: { style: 'thin' }
+            };
+        });
+
+        return { result: true, data: worksheet }
+
+    } catch (err) {
+        console.log(err);
+        return { result: false, status: 500, msg: 'Erro estilizando worksheet' };
+    }
+
+}
+
+
+module.exports = { login, registerUser, exportData };
