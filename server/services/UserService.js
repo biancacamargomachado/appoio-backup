@@ -153,7 +153,7 @@ function addStyle(worksheet) {
             { header: 'Nome', key: 'name', width: 20 },
             { header: 'E-mail', key: 'email', width: 20 },
             { header: 'Gênero', key: 'gender', width: 15 },
-            { header: 'Nascimento', key: 'birthYear', width: 15 },
+            { header: 'Ano de Nascimento', key: 'birthYear', width: 30 },
             { header: 'Cidade', key: 'city', width: 15 },
             { header: 'Estado', key: 'uf', width: 10 },
         ];
