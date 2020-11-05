@@ -107,7 +107,7 @@ async function register(creationObject) {
         let result = await tutorialService.registerTutorial(creationObject);
 
         if (result.result) {
-            if(creationObject.admin){
+            if(creationObject.approved){
                  return {
                     result: true,
                     status: 201,
