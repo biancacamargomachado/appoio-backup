@@ -1,13 +1,13 @@
 
 var args = process.argv.slice(2);
 
-
 if (args.length >= 1)
     if (args[0] == 'dev')
         module.exports = {
             env: 'development',
             secret: 'Shhh eh segredo',
-            admEmail: 'admin@gmail.com',
+            admEmail: process.env.ADMIN_EMAIL,
+            admPwd: process.env.ADMIN_PASSWORD,
             nomeApi: 'appoio-backend',
             apiURL: 'http://localhost',
             apiPort: 3000,
@@ -24,6 +24,7 @@ if (args.length >= 1)
             env: 'production',
             secret: process.env.SECRET,
             admEmail: process.env.ADMIN_EMAIL,
+            admPwd: process.env.ADMIN_PASSWORD,
             nomeApi: 'appoio-backend',
             apiURL: process.env.API_URL,
             apiPort: 3000,

@@ -1,4 +1,5 @@
 const userService = require('../services/UserService');
+const emailHandler = require('../helper/EmailHandler');
 
 
 async function login(email, password) {
@@ -72,4 +73,47 @@ async function register(name, email, password, gender, birthYear, city, uf) {
     }
 }
 
-module.exports = { login, register };
+async function exportData(email) {
+    try {
+        let result = await userService.exportData(email);
+
+        if (result.result){
+            let emailResult = await emailHandler.sendEmail(result.data);
+
+            if (emailResult){
+                return {
+                    result: true,
+                    status: 200,
+                    msg: 'Dados exportados',
+                    data: {}
+                };
+            }
+
+            return {
+                result: false,
+                status: result.status,
+                msg: result.msg,
+                data: {}
+            };
+        }
+
+        return {
+            result: false,
+            status: result.status,
+            msg: result.msg,
+            data: {}
+        };
+
+    } catch (err) {
+        console.log(err);
+
+        return {
+            result: false,
+            status: 500,
+            msg: 'Erro desconhecido durante exportação de dados',
+            data: {}
+        };
+    }
+}
+
+module.exports = { login, register, exportData };

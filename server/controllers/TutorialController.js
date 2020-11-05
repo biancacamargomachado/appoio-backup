@@ -1,4 +1,6 @@
 const tutorialService = require('../services/TutorialService');
+const emailHandler = require('../helper/EmailHandler');
+const config = require('../config/env');
 
 
 async function get(tutorialId) {
@@ -104,13 +106,36 @@ async function register(creationObject) {
     try {
         let result = await tutorialService.registerTutorial(creationObject);
 
-        if (result.result)
+        if (result.result) {
+            if(creationObject.admin){
+                 return {
+                    result: true,
+                    status: 201,
+                    msg: 'Tutorial registrado',
+                    data: {}
+                };
+            }
+            
+            result.data.email = config.admEmail;
+            let emailResult = await emailHandler.sendEmail(result.data);
+
+            if (emailResult.result) {
+                return {
+                    result: true,
+                    status: 201,
+                    msg: 'Tutorial registrado',
+                    data: {}
+                };
+            }
+
             return {
-                result: true,
-                status: 201,
-                msg: 'Tutorial registrado',
+                result: false,
+                status: emailResult.status,
+                msg: emailResult.msg,
                 data: {}
             };
+        }
+
 
         return {
             result: false,

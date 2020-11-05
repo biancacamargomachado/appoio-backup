@@ -75,7 +75,32 @@ async function getAll(approved) {
  * @returns {Tutorial}
  */
 async function registerTutorial(tutorialCreationObject) {
-    return await tutorialRepository.registerTutorial(tutorialCreationObject);
+    try {
+        let result = await tutorialRepository.registerTutorial(tutorialCreationObject);
+
+        if (result.result) {
+            let tutorial = result.data.tutorial;
+            let user = result.data.user;
+            let tags = result.data.tags;
+
+            let userText = `<p style='font-size:18px'><b>Informações do usuário:</b></p>\nNome: ${user.name}`;
+            let tutorialText = `<p style='font-size:18px'><b>Informações do tutorial:</b></p>\nNome: ${tutorial.appoioName}\nCategoria: ${tutorial.category}`;
+            let tagsText = `<p style='font-size:18px'><b>Tags associadas:</b></p>#${tags.map(tag => tag.name.replace(' ', '')).join(' #')}`
+
+            let subject = `Appoio pendente - ${tutorial.appoioName}`;
+            let text = `<html><p style='font-size:28px'><b>Novo tutorial pendente de aprovação</b></p>\n\n`
+
+            text += `${userText}\n\n${tutorialText}\n\n${tagsText}</html>`;
+
+            return { result: true, data: { subject: subject, text: text } };
+        }
+
+        return result;
+
+    } catch (err) {
+        console.log(err);
+        return { result: false, status: 500, msg: 'Erro durante a construção do corpo do e-mail' };
+    }
 }
 
 /*
