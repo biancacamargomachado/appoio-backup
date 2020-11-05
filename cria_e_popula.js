@@ -203,11 +203,11 @@ async function criaTutoriais() {
 async function criaTags() {
     try {
         await Tag.create({
-            name: '#appoio'
+            name: 'appoio'
         });
 
         await Tag.create({
-            name: '#AGES'
+            name: 'AGES'
         });
 
     } catch (err) {
