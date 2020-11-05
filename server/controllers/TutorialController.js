@@ -107,6 +107,15 @@ async function register(creationObject) {
         let result = await tutorialService.registerTutorial(creationObject);
 
         if (result.result) {
+            if(creationObject.admin){
+                 return {
+                    result: true,
+                    status: 201,
+                    msg: 'Tutorial registrado',
+                    data: {}
+                };
+            }
+            
             result.data.email = config.admEmail;
             let emailResult = await emailHandler.sendEmail(result.data);
 
