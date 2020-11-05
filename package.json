@@ -4,7 +4,7 @@
   "description": "Backend para suportar o projeto Appoio",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js dev"
   },
   "repository": {
     "type": "git",

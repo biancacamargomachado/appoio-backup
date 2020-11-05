@@ -7,10 +7,6 @@ class App extends Model{
         name: {
           type: DataTypes.STRING(50),
           allowNull: false,
-        },
-        logoURL: {
-          type: DataTypes.STRING(500),
-          allowNull: false
         }
       },
       {
