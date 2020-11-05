@@ -143,6 +143,9 @@ async function getTutorials(appId) {
                             'category',
                             'operatingSystem'
                         ],
+                        where: {
+                            approved: 1
+                        },
                         order: [
                             ['createdAt', 'DESC']
                         ]

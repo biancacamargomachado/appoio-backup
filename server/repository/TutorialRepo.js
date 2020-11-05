@@ -184,8 +184,8 @@ async function registerTutorial(tutorialCreationObject) {
             let createdTags = [];
 
             if (tags.length) {    
-                for (let i = 0; i < tags.length; i++) {
-                    createdTags.push((await Tag.findOrCreate({ transaction: transaction, where: tags[i] }))[0]);
+                for (let tagName of tags) {
+                    createdTags.push((await Tag.findOrCreate({ transaction: transaction, where: {name: tagName} }))[0]);
                 }
 
                 await tutorial.setTags(createdTags, { transaction: transaction });
@@ -264,7 +264,8 @@ async function search(searchString) {
     try {
         let tutorials = await Tutorial.findAll({
             where: {
-                appoioName: sequelize.where(sequelize.fn('LOWER', sequelize.col('appoioName')), 'LIKE', `%${searchString}%`)
+                appoioName: sequelize.where(sequelize.fn('LOWER', sequelize.col('appoioName')), 'LIKE', `%${searchString}%`),
+                approved: 1
             },
             attributes: [
                 'id',
@@ -293,7 +294,8 @@ async function search(searchString) {
                 where: {
                     id: {
                         [Op.notIn]: tutorialsIds
-                    }
+                    },
+                    approved: 1
                 }
             }]
         })).map(tag => tag.tutorials).flat();
@@ -317,7 +319,8 @@ async function search(searchString) {
                 where: {
                     id: {
                         [Op.notIn]: tutorialsIds
-                    }
+                    },
+                    approved: 1
                 }
             }]
         })).map(app => app.tutorials).flat();

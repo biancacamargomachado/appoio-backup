@@ -13,13 +13,26 @@ const tutorialRepository = require('../repository/TutorialRepo');
 async function get(id) {
     let result = await tutorialRepository.findById(id);
 
-    if (result.result)
-        if (result.data)
+    if (result.result) {
+        if (result.data) {
+            result.data = result.data.toJSON();
+
+            if (result.data.tags) {
+                let tags = result.data.tags;
+                for (let tag of tags)
+                    delete tag.tutorial_tag
+            }
+            
             return result;
-        else
+        }
+
+        else {
             return { result: false, status: 404, msg: 'Não foi possível recuperar o tutorial' };
-    else
+        }
+    }
+    else {
         return result;
+    }
 }
 
 /*

@@ -41,11 +41,17 @@ router.post('/registration',
                 creationObject.steps = JSON.parse(creationObject.steps);
 
                 let files = req.files;
-                if (files)
-                    for (let i = 0; i < files.length; i++)
-                        creationObject.steps[i].imgURL = files[i].secureURL
+                if (files) {
+                    let steps = creationObject.steps;
+                    for (let i = 0; i < steps.length; i++)
+                        if (steps[i].order)
+                            steps[i].imgURL = files[steps[i].order].secureURL
+
+                    creationObject.steps = steps;
+                }
             }
 
+            creationObject.userId = req.session.userId;
             creationObject.admin = req.session.admin;
 
             return res.json(await tutorialController.register(creationObject));
