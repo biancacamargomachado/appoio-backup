@@ -264,22 +264,29 @@ async function search(searchString) {
     try {
         let tutorials = await Tutorial.findAll({
             where: {
-                appoioName: sequelize.where(sequelize.fn('LOWER', sequelize.col('appoioName')), 'LIKE', `%${searchString}%`),
+                appoioName: sequelize.where(sequelize.fn('LOWER', sequelize.col('tutorial.appoioName')), 'LIKE', `%${searchString}%`),
                 approved: 1
             },
             attributes: [
                 'id',
                 'appoioName',
                 'category',
-                'createdAt'
-            ]
+                ['createdAt', 'date']
+            ],
+            include: [{
+                model: User,
+                as: 'user',
+                attributes: [
+                    'name',
+                ]
+            }],
         });
 
         let tutorialsIds = tutorials.map(tutorial => tutorial.id);
 
         let tagTutorials = (await Tag.findAll({
             where: {
-                appoioName: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), 'LIKE', `%${searchString}%`)
+                appoioName: sequelize.where(sequelize.fn('LOWER', sequelize.col('tag.name')), 'LIKE', `%${searchString}%`)
             },
             attributes: [],
             include: [{
@@ -289,8 +296,15 @@ async function search(searchString) {
                     'id',
                     'appoioName',
                     'category',
-                    'createdAt'
+                    ['createdAt', 'date']
                 ],
+                include: [{
+                    model: User,
+                    as: 'user',
+                    attributes: [
+                        'name',
+                    ]
+                }],
                 where: {
                     id: {
                         [Op.notIn]: tutorialsIds
@@ -304,7 +318,7 @@ async function search(searchString) {
 
         let appTutorials = (await App.findAll({
             where: {
-                appoioName: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), 'LIKE', `%${searchString}%`)
+                appoioName: sequelize.where(sequelize.fn('LOWER', sequelize.col('app.name')), 'LIKE', `%${searchString}%`)
             },
             attributes: [],
             include: [{
@@ -314,8 +328,15 @@ async function search(searchString) {
                     'id',
                     'appoioName',
                     'category',
-                    'createdAt'
+                    ['createdAt', 'date']
                 ],
+                include: [{
+                    model: User,
+                    as: 'user',
+                    attributes: [
+                        'name',
+                    ]
+                }],
                 where: {
                     id: {
                         [Op.notIn]: tutorialsIds
@@ -340,6 +361,7 @@ async function search(searchString) {
         else if (err instanceof ValidationError) {
             return { result: false, status: 400, msg: `Constraint referente à coluna: ${err.errors[0].validatorKey} falhou` };
         }
+        console.log(err);
     }
 }
 

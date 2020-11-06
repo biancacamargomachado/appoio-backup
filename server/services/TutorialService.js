@@ -149,23 +149,17 @@ async function search(searchString) {
 
         if (result.result) {
             result.data = result.data.sort((a, b) => {
-                let dateA = new Date(a.createdAt);
-                let dateB = new Date(b.createdAt);
+                let dateA = new Date(a['date']);
+                let dateB = new Date(b['date']);
 
                 return (dateA > dateB) - (dateA < dateB)
             });
-
-            result.data = result.data.map(tutorial => {
-                tutorial = tutorial.toJSON();
-                delete tutorial['createdAt'];
-
-                return tutorial;
-            })
         }
 
         return result;
 
     } catch (err) {
+        console.log(err);
         return { result: false, status: 500, msg: 'Erro durante a ordenação dos tutoriais' };
     }
 
