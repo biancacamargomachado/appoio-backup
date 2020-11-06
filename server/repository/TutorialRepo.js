@@ -237,7 +237,15 @@ async function deleteTutorial(tutorialId) {
                 model: Step,
                 as: 'steps'
             }]
-        })
+        });
+        
+        if (tutorial === null)
+            return {
+                result: false,
+                status: 404,
+                msg: 'Tutorial não encontrado para remoção'
+            };
+        
 
         return {
             result: true,
