@@ -107,7 +107,7 @@ async function criaTutoriais() {
         await Tutorial.create({
             userId: 1,
             appoioName: 'tutorial conceitos aprovado',
-            category: 'Conceitos',
+            category: 'conceitos',
             approved: 1,
             steps: [{ description: 'passo teste 1' }, { description: 'passo teste 1' }]
         }, {
@@ -122,7 +122,7 @@ async function criaTutoriais() {
         await Tutorial.create({
             userId: 2,
             appoioName: 'tutorial conceitos nao aprovado',
-            category: 'Conceitos',
+            category: 'conceitos',
             approved: 0,
             steps: [{ description: 'passo teste 1' }, { description: 'passo teste 1' }]
         }, {
@@ -137,7 +137,7 @@ async function criaTutoriais() {
         await Tutorial.create({
             userId: 1,
             appoioName: 'tutorial celular aprovado',
-            category: 'Celular',
+            category: 'celular',
             approved: 1,
             steps: [{ description: 'passo teste 1' }, { description: 'passo teste 2' }]
         }, {
@@ -152,7 +152,7 @@ async function criaTutoriais() {
         await Tutorial.create({
             userId: 2,
             appoioName: 'tutorial celular nao aprovado',
-            category: 'Celular',
+            category: 'celular',
             approved: 0,
             steps: [{ description: 'passo teste 1' }, { description: 'passo teste 2' }]
         }, {
@@ -167,7 +167,7 @@ async function criaTutoriais() {
         await Tutorial.create({
             userId: 1,
             appoioName: 'tutorial aplicativos aprovado',
-            category: 'Aplicativos',
+            category: 'aplicativos',
             approved: 1,
             steps: [{ description: 'Abrir whats' }, { description: 'Clicar on botao' }]
         }, {
@@ -182,7 +182,7 @@ async function criaTutoriais() {
         await Tutorial.create({
             userId: 2,
             appoioName: 'tutorial aplicativos nao aprovado',
-            category: 'Aplicativos',
+            category: 'aplicativos',
             approved: 0,
             steps: [{ description: 'Abrir instagram' }, { description: 'Clicar no botao' }]
         }, {

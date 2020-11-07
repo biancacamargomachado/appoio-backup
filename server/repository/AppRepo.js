@@ -19,6 +19,9 @@ async function getAll() {
                         {
                             model: Tutorial,
                             as: 'tutorials',
+                            where: {
+                                approved: 1
+                            },
                             attributes: [
                                 'id'
                             ]
@@ -62,6 +65,9 @@ async function getByUserId(userId) {
                             {
                                 model: Tutorial,
                                 as: 'tutorials',
+                                where: {
+                                    approved: 1
+                                },
                                 attributes: [
                                     'id'
                                 ]
@@ -104,6 +110,9 @@ async function getExcept(appIds) {
                     {
                         model: Tutorial,
                         as: 'tutorials',
+                        where: {
+                            approved: 1
+                        },
                         attributes: [
                             'id'
                         ]
